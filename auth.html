@@ -128,39 +128,37 @@
 
       const { data, error } = await supabase.auth.signUp({
         email,
-        password
-      });
-
-      if (error) return message(error.message);
-
-      if (data.user) {
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .insert({
-            id: data.user.id,
+        password,
+        options: {
+          data: {
             full_name,
             phone,
             university,
-            specialty,
-            role: "student",
-            verification_status: "pending"
-          });
-
-        if (profileError) {
-          return message("تم إنشاء الحساب، لكن تعذر إنشاء الملف الشخصي: " + profileError.message);
+            specialty
+          }
         }
+      });
+
+      if (error) {
+        return message("تعذر إنشاء الحساب: " + error.message);
       }
 
-      message(
-        data.session
-          ? "تم إنشاء حسابك بنجاح!"
-          : "تحقق من بريدك الإلكتروني لتأكيد الحساب."
-      );
+      if (data.user) {
+        message(
+          data.session
+            ? "تم إنشاء الحساب بنجاح!"
+            : "تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيده."
+        );
+      }
     };
 
     $("loginBtn").onclick = async () => {
       const email = $("loginEmail").value.trim();
       const password = $("loginPassword").value;
+
+      if (!email || !password) {
+        return message("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
+      }
 
       message("جارٍ تسجيل الدخول...");
 
@@ -169,7 +167,7 @@
         password
       });
 
-      if (error) return message(error.message);
+      if (error) return message("تعذر تسجيل الدخول: " + error.message);
 
       message("تم تسجيل الدخول بنجاح!");
     };
