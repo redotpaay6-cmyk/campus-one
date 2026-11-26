@@ -2,135 +2,203 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CAMPUS ONE - المنصة الجامعية الجزائرية">
-  <title>CAMPUS ONE | منصتك الجامعية</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fc;
-      color: #172b4d;
-    }
-    header {
-      background: #102b46;
-      color: white;
-      padding: 20px 7%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-    .logo { font-size: 25px; font-weight: bold; }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-      font-size: 14px;
-    }
-    .hero {
-      background: linear-gradient(135deg, #102b46, #1768a5);
-      color: white;
-      text-align: center;
-      padding: 85px 20px;
-    }
-    .hero h1 { font-size: 38px; margin-bottom: 18px; }
-    .hero p { font-size: 18px; line-height: 1.8; }
-    .hero button {
-      background: white;
-      color: #14558a;
-      border: none;
-      padding: 14px 28px;
-      border-radius: 8px;
-      margin-top: 25px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .section { padding: 50px 7%; text-align: center; }
-    .section h2 { margin-bottom: 30px; font-size: 27px; }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: white;
-      padding: 28px 18px;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px #102b4610;
-    }
-    .card .symbol { font-size: 35px; margin-bottom: 15px; }
-    .card h3 { margin-bottom: 10px; color: #14558a; }
-    .card p { color: #68788d; line-height: 1.7; }
-    footer {
-      background: #102b46;
-      color: white;
-      text-align: center;
-      padding: 25px;
-    }
-    @media(max-width:600px) {
-      .hero h1 { font-size: 29px; }
-      nav { display: flex; flex-wrap: wrap; gap: 10px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b46">
+<title>CAMPUS ONE</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,sans-serif;
+ background:#f4f7fc;
+ color:#172b4d;
+ line-height:1.7;
+}
+header{
+ background:#102b46;
+ color:white;
+ padding:18px 7%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:15px;
+}
+.logo{font-size:25px;font-weight:bold}
+nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;font-size:14px}
+.lang{
+ background:#fff;color:#102b46;border:0;
+ padding:9px 15px;border-radius:7px;
+ font-weight:bold;cursor:pointer;
+}
+.hero{
+ background:linear-gradient(135deg,#102b46,#1768a5);
+ color:white;text-align:center;padding:85px 20px;
+}
+.hero h1{font-size:38px;margin-bottom:15px}
+.hero p{font-size:18px;line-height:1.9}
+.main-btn{
+ display:inline-block;background:white;color:#14558a;
+ padding:12px 25px;border:0;border-radius:8px;
+ margin-top:25px;text-decoration:none;cursor:pointer;
+ font-size:16px;font-weight:bold;
+}
+.section{padding:55px 7%;text-align:center}
+.section h2{font-size:27px;margin-bottom:30px}
+.cards{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+ gap:20px;
+}
+.card{
+ background:white;padding:28px 18px;border-radius:14px;
+ box-shadow:0 4px 15px #102b4610;
+ transition:.2s;
+}
+.card:hover{transform:translateY(-5px)}
+.symbol{font-size:38px;margin-bottom:12px}
+.card h3{color:#14558a;margin-bottom:10px}
+.card p{color:#68788d}
+.about{background:#e9f1fa}
+footer{
+ background:#102b46;color:white;text-align:center;
+ padding:25px;
+}
+@media(max-width:600px){
+ header{justify-content:center}
+ nav{justify-content:center}
+ .hero h1{font-size:29px}
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <div class="logo">🎓 CAMPUS ONE</div>
-  <nav>
-    <a href="#home">الرئيسية</a>
-    <a href="#services">الخدمات</a>
-    <a href="#about">من نحن</a>
-  </nav>
+ <div class="logo">🎓 CAMPUS ONE</div>
+
+ <nav>
+  <a href="#home" data-ar="الرئيسية" data-fr="Accueil">الرئيسية</a>
+  <a href="#services" data-ar="الخدمات" data-fr="Services">الخدمات</a>
+  <a href="#about" data-ar="من نحن" data-fr="À propos">من نحن</a>
+  <button class="lang" onclick="toggleLanguage()">Français</button>
+ </nav>
 </header>
 
 <section class="hero" id="home">
-  <h1>مرحباً بك في CAMPUS ONE</h1>
-  <p>كل ما يحتاجه الطالب الجامعي الجزائري<br>
-  منصة واحدة، فرص أكثر، ومستقبل أفضل.</p>
-  <button onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
-    اكتشف خدماتنا
-  </button>
+ <h1 data-ar="مرحباً بك في CAMPUS ONE"
+     data-fr="Bienvenue sur CAMPUS ONE">
+  مرحباً بك في CAMPUS ONE
+ </h1>
+
+ <p data-ar="كل ما يحتاجه الطالب الجامعي الجزائري<br>منصة واحدة، فرص أكثر، ومستقبل أفضل."
+    data-fr="Tout ce dont l'étudiant algérien a besoin.<br>Une plateforme, plus d'opportunités, un meilleur avenir.">
+  كل ما يحتاجه الطالب الجامعي الجزائري<br>
+  منصة واحدة، فرص أكثر، ومستقبل أفضل.
+ </p>
+
+ <a class="main-btn" href="#services"
+ data-ar="اكتشف خدماتنا"
+ data-fr="Découvrir nos services">
+ اكتشف خدماتنا
+ </a>
 </section>
 
 <section class="section" id="services">
-  <h2>اكتشف عالمك الجامعي</h2>
-  <div class="cards">
-    <div class="card">
-      <div class="symbol">🏛️</div>
-      <h3>الجامعات</h3>
-      <p>اكتشف الجامعات الجزائرية ومعلوماتها.</p>
-    </div>
-    <div class="card">
-      <div class="symbol">📚</div>
-      <h3>الدروس والملخصات</h3>
-      <p>مصادر تعليمية تساعدك في دراستك.</p>
-    </div>
-    <div class="card">
-      <div class="symbol">🎓</div>
-      <h3>التوجيه الجامعي</h3>
-      <p>معلومات حول التخصصات والمسارات.</p>
-    </div>
-    <div class="card">
-      <div class="symbol">🚌</div>
-      <h3>الخدمات الجامعية</h3>
-      <p>معلومات وخدمات الحياة الجامعية.</p>
-    </div>
+ <h2 data-ar="اكتشف عالمك الجامعي"
+     data-fr="Explorez votre université">
+ اكتشف عالمك الجامعي
+ </h2>
+
+ <div class="cards">
+
+  <div class="card">
+   <div class="symbol">🏛️</div>
+   <h3 data-ar="الجامعات الجزائرية"
+       data-fr="Universités algériennes">الجامعات الجزائرية</h3>
+   <p data-ar="اكتشف الجامعات الجزائرية ومعلوماتها."
+      data-fr="Découvrez les universités algériennes et leurs informations.">
+    اكتشف الجامعات الجزائرية ومعلوماتها.
+   </p>
   </div>
+
+  <div class="card">
+   <div class="symbol">📚</div>
+   <h3 data-ar="الدروس والملخصات"
+       data-fr="Cours et résumés">الدروس والملخصات</h3>
+   <p data-ar="مصادر تعليمية تساعدك في دراستك."
+      data-fr="Des ressources pédagogiques pour vos études.">
+    مصادر تعليمية تساعدك في دراستك.
+   </p>
+  </div>
+
+  <div class="card">
+   <div class="symbol">🎓</div>
+   <h3 data-ar="التوجيه الجامعي"
+       data-fr="Orientation universitaire">التوجيه الجامعي</h3>
+   <p data-ar="تعرف على التخصصات والمسارات الجامعية."
+      data-fr="Découvrez les spécialités et les parcours universitaires.">
+    تعرف على التخصصات والمسارات الجامعية.
+   </p>
+  </div>
+
+  <div class="card">
+   <div class="symbol">🚌</div>
+   <h3 data-ar="الخدمات الجامعية"
+       data-fr="Services universitaires">الخدمات الجامعية</h3>
+   <p data-ar="معلومات حول الإقامة والنقل والإطعام."
+      data-fr="Informations sur l'hébergement, le transport et la restauration.">
+    معلومات حول الإقامة والنقل والإطعام.
+   </p>
+  </div>
+
+ </div>
 </section>
 
-<section class="section" id="about">
-  <h2>عن CAMPUS ONE</h2>
-  <p>منصة رقمية تهدف إلى جمع الخدمات والمعلومات الجامعية الجزائرية في مكان واحد.</p>
+<section class="section about" id="about">
+ <h2 data-ar="عن CAMPUS ONE"
+     data-fr="À propos de CAMPUS ONE">عن CAMPUS ONE</h2>
+ <p data-ar="منصة رقمية تهدف إلى جمع المعلومات والخدمات الجامعية الجزائرية في مكان واحد."
+    data-fr="Une plateforme numérique qui rassemble les informations et les services universitaires algériens en un seul endroit.">
+  منصة رقمية تهدف إلى جمع المعلومات والخدمات الجامعية الجزائرية في مكان واحد.
+ </p>
 </section>
 
 <footer>
-  <p>© 2026 CAMPUS ONE - جميع الحقوق محفوظة</p>
-  <p>منصة الطالب الجزائري 🇩🇿</p>
+ <p>CAMPUS ONE © 2026</p>
+ <p data-ar="منصة الطالب الجامعي الجزائري 🇩🇿"
+    data-fr="La plateforme de l'étudiant algérien 🇩🇿">
+  منصة الطالب الجامعي الجزائري 🇩🇿
+ </p>
 </footer>
+
+<script>
+let currentLanguage = localStorage.getItem("campusLanguage") || "ar";
+
+function setLanguage(lang){
+ currentLanguage = lang;
+
+ document.documentElement.lang = lang;
+ document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
+ document.querySelectorAll("[data-ar][data-fr]").forEach(element=>{
+  element.innerHTML = element.getAttribute("data-" + lang);
+ });
+
+ document.querySelector(".lang").textContent =
+  lang === "ar" ? "Français" : "العربية";
+
+ localStorage.setItem("campusLanguage",lang);
+}
+
+function toggleLanguage(){
+ setLanguage(currentLanguage === "ar" ? "fr" : "ar");
+}
+
+setLanguage(currentLanguage);
+</script>
 
 </body>
 </html>
