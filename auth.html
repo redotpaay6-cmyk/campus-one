@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAMPUS ONE | حساب الطالب</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #102b46;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      width: 100%;
+      max-width: 430px;
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px #102b4615;
+    }
+    h1 { text-align: center; margin-bottom: 8px; }
+    .sub { text-align: center; color: #64748b; margin-bottom: 24px; }
+    input {
+      width: 100%;
+      padding: 13px;
+      margin: 7px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      font-size: 15px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      background: #1768a5;
+      color: white;
+      border: 0;
+      border-radius: 9px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .switch {
+      background: none;
+      color: #1768a5;
+      margin-top: 8px;
+    }
+    #message { text-align: center; margin-top: 15px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>CAMPUS ONE</h1>
+    <p class="sub">كل ما يحتاجه الطالب، في مكان واحد</p>
+
+    <div id="register">
+      <h3>إنشاء حساب طالب</h3>
+      <input id="name" placeholder="الاسم الكامل">
+      <input id="phone" type="tel" placeholder="رقم الهاتف">
+      <input id="email" type="email" placeholder="البريد الإلكتروني">
+      <input id="password" type="password" placeholder="كلمة المرور">
+      <input id="university" placeholder="الجامعة">
+      <input id="specialty" placeholder="التخصص">
+      <button id="registerBtn">إنشاء الحساب</button>
+      <button class="switch" id="showLogin">لديك حساب؟ تسجيل الدخول</button>
+    </div>
+
+    <div id="login" class="hidden">
+      <h3>تسجيل الدخول</h3>
+      <input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
+      <input id="loginPassword" type="password" placeholder="كلمة المرور">
+      <button id="loginBtn">دخول</button>
+      <button class="switch" id="showRegister">إنشاء حساب جديد</button>
+    </div>
+
+    <p id="message" role="status"></p>
+  </main>
+
+  <script type="module">
+    import { createClient } from
+      "https://esm.sh/@supabase/supabase-js@2";
+
+    const supabase = createClient(
+      "https://rpvoajlzkoynimfowzgl.supabase.co",
+      "sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552"
+    );
+
+    const $ = id => document.getElementById(id);
+    const message = text => $("message").textContent = text;
+
+    $("showLogin").onclick = () => {
+      $("register").classList.add("hidden");
+      $("login").classList.remove("hidden");
+      message("");
+    };
+
+    $("showRegister").onclick = () => {
+      $("login").classList.add("hidden");
+      $("register").classList.remove("hidden");
+      message("");
+    };
+
+    $("registerBtn").onclick = async () => {
+      const full_name = $("name").value.trim();
+      const phone = $("phone").value.trim();
+      const email = $("email").value.trim();
+      const password = $("password").value;
+      const university = $("university").value.trim();
+      const specialty = $("specialty").value.trim();
+
+      if (!full_name || !phone || !email || !password ||
+          !university || !specialty) {
+        return message("يرجى ملء جميع الخانات.");
+      }
+
+      if (password.length < 8) {
+        return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
+      }
+
+      message("جارٍ إنشاء الحساب...");
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password
+      });
+
+      if (error) return message(error.message);
+
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .insert({
+            id: data.user.id,
+            full_name,
+            phone,
+            university,
+            specialty,
+            role: "student",
+            verification_status: "pending"
+          });
+
+        if (profileError) {
+          return message("تم إنشاء الحساب، لكن تعذر إنشاء الملف الشخصي: " + profileError.message);
+        }
+      }
+
+      message(
+        data.session
+          ? "تم إنشاء حسابك بنجاح!"
+          : "تحقق من بريدك الإلكتروني لتأكيد الحساب."
+      );
+    };
+
+    $("loginBtn").onclick = async () => {
+      const email = $("loginEmail").value.trim();
+      const password = $("loginPassword").value;
+
+      message("جارٍ تسجيل الدخول...");
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) return message(error.message);
+
+      message("تم تسجيل الدخول بنجاح!");
+    };
+  </script>
+</body>
+</html>
