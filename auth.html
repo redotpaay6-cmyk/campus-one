@@ -5,8 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CAMPUS ONE | حساب الطالب</title>
+
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -17,6 +19,7 @@
       place-items: center;
       padding: 20px;
     }
+
     .card {
       background: white;
       width: 100%;
@@ -25,8 +28,18 @@
       border-radius: 18px;
       box-shadow: 0 8px 30px #102b4615;
     }
-    h1 { text-align: center; margin-bottom: 8px; }
-    .sub { text-align: center; color: #64748b; margin-bottom: 24px; }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
     input {
       width: 100%;
       padding: 13px;
@@ -35,6 +48,7 @@
       border-radius: 9px;
       font-size: 15px;
     }
+
     button {
       width: 100%;
       padding: 14px;
@@ -46,44 +60,101 @@
       font-size: 16px;
       cursor: pointer;
     }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .switch {
       background: none;
       color: #1768a5;
       margin-top: 8px;
     }
-    #message { text-align: center; margin-top: 15px; }
-    .hidden { display: none; }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
+
   <main class="card">
+
     <h1>CAMPUS ONE</h1>
     <p class="sub">كل ما يحتاجه الطالب، في مكان واحد</p>
 
+    <!-- إنشاء حساب -->
     <div id="register">
+
       <h3>إنشاء حساب طالب</h3>
+
       <input id="name" placeholder="الاسم الكامل">
-      <input id="phone" type="tel" placeholder="رقم الهاتف">
-      <input id="email" type="email" placeholder="البريد الإلكتروني">
-      <input id="password" type="password" placeholder="كلمة المرور">
-      <input id="university" placeholder="الجامعة">
-      <input id="specialty" placeholder="التخصص">
-      <button id="registerBtn">إنشاء الحساب</button>
-      <button class="switch" id="showLogin">لديك حساب؟ تسجيل الدخول</button>
+
+      <input id="phone"
+             type="tel"
+             placeholder="رقم الهاتف">
+
+      <input id="email"
+             type="email"
+             placeholder="البريد الإلكتروني">
+
+      <input id="password"
+             type="password"
+             placeholder="كلمة المرور">
+
+      <input id="university"
+             placeholder="الجامعة">
+
+      <input id="specialty"
+             placeholder="التخصص">
+
+      <button id="registerBtn">
+        إنشاء الحساب
+      </button>
+
+      <button class="switch" id="showLogin">
+        لديك حساب؟ تسجيل الدخول
+      </button>
+
     </div>
 
+    <!-- تسجيل الدخول -->
     <div id="login" class="hidden">
+
       <h3>تسجيل الدخول</h3>
-      <input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
-      <input id="loginPassword" type="password" placeholder="كلمة المرور">
-      <button id="loginBtn">دخول</button>
-      <button class="switch" id="showRegister">إنشاء حساب جديد</button>
+
+      <input id="loginEmail"
+             type="email"
+             placeholder="البريد الإلكتروني">
+
+      <input id="loginPassword"
+             type="password"
+             placeholder="كلمة المرور">
+
+      <button id="loginBtn">
+        دخول
+      </button>
+
+      <button class="switch" id="showRegister">
+        إنشاء حساب جديد
+      </button>
+
     </div>
 
     <p id="message" role="status"></p>
+
   </main>
 
   <script type="module">
+
     import { createClient } from
       "https://esm.sh/@supabase/supabase-js@2";
 
@@ -93,21 +164,34 @@
     );
 
     const $ = id => document.getElementById(id);
-    const message = text => $("message").textContent = text;
 
+    const message = text => {
+      $("message").textContent = text;
+    };
+
+    // الانتقال إلى تسجيل الدخول
     $("showLogin").onclick = () => {
+
       $("register").classList.add("hidden");
       $("login").classList.remove("hidden");
+
       message("");
+
     };
 
+    // العودة إلى إنشاء الحساب
     $("showRegister").onclick = () => {
+
       $("login").classList.add("hidden");
       $("register").classList.remove("hidden");
+
       message("");
+
     };
 
+    // إنشاء حساب طالب
     $("registerBtn").onclick = async () => {
+
       const full_name = $("name").value.trim();
       const phone = $("phone").value.trim();
       const email = $("email").value.trim();
@@ -115,62 +199,161 @@
       const university = $("university").value.trim();
       const specialty = $("specialty").value.trim();
 
-      if (!full_name || !phone || !email || !password ||
-          !university || !specialty) {
+      if (
+        !full_name ||
+        !phone ||
+        !email ||
+        !password ||
+        !university ||
+        !specialty
+      ) {
+
         return message("يرجى ملء جميع الخانات.");
+
       }
 
       if (password.length < 8) {
-        return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
+
+        return message(
+          "كلمة المرور يجب أن تكون 8 أحرف على الأقل."
+        );
+
       }
 
+      const button = $("registerBtn");
+
+      button.disabled = true;
       message("جارٍ إنشاء الحساب...");
 
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name,
-            phone,
-            university,
-            specialty
-          }
+      try {
+
+        const { data, error } =
+          await supabase.auth.signUp({
+
+            email: email,
+            password: password,
+
+            options: {
+
+              data: {
+
+                full_name: full_name,
+                phone: phone,
+                university: university,
+                specialty: specialty
+
+              }
+
+            }
+
+          });
+
+        if (error) {
+
+          throw error;
+
         }
-      });
 
-      if (error) {
-        return message("تعذر إنشاء الحساب: " + error.message);
-      }
+        if (!data.user) {
 
-      if (data.user) {
+          throw new Error(
+            "لم يتم إرجاع بيانات المستخدم."
+          );
+
+        }
+
+        const metadata = data.user.user_metadata || {};
+
+        console.log(
+          "بيانات التسجيل:",
+          metadata
+        );
+
+        if (
+          metadata.full_name !== full_name ||
+          metadata.phone !== phone ||
+          metadata.university !== university ||
+          metadata.specialty !== specialty
+        ) {
+
+          return message(
+            "تم إنشاء الحساب، لكن بيانات الطالب لم تصل كما هو متوقع. يرجى التواصل مع الإدارة."
+          );
+
+        }
+
         message(
           data.session
-            ? "تم إنشاء الحساب بنجاح!"
-            : "تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيده."
+            ? "تم إنشاء حسابك بنجاح! ملفك الشخصي قيد المراجعة."
+            : "تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيده. ملفك الشخصي قيد المراجعة."
         );
+
+      } catch (error) {
+
+        message(
+          "تعذر إنشاء الحساب: " + error.message
+        );
+
+      } finally {
+
+        button.disabled = false;
+
       }
+
     };
 
+    // تسجيل الدخول
     $("loginBtn").onclick = async () => {
+
       const email = $("loginEmail").value.trim();
       const password = $("loginPassword").value;
 
       if (!email || !password) {
-        return message("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
+
+        return message(
+          "يرجى إدخال البريد الإلكتروني وكلمة المرور."
+        );
+
       }
 
+      const button = $("loginBtn");
+
+      button.disabled = true;
       message("جارٍ تسجيل الدخول...");
 
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      try {
 
-      if (error) return message("تعذر تسجيل الدخول: " + error.message);
+        const { error } =
+          await supabase.auth.signInWithPassword({
 
-      message("تم تسجيل الدخول بنجاح!");
+            email: email,
+            password: password
+
+          });
+
+        if (error) {
+
+          throw error;
+
+        }
+
+        message("تم تسجيل الدخول بنجاح!");
+
+      } catch (error) {
+
+        message(
+          "تعذر تسجيل الدخول: " + error.message
+        );
+
+      } finally {
+
+        button.disabled = false;
+
+      }
+
     };
+
   </script>
+
 </body>
 </html>
