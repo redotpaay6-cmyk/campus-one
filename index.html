@@ -18,32 +18,103 @@ body{
 header{
  background:#102b46;
  color:white;
- padding:18px 7%;
+ padding:16px 5%;
  display:flex;
  justify-content:space-between;
  align-items:center;
  flex-wrap:wrap;
  gap:15px;
 }
-.logo{font-size:25px;font-weight:bold}
-nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:bold;white-space:nowrap}
+nav{
+ display:flex;
+ align-items:center;
+ gap:18px;
+ flex-wrap:wrap;
+}
 nav a{color:white;text-decoration:none;font-size:14px}
+nav a:hover{color:#93c5fd}
+.header-actions{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ flex-wrap:wrap;
+}
+.btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ padding:9px 14px;
+ border-radius:8px;
+ font-weight:bold;
+ font-size:13px;
+ text-decoration:none;
+ cursor:pointer;
+ border:1px solid transparent;
+ transition:.2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-login{
+ color:white;
+ background:transparent;
+ border-color:#94a3b8;
+}
+.btn-signup{
+ color:#102b46;
+ background:white;
+}
+.btn-admin{
+ color:white;
+ background:#1d4f7a;
+ border-color:#60a5fa;
+}
+.btn-account{
+ color:white;
+ background:#2563eb;
+}
 .lang{
- background:#fff;color:#102b46;border:0;
- padding:9px 15px;border-radius:7px;
- font-weight:bold;cursor:pointer;
+ background:#fff;
+ color:#102b46;
+ border:0;
+ padding:9px 13px;
+ border-radius:7px;
+ font-weight:bold;
+ cursor:pointer;
 }
 .hero{
  background:linear-gradient(135deg,#102b46,#1768a5);
- color:white;text-align:center;padding:85px 20px;
+ color:white;
+ text-align:center;
+ padding:85px 20px;
 }
 .hero h1{font-size:38px;margin-bottom:15px}
 .hero p{font-size:18px;line-height:1.9}
+.hero-buttons{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ gap:12px;
+ flex-wrap:wrap;
+}
 .main-btn{
- display:inline-block;background:white;color:#14558a;
- padding:12px 25px;border:0;border-radius:8px;
- margin-top:25px;text-decoration:none;cursor:pointer;
- font-size:16px;font-weight:bold;
+ display:inline-block;
+ background:white;
+ color:#14558a;
+ padding:13px 27px;
+ border:0;
+ border-radius:8px;
+ margin-top:25px;
+ text-decoration:none;
+ cursor:pointer;
+ font-size:16px;
+ font-weight:bold;
+ transition:.2s;
+}
+.main-btn:hover{transform:translateY(-3px)}
+.main-btn.secondary{
+ background:transparent;
+ color:white;
+ border:1px solid #ffffffaa;
 }
 .section{padding:55px 7%;text-align:center}
 .section h2{font-size:27px;margin-bottom:30px}
@@ -53,7 +124,9 @@ nav a{color:white;text-decoration:none;font-size:14px}
  gap:20px;
 }
 .card{
- background:white;padding:28px 18px;border-radius:14px;
+ background:white;
+ padding:28px 18px;
+ border-radius:14px;
  box-shadow:0 4px 15px #102b4610;
  transition:.2s;
 }
@@ -62,14 +135,43 @@ nav a{color:white;text-decoration:none;font-size:14px}
 .card h3{color:#14558a;margin-bottom:10px}
 .card p{color:#68788d}
 .about{background:#e9f1fa}
+.bottom-cta{
+ background:linear-gradient(135deg,#102b46,#1768a5);
+ color:white;
+ padding:45px 20px;
+ text-align:center;
+}
+.bottom-cta h2{font-size:25px;margin-bottom:10px}
+.bottom-cta p{color:#e2e8f0}
+.bottom-cta a{
+ display:inline-block;
+ background:white;
+ color:#14558a;
+ padding:11px 23px;
+ border-radius:8px;
+ margin-top:18px;
+ font-weight:bold;
+}
 footer{
- background:#102b46;color:white;text-align:center;
+ background:#102b46;
+ color:white;
+ text-align:center;
  padding:25px;
 }
-@media(max-width:600px){
+.hidden{display:none!important}
+@media(max-width:850px){
  header{justify-content:center}
  nav{justify-content:center}
+ .header-actions{justify-content:center}
+}
+@media(max-width:600px){
+ .logo{font-size:23px}
  .hero h1{font-size:29px}
+ .hero p{font-size:16px}
+ .section{padding:45px 5%}
+ .section h2{font-size:24px}
+ .header-actions{gap:6px}
+ .btn{padding:9px 10px;font-size:12px}
 }
 </style>
 </head>
@@ -83,8 +185,32 @@ footer{
   <a href="#home" data-ar="الرئيسية" data-fr="Accueil">الرئيسية</a>
   <a href="#services" data-ar="الخدمات" data-fr="Services">الخدمات</a>
   <a href="#about" data-ar="من نحن" data-fr="À propos">من نحن</a>
-  <button class="lang" onclick="toggleLanguage()">Français</button>
  </nav>
+
+ <div class="header-actions">
+
+  <a href="auth.html" class="btn btn-login" id="loginBtn"
+     data-ar="تسجيل الدخول" data-fr="Connexion">
+   تسجيل الدخول
+  </a>
+
+  <a href="auth.html" class="btn btn-signup" id="signupBtn"
+     data-ar="إنشاء حساب جديد" data-fr="Créer un compte">
+   إنشاء حساب جديد
+  </a>
+
+  <a href="student.html" class="btn btn-account hidden" id="accountBtn"
+     data-ar="حسابي" data-fr="Mon compte">
+   حسابي
+  </a>
+
+  <a href="auth.html" class="btn btn-admin" id="adminBtn"
+     data-ar="دخول الإدارة" data-fr="Accès administration">
+   دخول الإدارة
+  </a>
+
+  <button class="lang" onclick="toggleLanguage()">Français</button>
+ </div>
 </header>
 
 <section class="hero" id="home">
@@ -99,17 +225,25 @@ footer{
   منصة واحدة، فرص أكثر، ومستقبل أفضل.
  </p>
 
- <a class="main-btn" href="#services"
- data-ar="اكتشف خدماتنا"
- data-fr="Découvrir nos services">
- اكتشف خدماتنا
- </a>
+ <div class="hero-buttons">
+  <a class="main-btn" id="startBtn" href="auth.html"
+     data-ar="ابدأ الآن"
+     data-fr="Commencer maintenant">
+   ابدأ الآن
+  </a>
+
+  <a class="main-btn secondary" href="#services"
+     data-ar="اكتشف خدماتنا"
+     data-fr="Découvrir nos services">
+   اكتشف خدماتنا
+  </a>
+ </div>
 </section>
 
 <section class="section" id="services">
  <h2 data-ar="اكتشف عالمك الجامعي"
      data-fr="Explorez votre université">
- اكتشف عالمك الجامعي
+  اكتشف عالمك الجامعي
  </h2>
 
  <div class="cards">
@@ -166,6 +300,22 @@ footer{
  </p>
 </section>
 
+<section class="bottom-cta">
+ <h2 data-ar="انضم إلى مجتمع CAMPUS ONE"
+     data-fr="Rejoignez la communauté CAMPUS ONE">
+  انضم إلى مجتمع CAMPUS ONE
+ </h2>
+ <p data-ar="أنشئ حسابك وابدأ رحلتك الجامعية معنا."
+    data-fr="Créez votre compte et commencez votre parcours avec nous.">
+  أنشئ حسابك وابدأ رحلتك الجامعية معنا.
+ </p>
+ <a href="auth.html" id="bottomStart"
+    data-ar="إنشاء حساب جديد"
+    data-fr="Créer un compte">
+  إنشاء حساب جديد
+ </a>
+</section>
+
 <footer>
  <p>CAMPUS ONE © 2026</p>
  <p data-ar="منصة الطالب الجامعي الجزائري 🇩🇿"
@@ -174,14 +324,24 @@ footer{
  </p>
 </footer>
 
-<script>
-let currentLanguage = localStorage.getItem("campusLanguage") || "ar";
+<script type="module">
+import { createClient } from
+'https://esm.sh/@supabase/supabase-js@2';
+
+const supabase = createClient(
+ 'https://rpvoajlzkoynimfowzgl.supabase.co',
+ 'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552'
+);
+
+let currentLanguage =
+ localStorage.getItem("campusLanguage") || "ar";
 
 function setLanguage(lang){
  currentLanguage = lang;
 
  document.documentElement.lang = lang;
- document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+ document.documentElement.dir =
+  lang === "ar" ? "rtl" : "ltr";
 
  document.querySelectorAll("[data-ar][data-fr]").forEach(element=>{
   element.innerHTML = element.getAttribute("data-" + lang);
@@ -193,11 +353,70 @@ function setLanguage(lang){
  localStorage.setItem("campusLanguage",lang);
 }
 
-function toggleLanguage(){
+window.toggleLanguage = function(){
  setLanguage(currentLanguage === "ar" ? "fr" : "ar");
+};
+
+async function checkUser(){
+ const loginBtn = document.getElementById("loginBtn");
+ const signupBtn = document.getElementById("signupBtn");
+ const accountBtn = document.getElementById("accountBtn");
+ const adminBtn = document.getElementById("adminBtn");
+ const startBtn = document.getElementById("startBtn");
+ const bottomStart = document.getElementById("bottomStart");
+
+ try{
+  const {data:{session},error:sessionError} =
+   await supabase.auth.getSession();
+
+  if(sessionError || !session) return;
+
+  const {data:profile,error:profileError} = await supabase
+   .from("profiles")
+   .select("role")
+   .eq("id",session.user.id)
+   .single();
+
+  if(profileError || !profile) return;
+
+  loginBtn.classList.add("hidden");
+  signupBtn.classList.add("hidden");
+  accountBtn.classList.remove("hidden");
+
+  let destination = "student.html";
+
+  if(profile.role === "admin"){
+   destination = "admin.html";
+   adminBtn.href = "admin.html";
+   adminBtn.setAttribute("data-ar","لوحة الإدارة");
+   adminBtn.setAttribute("data-fr","Administration");
+   adminBtn.textContent =
+    currentLanguage === "ar" ? "لوحة الإدارة" : "Administration";
+  }else{
+   adminBtn.classList.add("hidden");
+  }
+
+  accountBtn.href = destination;
+  startBtn.href = destination;
+  bottomStart.href = destination;
+
+  startBtn.textContent =
+   currentLanguage === "ar" ? "الذهاب إلى حسابي" : "Accéder à mon compte";
+
+  bottomStart.textContent =
+   currentLanguage === "ar" ? "الذهاب إلى حسابي" : "Accéder à mon compte";
+
+ }catch(error){
+  console.error("Session check:",error);
+ }
 }
 
 setLanguage(currentLanguage);
+checkUser();
+
+supabase.auth.onAuthStateChange(()=>{
+ checkUser();
+});
 </script>
 
 </body>
