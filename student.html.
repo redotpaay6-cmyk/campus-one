@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102b50">
+<title>CAMPUS ONE | حساب الطالب</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f1f5f9;
+  color:#102b50;
+}
+header{
+  background:#102b50;
+  color:white;
+  padding:16px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.logo{font-size:21px;font-weight:bold}
+header a{
+  color:white;
+  text-decoration:none;
+  font-size:14px;
+}
+main{
+  max-width:850px;
+  margin:30px auto;
+  padding:15px;
+}
+.welcome{
+  background:linear-gradient(135deg,#102b50,#2563eb);
+  color:white;
+  padding:28px 22px;
+  border-radius:18px;
+  margin-bottom:20px;
+}
+.welcome h1{font-size:25px;margin:0 0 8px}
+.welcome p{margin:0;color:#e0ecff}
+.card{
+  background:white;
+  padding:22px;
+  border-radius:16px;
+  box-shadow:0 4px 18px #102b5010;
+  margin-bottom:18px;
+}
+.card h2{font-size:19px;margin:0 0 18px}
+.info{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:12px;
+}
+.info-item{
+  background:#f8fafc;
+  padding:14px;
+  border-radius:10px;
+}
+.info-item small{
+  display:block;
+  color:#64748b;
+  margin-bottom:5px;
+}
+.info-item strong{overflow-wrap:anywhere}
+.status{
+  display:inline-block;
+  padding:7px 13px;
+  border-radius:20px;
+  background:#fff7ed;
+  color:#c2410c;
+  font-size:13px;
+}
+.status.approved{
+  background:#ecfdf5;
+  color:#047857;
+}
+.status.rejected{
+  background:#fef2f2;
+  color:#b91c1c;
+}
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.btn{
+  display:inline-block;
+  border:0;
+  border-radius:9px;
+  padding:12px 17px;
+  text-decoration:none;
+  font-size:14px;
+  cursor:pointer;
+  background:#2563eb;
+  color:white;
+}
+.btn.secondary{background:#e2e8f0;color:#102b50}
+.btn.danger{background:#dc2626}
+.message{
+  text-align:center;
+  background:white;
+  padding:25px;
+  border-radius:14px;
+  color:#64748b;
+}
+.hidden{display:none!important}
+footer{
+  text-align:center;
+  color:#94a3b8;
+  padding:25px;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🎓 CAMPUS ONE</div>
+  <a href="index.html">الصفحة الرئيسية</a>
+</header>
+
+<main>
+  <div id="loading" class="message">
+    جارٍ التحقق من حسابك...
+  </div>
+
+  <div id="content" class="hidden">
+
+    <section class="welcome">
+      <h1>مرحباً، <span id="welcomeName">طالبنا</span> 👋</h1>
+      <p>كل ما يحتاجه الطالب، في مكان واحد.</p>
+    </section>
+
+    <section class="card">
+      <h2>معلومات حسابك</h2>
+
+      <div class="info">
+        <div class="info-item">
+          <small>الاسم الكامل</small>
+          <strong id="fullName">—</strong>
+        </div>
+
+        <div class="info-item">
+          <small>البريد الإلكتروني</small>
+          <strong id="email">—</strong>
+        </div>
+
+        <div class="info-item">
+          <small>رقم الهاتف</small>
+          <strong id="phone">—</strong>
+        </div>
+
+        <div class="info-item">
+          <small>الجامعة</small>
+          <strong id="university">—</strong>
+        </div>
+
+        <div class="info-item">
+          <small>التخصص</small>
+          <strong id="specialty">—</strong>
+        </div>
+
+        <div class="info-item">
+          <small>حالة التوثيق</small>
+          <span id="verification" class="status">قيد الانتظار</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a id="adminLink" class="btn hidden" href="admin.html">
+          لوحة الإدارة
+        </a>
+
+        <a id="publicProfileLink" class="btn secondary hidden"
+           href="profile.html">
+          الملف الشخصي للمدير
+        </a>
+
+        <button id="logoutBtn" class="btn danger">
+          تسجيل الخروج
+        </button>
+      </div>
+    </section>
+
+    <section id="pendingBox" class="card hidden">
+      <h2>حسابك قيد المراجعة</h2>
+      <p>شكراً لتسجيلك في CAMPUS ONE. سيتم مراجعة حسابك من طرف الإدارة.</p>
+    </section>
+
+    <section id="approvedBox" class="card hidden">
+      <h2>أهلاً بك في مجتمع CAMPUS ONE 🎓</h2>
+      <p>تم اعتماد حسابك بنجاح. سنضيف هنا خدمات الطالب والمنشورات في المراحل القادمة.</p>
+    </section>
+
+    <section id="rejectedBox" class="card hidden">
+      <h2>تعذر اعتماد الحساب</h2>
+      <p>حالة حسابك غير معتمدة حالياً. يرجى التواصل مع الإدارة.</p>
+    </section>
+
+  </div>
+
+  <div id="errorBox" class="message hidden">
+    <p id="errorText">تعذر تحميل الحساب.</p>
+    <div class="actions" style="justify-content:center">
+      <a href="auth.html" class="btn">الذهاب إلى تسجيل الدخول</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  CAMPUS ONE © 2026
+  <br>
+  منصة الطالب الجامعي الجزائري 🇩🇿
+</footer>
+
+<script type="module">
+import { createClient } from
+'https://esm.sh/@supabase/supabase-js@2';
+
+const supabase = createClient(
+  'https://rpvoajlzkoynimfowzgl.supabase.co',
+  'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552'
+);
+
+const loading = document.getElementById('loading');
+const content = document.getElementById('content');
+const errorBox = document.getElementById('errorBox');
+
+function showError(message){
+  loading.classList.add('hidden');
+  content.classList.add('hidden');
+  errorBox.classList.remove('hidden');
+  document.getElementById('errorText').textContent = message;
+}
+
+function setText(id,value){
+  document.getElementById(id).textContent = value || '—';
+}
+
+async function loadStudent(){
+  try{
+    const {data:{user},error:authError} =
+      await supabase.auth.getUser();
+
+    if(authError || !user){
+      window.location.href = 'auth.html';
+      return;
+    }
+
+    const {data:profile,error:profileError} =
+      await supabase
+        .from('profiles')
+        .select('id,full_name,phone,university,specialty,role,verification_status')
+        .eq('id',user.id)
+        .single();
+
+    if(profileError || !profile){
+      throw new Error('لم نتمكن من العثور على بيانات الحساب.');
+    }
+
+    setText('welcomeName',profile.full_name);
+    setText('fullName',profile.full_name);
+    setText('email',user.email);
+    setText('phone',profile.phone);
+    setText('university',profile.university);
+    setText('specialty',profile.specialty);
+
+    const status = profile.verification_status || 'pending';
+    const statusElement = document.getElementById('verification');
+
+    if(status === 'approved'){
+      statusElement.textContent = 'معتمد ✓';
+      statusElement.className = 'status approved';
+      document.getElementById('approvedBox').classList.remove('hidden');
+    }else if(status === 'rejected'){
+      statusElement.textContent = 'غير معتمد';
+      statusElement.className = 'status rejected';
+      document.getElementById('rejectedBox').classList.remove('hidden');
+    }else{
+      statusElement.textContent = 'قيد الانتظار';
+      statusElement.className = 'status';
+      document.getElementById('pendingBox').classList.remove('hidden');
+    }
+
+    if(profile.role === 'admin'){
+      document.getElementById('adminLink').classList.remove('hidden');
+      document.getElementById('publicProfileLink').classList.remove('hidden');
+    }
+
+    loading.classList.add('hidden');
+    content.classList.remove('hidden');
+
+  }catch(error){
+    console.error(error);
+    showError(error.message || 'حدث خطأ أثناء تحميل الحساب.');
+  }
+}
+
+document.getElementById('logoutBtn').addEventListener('click',async()=>{
+  const {error} = await supabase.auth.signOut();
+
+  if(error){
+    alert('تعذر تسجيل الخروج. حاول مرة أخرى.');
+    return;
+  }
+
+  window.location.href = 'auth.html';
+});
+
+loadStudent();
+</script>
+
+</body>
+</html>
