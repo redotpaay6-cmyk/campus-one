@@ -82,6 +82,35 @@ main{max-width:1050px;margin:28px auto;padding:0 16px 100px}
   font-size:14px;font-weight:bold;
 }
 .role{color:var(--muted);font-size:14px;margin-top:8px}
+.username-display{
+  color:#2563eb;font-size:13px;font-weight:bold;
+  margin-top:9px;direction:ltr;text-align:right;
+}
+.username-box{
+  margin-top:12px;background:#f7f9fd;
+  border:1px solid #e5ebf5;border-radius:12px;
+  padding:12px;max-width:350px;
+}
+.username-box label{
+  display:block;font-size:12px;font-weight:bold;
+  margin-bottom:8px;color:#40516b;
+}
+.username-box input{
+  width:100%;padding:11px;border:1px solid #dce4f0;
+  border-radius:8px;font-size:14px;outline:none;
+  direction:ltr;text-align:left;background:white;
+}
+.username-box input:focus{border-color:#2563eb}
+.username-save{
+  margin-top:9px;width:100%;border:0;
+  border-radius:8px;padding:11px;
+  background:#2563eb;color:white;
+  font-weight:bold;cursor:pointer;
+}
+.username-save:disabled{opacity:.6;cursor:wait}
+.username-message{
+  margin-top:9px;font-size:12px;line-height:1.7;
+}
 .edit-area{padding-bottom:8px}
 .edit-btn{
   display:inline-block;padding:11px 19px;border-radius:10px;
@@ -144,6 +173,7 @@ input[type=file]{display:none}
   .role{font-size:12px}
   .edit-area{width:100%;padding-bottom:0}
   .edit-btn{display:block;text-align:center}
+  .username-box{max-width:100%}
   .stats{gap:7px;margin:22px 0 17px}
   .stat{padding:11px 3px}
   .stat strong{font-size:19px}
@@ -213,7 +243,27 @@ input[type=file]{display:none}
           <h1 id="fullName">الطالب</h1>
           <span class="verified" id="verified">✓</span>
         </div>
+
         <div class="role" id="roleLabel">طالب جامعي</div>
+
+        <div id="usernameDisplay" class="username-display hidden"></div>
+
+        <div id="usernameBox" class="username-box hidden">
+          <label for="usernameInput">اختر اسم المستخدم الخاص بك</label>
+          <input
+            id="usernameInput"
+            type="text"
+            maxlength="20"
+            minlength="3"
+            placeholder="مثال: mouhamed_25"
+            autocomplete="off"
+            dir="ltr"
+          >
+          <button id="usernameSave" class="username-save">
+            تحقق وحفظ اسم المستخدم
+          </button>
+          <div id="usernameMessage" class="username-message"></div>
+        </div>
       </div>
 
       <div class="edit-area">
@@ -263,6 +313,7 @@ input[type=file]{display:none}
       <div id="aboutPanel" class="panel hidden">
         <div class="details-grid">
           <div class="detail"><small>الاسم الكامل</small><strong id="detailName">—</strong></div>
+          <div class="detail"><small>اسم المستخدم</small><strong id="detailUsername">—</strong></div>
           <div class="detail"><small>البريد الإلكتروني</small><strong id="email">—</strong></div>
           <div class="detail"><small>رقم الهاتف</small><strong id="phone">—</strong></div>
           <div class="detail"><small>الجامعة</small><strong id="detailUniversity">—</strong></div>
@@ -369,6 +420,107 @@ async function displayPrivateImage(path,imageElement,letterElement=null){
   if(letterElement) letterElement.style.display = 'none';
 }
 
+// عرض اسم المستخدم أو إظهار خانة اختياره
+function displayUsername(username){
+  if(username){
+    $('usernameDisplay').textContent = '@' + username;
+    $('usernameDisplay').classList.remove('hidden');
+    $('usernameBox').classList.add('hidden');
+    setText('detailUsername','@' + username);
+  }else{
+    $('usernameDisplay').classList.add('hidden');
+    $('usernameBox').classList.remove('hidden');
+    setText('detailUsername','لم يتم اختياره بعد');
+  }
+}
+
+// حفظ اسم مستخدم للحسابات القديمة
+async function saveUsername(){
+  if(!currentUser || !currentProfile) return;
+
+  const input = $('usernameInput');
+  const button = $('usernameSave');
+  const message = $('usernameMessage');
+
+  const username = input.value.trim().toLowerCase();
+
+  if(!/^[a-z0-9_]{3,20}$/.test(username)){
+    message.style.color = '#c2410c';
+    message.textContent =
+      'استعمل 3 إلى 20 حرفاً إنجليزياً أو رقماً أو _ فقط.';
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = 'جارٍ التحقق...';
+  message.style.color = '#2563eb';
+  message.textContent = 'نتحقق من توفر الاسم...';
+
+  try{
+    const {data:available,error:checkError} =
+      await supabase.rpc('is_username_available',{
+        candidate_username:username
+      });
+
+    if(checkError) throw checkError;
+
+    if(!available){
+      message.style.color = '#c2410c';
+      message.textContent = 'اسم المستخدم غير متاح. اختر اسماً آخر.';
+      return;
+    }
+
+    button.textContent = 'جارٍ الحفظ...';
+
+    const {data:result,error:saveError} =
+      await supabase.rpc('set_my_username',{
+        candidate_username:username
+      });
+
+    if(saveError) throw saveError;
+
+    if(result === 'success'){
+      currentProfile.username = username;
+      displayUsername(username);
+
+      message.style.color = '#15803d';
+      message.textContent = 'تم حفظ اسم المستخدم بنجاح ✓';
+
+      input.value = '';
+    }else if(result === 'taken'){
+      message.style.color = '#c2410c';
+      message.textContent = 'هذا الاسم مستخدم بالفعل. اختر اسماً آخر.';
+    }else if(result === 'already_set'){
+      message.style.color = '#c2410c';
+      message.textContent = 'لديك اسم مستخدم محفوظ بالفعل.';
+    }else if(result === 'invalid'){
+      message.style.color = '#c2410c';
+      message.textContent = 'صيغة اسم المستخدم غير صحيحة.';
+    }else{
+      message.style.color = '#c2410c';
+      message.textContent = 'تعذر حفظ الاسم. حاول مرة أخرى.';
+    }
+
+  }catch(error){
+    console.error('Username error:',error);
+    message.style.color = '#c2410c';
+    message.textContent =
+      'حدث خطأ أثناء حفظ الاسم. تحقق من الاتصال وحاول مجدداً.';
+  }finally{
+    button.disabled = false;
+    button.textContent = 'تحقق وحفظ اسم المستخدم';
+  }
+}
+
+$('usernameSave').addEventListener('click',saveUsername);
+
+$('usernameInput').addEventListener('keydown',event=>{
+  if(event.key === 'Enter'){
+    event.preventDefault();
+    saveUsername();
+  }
+});
+
 async function loadStudent(){
   try{
     const {data:{user},error:authError} =
@@ -384,7 +536,7 @@ async function loadStudent(){
     const {data:profile,error:profileError} =
       await supabase
         .from('profiles')
-        .select('id,full_name,phone,university,specialty,role,verification_status,bio,profile_avatar_path,cover_url')
+        .select('id,full_name,phone,university,specialty,role,verification_status,bio,profile_avatar_path,cover_url,username')
         .eq('id',user.id)
         .single();
 
@@ -407,6 +559,8 @@ async function loadStudent(){
     setText('detailUniversity',profile.university);
     setText('specialty',profile.specialty);
     setText('detailSpecialty',profile.specialty);
+
+    displayUsername(profile.username);
 
     $('avatarLetter').textContent = [...name.trim()][0] || 'C';
     $('bioText').textContent = profile.bio || 'طالب في مجتمع CAMPUS ONE 🎓';
