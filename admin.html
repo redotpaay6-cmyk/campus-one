@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAMPUS ONE | لوحة الإدارة</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6fb;
+      color: #17243a;
+    }
+    header {
+      background: #102b50;
+      color: white;
+      padding: 22px 16px;
+      text-align: center;
+    }
+    main { max-width: 850px; margin: 25px auto; padding: 16px; }
+    .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px #0000000c;
+    }
+    .student {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 14px 0;
+    }
+    .student p { margin: 8px 0; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 18px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+    .approve { background: #16834b; color: white; }
+    .logout { background: #dce5f0; color: #17243a; }
+    #message { padding: 12px 0; color: #52647b; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CAMPUS ONE</h1>
+    <p>لوحة تحكم الإدارة</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>طلبات توثيق الطلاب</h2>
+      <p id="message">جارٍ التحقق من صلاحية الدخول...</p>
+      <div id="students"></div>
+      <button class="logout" id="logout" hidden>تسجيل الخروج</button>
+    </section>
+  </main>
+
+  <script type="module">
+    import { createClient } from
+      "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL = "https://rpvoajlzkoynimfowzgl.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    const message = document.getElementById("message");
+    const studentsBox = document.getElementById("students");
+    const logoutButton = document.getElementById("logout");
+
+    function safe(value) {
+      const div = document.createElement("div");
+      div.textContent = value ?? "غير متوفر";
+      return div.innerHTML;
+    }
+
+    async function start() {
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+
+      if (sessionError || !sessionData.session) {
+        message.textContent = "يجب تسجيل الدخول أولاً من صفحة الحساب.";
+        return;
+      }
+
+      logoutButton.hidden = false;
+
+      const userId = sessionData.session.user.id;
+
+      const { data: me, error: meError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .single();
+
+      if (meError || !me || me.role !== "admin") {
+        message.textContent = "ليس لديك صلاحية الدخول إلى لوحة الإدارة.";
+        return;
+      }
+
+      logoutButton.hidden = false;
+      await loadStudents();
+    }
+
+    async function loadStudents() {
+      message.textContent = "جارٍ تحميل الطلبات...";
+      studentsBox.replaceChildren();
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, full_name, phone, university, specialty, created_at")
+        .eq("role", "student")
+        .eq("verification_status", "pending")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        message.textContent = "تعذر تحميل الطلبات: " + error.message;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        message.textContent = "لا توجد طلبات توثيق معلقة حالياً.";
+        return;
+      }
+
+      message.textContent = "عدد الطلبات المعلقة: " + data.length;
+
+      data.forEach(student => {
+        const card = document.createElement("div");
+        card.className = "student";
+
+        const info = document.createElement("div");
+        info.innerHTML = `
+          <p><strong>الاسم:</strong> ${safe(student.full_name)}</p>
+          <p><strong>الهاتف:</strong> ${safe(student.phone)}</p>
+          <p><strong>الجامعة:</strong> ${safe(student.university)}</p>
+          <p><strong>التخصص:</strong> ${safe(student.specialty)}</p>
+        `;
+
+        const button = document.createElement("button");
+        button.className = "approve";
+        button.textContent = "الموافقة على الطالب";
+
+        button.addEventListener("click", async () => {
+          if (!confirm("هل أنت متأكد من الموافقة على هذا الطالب؟")) return;
+
+          button.disabled = true;
+          button.textContent = "جارٍ التحديث...";
+
+          const { error: updateError } = await supabase
+            .from("profiles")
+            .update({ verification_status: "approved" })
+            .eq("id", student.id)
+            .eq("verification_status", "pending");
+
+          if (updateError) {
+            alert("فشلت العملية: " + updateError.message);
+            button.disabled = false;
+            button.textContent = "الموافقة على الطالب";
+            return;
+          }
+
+          alert("تم تحديث حالة الطالب.");
+          await loadStudents();
+        });
+
+        card.append(info, button);
+        studentsBox.appendChild(card);
+      });
+    }
+
+    logoutButton.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "auth.html";
+    });
+
+    start().catch(error => {
+      message.textContent = "حدث خطأ: " + error.message;
+    });
+  </script>
+</body>
+</html>
