@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#102b50">
+<meta name="theme-color" content="#ffffff">
 <title>CAMPUS ONE | المجتمع</title>
 
 <style>
@@ -12,10 +12,11 @@
 :root{
   --navy:#102b50;
   --blue:#2563eb;
-  --bg:#f3f6fb;
+  --bg:#f5f7fa;
   --text:#172b46;
-  --muted:#64748b;
-  --border:#e5eaf2;
+  --muted:#8490a2;
+  --border:#edf0f4;
+  --red:#ff3040;
 }
 body{
   margin:0;
@@ -23,27 +24,27 @@ body{
   background:var(--bg);
   color:var(--text);
 }
+button{font:inherit;cursor:pointer;border:0}
 header{
-  background:var(--navy);
-  color:white;
-  padding:15px 20px;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  padding:14px 20px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   position:sticky;
   top:0;
-  z-index:10;
-  box-shadow:0 3px 12px #0002;
+  z-index:20;
 }
-.logo{font-size:20px;font-weight:bold}
-.header-sub{font-size:12px;color:#cbd5e1;margin-top:4px}
+.logo{font-size:20px;font-weight:800;color:var(--navy)}
+.header-sub{font-size:12px;color:var(--muted);margin-top:4px}
 .header-btn{
-  color:white;
+  color:var(--navy);
   text-decoration:none;
-  font-size:13px;
-  background:#ffffff18;
+  background:#f1f5f9;
   padding:10px 13px;
-  border-radius:10px;
+  border-radius:12px;
+  font-size:13px;
 }
 .layout{
   max-width:1050px;
@@ -51,21 +52,16 @@ header{
   padding:0 14px 100px;
   display:grid;
   grid-template-columns:220px minmax(0,1fr);
-  gap:18px;
+  gap:20px;
 }
-.sidebar{
-  position:sticky;
-  top:88px;
-  align-self:start;
-}
+.sidebar{position:sticky;top:85px;align-self:start}
 .side-card,.composer,.post,.empty{
-  background:white;
+  background:#fff;
   border:1px solid var(--border);
-  border-radius:17px;
-  box-shadow:0 3px 12px #102b5008;
+  border-radius:18px;
 }
-.side-card{padding:17px}
-.side-title{font-weight:bold;margin-bottom:14px}
+.side-card{padding:16px}
+.side-title{font-weight:bold;margin-bottom:13px}
 .side-link{
   display:flex;
   align-items:center;
@@ -73,15 +69,14 @@ header{
   text-decoration:none;
   color:var(--text);
   padding:12px 10px;
-  border-radius:10px;
+  border-radius:11px;
   font-size:14px;
 }
 .side-link.active,.side-link:hover{
-  background:#eff6ff;
-  color:var(--blue);
+  background:#eff6ff;color:var(--blue)
 }
 .main{min-width:0}
-.page-heading{
+.page-heading,.feed-heading{
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -89,282 +84,193 @@ header{
 }
 .page-heading h2{margin:0;font-size:22px}
 .muted{color:var(--muted);font-size:13px}
-.composer{padding:18px;margin-bottom:18px}
+.composer{
+  padding:17px;
+  margin-bottom:22px;
+  box-shadow:0 3px 15px #102b5008;
+}
 .composer-top{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  margin-bottom:13px;
+  display:flex;gap:11px;align-items:center;margin-bottom:13px
 }
 .avatar{
-  width:44px;
-  height:44px;
-  min-width:44px;
-  border-radius:50%;
-  object-fit:cover;
-  background:#dbeafe;
-}
-.avatar-fallback{
-  display:grid;
-  place-items:center;
-  color:#1d4ed8;
-  font-weight:bold;
-  font-size:17px;
+  width:44px;height:44px;min-width:44px;
+  border-radius:50%;object-fit:cover;background:#e7edf5;
 }
 textarea{
-  width:100%;
-  min-height:95px;
-  resize:vertical;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:13px;
-  font:inherit;
-  outline:none;
-  line-height:1.7;
-  background:#fbfdff;
+  width:100%;min-height:90px;resize:vertical;
+  border:1px solid var(--border);border-radius:14px;
+  padding:13px;font:inherit;outline:none;
+  line-height:1.8;background:#fafbfd;
 }
 textarea:focus,input:focus{
   border-color:#93c5fd;
   box-shadow:0 0 0 3px #2563eb12;
 }
 .composer-tools{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-top:12px;
-  flex-wrap:wrap;
-}
-button{
-  border:0;
-  cursor:pointer;
-  font:inherit;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-top:12px;flex-wrap:wrap;
 }
 .primary{
-  background:var(--blue);
-  color:white;
-  border-radius:10px;
-  padding:11px 20px;
-  font-weight:bold;
+  background:var(--blue);color:white;
+  border-radius:11px;padding:11px 20px;font-weight:bold;
 }
-.primary:disabled{opacity:.6;cursor:wait}
+.primary:disabled{opacity:.6}
 .upload-label{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  background:#eff6ff;
-  color:#1d4ed8;
-  padding:10px 13px;
-  border-radius:10px;
-  font-size:13px;
-  cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;
+  background:#eff6ff;color:#1d4ed8;
+  padding:10px 13px;border-radius:11px;
+  font-size:13px;cursor:pointer;
 }
 #imageInput{display:none}
 .preview-wrap{display:none;margin-top:12px;position:relative}
 .preview-wrap img{
-  width:100%;
-  max-height:280px;
-  object-fit:contain;
-  border-radius:12px;
-  background:#f1f5f9;
+  width:100%;max-height:280px;object-fit:contain;
+  border-radius:13px;background:#f1f5f9;
 }
 .remove-preview{
-  position:absolute;
-  top:8px;
-  left:8px;
-  background:#172b46;
-  color:white;
-  border-radius:50%;
-  width:30px;
-  height:30px;
+  position:absolute;top:8px;left:8px;
+  background:#172b46;color:white;border-radius:50%;
+  width:30px;height:30px;
 }
-.feed-heading{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:20px 0 13px;
-}
+.feed-heading{margin:22px 0 13px}
 .feed-heading h3{margin:0;font-size:18px}
-.post{padding:17px;margin-bottom:15px}
+.post{
+  overflow:hidden;
+  margin-bottom:17px;
+  box-shadow:0 4px 18px #102b5008;
+}
 .post-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;padding:15px 16px 9px;
 }
-.actor{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-}
+.actor{display:flex;align-items:center;gap:10px;min-width:0}
 .actor-info{min-width:0}
 .actor-name{
-  font-weight:bold;
-  color:var(--text);
-  text-decoration:none;
-  font-size:14px;
+  font-weight:750;color:var(--text);
+  text-decoration:none;font-size:14px;
 }
 .actor-name:hover{color:var(--blue)}
 .username{font-size:12px;color:var(--muted);margin-top:4px}
 .verified{color:#2563eb}
-.post-date{font-size:11px;color:#94a3b8;margin-top:5px}
+.post-date{font-size:11px;color:#9aa4b2;margin-top:5px}
 .more-btn{
-  background:#f1f5f9;
-  color:#475569;
-  border-radius:9px;
-  padding:8px 11px;
+  background:#f4f6f9;color:#64748b;
+  border-radius:9px;padding:8px 11px;font-size:12px;
 }
 .post-content{
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  line-height:1.9;
-  font-size:15px;
-  margin:16px 0 12px;
+  white-space:pre-wrap;overflow-wrap:anywhere;
+  line-height:1.9;font-size:15px;
+  padding:8px 17px 15px;
 }
 .post-image{
-  display:block;
-  width:100%;
-  max-height:470px;
-  object-fit:contain;
-  border-radius:12px;
-  background:#f1f5f9;
+  display:block;width:100%;max-height:560px;
+  object-fit:contain;background:#f4f6f9;
 }
 .post-stats{
-  display:flex;
-  justify-content:space-between;
-  color:var(--muted);
-  font-size:12px;
-  padding:12px 2px;
-  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;
+  color:#778397;font-size:12px;
+  padding:13px 16px 10px;
 }
+.likes-preview{display:flex;align-items:center;gap:6px}
+.heart-dot{color:var(--red);font-size:17px}
 .post-actions{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  padding-top:10px;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  border-top:1px solid var(--border);
+  margin:0 12px;
+  padding:5px 0;
 }
 .action-btn{
-  background:white;
-  color:#64748b;
-  padding:11px 5px;
-  border-radius:9px;
-  font-weight:bold;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:4px;background:transparent;
+  color:#667085;padding:9px 2px;
+  border-radius:10px;min-width:0;
 }
-.action-btn:hover{background:#f1f5f9}
-.action-btn.liked{color:#2563eb;background:#eff6ff}
+.action-btn:hover{background:#f7f8fa}
+.action-btn .symbol{
+  font-size:25px;line-height:1.2;
+  font-family:Arial,sans-serif;
+}
+.action-btn small{font-size:10px;color:#8a94a3}
+.action-btn.liked{color:var(--red)}
+.action-btn.liked .symbol{color:var(--red)}
+.action-btn.saved{color:var(--blue)}
+.action-btn:disabled{opacity:.5;cursor:wait}
 .comments-area{
   display:none;
   border-top:1px solid var(--border);
-  margin-top:12px;
-  padding-top:13px;
+  margin:0 15px;
+  padding:13px 0 15px;
 }
 .comment-row{
-  display:flex;
-  gap:9px;
-  margin:12px 0;
-  align-items:flex-start;
+  display:flex;gap:9px;margin:12px 0;align-items:flex-start
 }
 .comment-body{
-  flex:1;
-  background:#f3f6fb;
-  border-radius:12px;
-  padding:10px 12px;
-  min-width:0;
+  flex:1;background:#f5f7fa;border-radius:13px;
+  padding:10px 12px;min-width:0;
 }
 .comment-author{
-  font-size:13px;
-  font-weight:bold;
-  text-decoration:none;
-  color:var(--text);
+  font-size:13px;font-weight:bold;
+  text-decoration:none;color:var(--text);
 }
 .comment-text{
-  font-size:13px;
-  line-height:1.7;
-  overflow-wrap:anywhere;
-  margin-top:5px;
+  font-size:13px;line-height:1.7;
+  overflow-wrap:anywhere;margin-top:5px;
   white-space:pre-wrap;
 }
 .comment-date{font-size:10px;color:#94a3b8;margin-top:5px}
 .delete-comment{
-  color:#dc2626;
-  background:transparent;
-  font-size:11px;
-  padding:5px;
+  color:#dc2626;background:transparent;
+  font-size:11px;padding:5px;
 }
-.comment-form{
-  display:flex;
-  gap:8px;
-  margin-top:12px;
-}
+.comment-form{display:flex;gap:8px;margin-top:12px}
 .comment-form input{
-  flex:1;
-  min-width:0;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:11px;
-  font:inherit;
-  outline:none;
+  flex:1;min-width:0;border:1px solid var(--border);
+  border-radius:11px;padding:11px;font:inherit;outline:none;
 }
 .comment-form button{
-  background:var(--blue);
-  color:white;
-  border-radius:10px;
-  padding:0 15px;
-  font-weight:bold;
+  background:var(--blue);color:white;
+  border-radius:10px;padding:0 15px;font-weight:bold;
 }
 .empty{
-  padding:35px 15px;
-  text-align:center;
-  color:var(--muted);
-  line-height:1.9;
+  padding:35px 15px;text-align:center;
+  color:var(--muted);line-height:1.9;
 }
 .empty-icon{font-size:38px;margin-bottom:10px}
-.status{
-  text-align:center;
-  color:var(--muted);
-  padding:20px;
-}
+.status{text-align:center;color:var(--muted);padding:20px}
 .bottom-nav{
-  display:flex;
-  justify-content:space-around;
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:white;
-  border-top:1px solid var(--border);
-  padding:11px 4px;
-  z-index:20;
+  display:flex;justify-content:space-around;
+  position:fixed;bottom:0;left:0;right:0;
+  background:#fff;border-top:1px solid var(--border);
+  padding:10px 4px;z-index:20;
 }
 .bottom-nav a{
-  text-decoration:none;
-  color:#64748b;
-  font-size:11px;
-  text-align:center;
-  line-height:1.8;
+  text-decoration:none;color:#7b8797;
+  font-size:11px;text-align:center;line-height:1.8;
 }
 .bottom-nav a.active{color:var(--blue);font-weight:bold}
 .toast{
-  position:fixed;
-  bottom:80px;
-  left:50%;
+  position:fixed;bottom:80px;left:50%;
   transform:translateX(-50%);
-  background:#102b50;
-  color:white;
-  padding:12px 18px;
-  border-radius:12px;
-  z-index:50;
-  display:none;
-  font-size:13px;
-  max-width:90%;
-  text-align:center;
+  background:#102b50;color:white;
+  padding:12px 18px;border-radius:12px;
+  z-index:50;display:none;font-size:13px;
+  max-width:90%;text-align:center;
 }
 @media(max-width:700px){
-  .layout{display:block;margin:17px auto}
+  .layout{display:block;margin:16px auto}
   .sidebar{display:none}
   .page-heading h2{font-size:19px}
   .composer{padding:14px}
-  .post{padding:14px}
   header{padding:13px 14px}
+  .post-head{padding:13px 13px 8px}
+  .post-content{padding:8px 14px 13px;font-size:14px}
+  .post-stats{padding:11px 13px 9px}
+  .post-actions{margin:0 7px}
+  .action-btn .symbol{font-size:23px}
+  .action-btn small{font-size:9px}
 }
 </style>
 </head>
@@ -402,7 +308,7 @@ button{
       <button class="more-btn" id="refreshBtn">↻ تحديث</button>
     </div>
 
-    <section class="composer">
+    <section class="composer" id="composer">
       <div class="composer-top">
         <img class="avatar" id="myAvatar" alt="">
         <div>
@@ -411,19 +317,16 @@ button{
         </div>
       </div>
 
-      <textarea id="postText"
-        maxlength="5000"
+      <textarea id="postText" maxlength="5000"
         placeholder="ماذا تريد أن تشارك مع الطلاب اليوم؟"></textarea>
 
       <div class="preview-wrap" id="previewWrap">
-        <button class="remove-preview" id="removePreview">×</button>
+        <button class="remove-preview" id="removePreview" type="button">×</button>
         <img id="previewImage" alt="معاينة الصورة">
       </div>
 
       <div class="composer-tools">
-        <label class="upload-label" for="imageInput">
-          📷 إضافة صورة
-        </label>
+        <label class="upload-label" for="imageInput">📷 إضافة صورة</label>
         <input id="imageInput" type="file"
           accept="image/jpeg,image/png,image/webp">
         <button class="primary" id="publishBtn">نشر المنشور</button>
@@ -439,7 +342,6 @@ button{
     </div>
 
     <div id="feed" class="status">جارٍ تحميل المنشورات...</div>
-
   </main>
 </div>
 
@@ -464,7 +366,6 @@ const SUPABASE_KEY =
 'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552';
 
 const supabase = createClient(SUPABASE_URL,SUPABASE_KEY);
-
 const $ = id => document.getElementById(id);
 
 let currentUser = null;
@@ -484,13 +385,17 @@ function toast(message){
 function dateText(value){
   if(!value) return '';
   return new Date(value).toLocaleString('ar-DZ',{
-    dateStyle:'medium',
-    timeStyle:'short'
+    dateStyle:'medium',timeStyle:'short'
   });
 }
 
-function escapeInitial(name){
-  return (name || 'ط').trim().charAt(0) || 'ط';
+async function signedImage(path){
+  if(!path) return null;
+  const {data,error} = await supabase.storage
+    .from('community-media')
+    .createSignedUrl(path,3600);
+  if(error) return null;
+  return data?.signedUrl || null;
 }
 
 function makeAvatar(profile,size=44){
@@ -511,20 +416,12 @@ function makeAvatar(profile,size=44){
   return img;
 }
 
-async function signedImage(path){
-  if(!path) return null;
-  const {data,error} = await supabase.storage
-    .from('community-media')
-    .createSignedUrl(path,3600);
-  if(error) return null;
-  return data?.signedUrl || null;
-}
-
 function profileLink(profile){
   const link = document.createElement('a');
   link.className = 'actor-name';
   link.href = 'student.html?user='+encodeURIComponent(profile.id);
   link.textContent = profile.full_name || 'طالب';
+
   if(profile.verification_status === 'approved'){
     const check = document.createElement('span');
     check.className = 'verified';
@@ -544,15 +441,11 @@ async function loadProfiles(ids){
     return;
   }
 
-  for(const p of (data || [])){
-    profiles[p.id] = p;
-  }
-
+  for(const p of (data || [])) profiles[p.id] = p;
   if(myProfile) profiles[currentUser.id] = myProfile;
 }
 
 async function start(){
-
   const {data,error} = await supabase.auth.getUser();
 
   if(error || !data.user){
@@ -596,7 +489,6 @@ async function start(){
 }
 
 async function loadFeed(){
-
   $('feed').textContent = 'جارٍ تحميل المنشورات...';
 
   const {data:posts,error} = await supabase
@@ -619,8 +511,7 @@ async function loadFeed(){
     return;
   }
 
-  const ids = postsCache.map(p=>p.author_id);
-  await loadProfiles(ids);
+  await loadProfiles(postsCache.map(p=>p.author_id));
 
   const postIds = postsCache.map(p=>p.id);
 
@@ -661,15 +552,29 @@ async function loadFeed(){
   }
 }
 
-function createPostCard(post,likes,commentCount){
+function createAction(symbol,label,extraClass=''){
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'action-btn '+extraClass;
 
+  const icon = document.createElement('span');
+  icon.className = 'symbol';
+  icon.textContent = symbol;
+
+  const caption = document.createElement('small');
+  caption.textContent = label;
+
+  btn.append(icon,caption);
+  return btn;
+}
+
+function createPostCard(post,likes,commentCount){
   const card = document.createElement('article');
   card.className = 'post';
   card.id = 'post-'+post.id;
 
   const author = profiles[post.author_id] || {
-    id:post.author_id,
-    full_name:'طالب CAMPUS ONE'
+    id:post.author_id,full_name:'طالب CAMPUS ONE'
   };
 
   const head = document.createElement('div');
@@ -695,7 +600,6 @@ function createPostCard(post,likes,commentCount){
     const more = document.createElement('button');
     more.className = 'more-btn';
     more.textContent = 'حذف';
-    more.title = 'حذف المنشور';
     more.addEventListener('click',()=>deletePost(post));
     head.appendChild(more);
   }
@@ -715,20 +619,25 @@ function createPostCard(post,likes,commentCount){
     img.alt = 'صورة المنشور';
     img.loading = 'lazy';
     card.appendChild(img);
+
     signedImage(post.image_path).then(url=>{
       if(url) img.src = url;
     });
   }
 
+  const myLike = likes.some(l=>l.user_id === currentUser.id);
+
   const stats = document.createElement('div');
   stats.className = 'post-stats';
 
   const likeCount = document.createElement('span');
-  const myLike = likes.find(l=>l.user_id === currentUser.id);
-  likeCount.textContent = '❤️ '+likes.length+' إعجاب';
+  likeCount.className = 'likes-preview';
+  likeCount.innerHTML =
+    '<span class="heart-dot">♥</span><span></span>';
+  likeCount.lastChild.textContent = likes.length+' إعجاب';
 
   const commentCountText = document.createElement('span');
-  commentCountText.textContent = '💬 '+commentCount+' تعليق';
+  commentCountText.textContent = commentCount+' تعليق';
 
   stats.append(likeCount,commentCountText);
   card.appendChild(stats);
@@ -736,12 +645,32 @@ function createPostCard(post,likes,commentCount){
   const actions = document.createElement('div');
   actions.className = 'post-actions';
 
-  const likeBtn = document.createElement('button');
-  likeBtn.className = 'action-btn'+(myLike?' liked':'');
-  likeBtn.textContent = myLike?'❤️ أعجبني':'♡ إعجاب';
+  const likeBtn = createAction(myLike?'♥':'♡','إعجاب',
+    myLike?'liked':'');
+  const commentBtn = createAction('▢','تعليق');
+  const repostBtn = createAction('⇄','إعادة نشر');
+  const shareBtn = createAction('➤','مشاركة');
+  const saveBtn = createAction('♧','حفظ');
+
+  const savedKey = 'campus_saved_posts';
+  function isSaved(){
+    try{
+      return JSON.parse(localStorage.getItem(savedKey)||'[]')
+        .includes(post.id);
+    }catch{return false}
+  }
+
+  function updateSaveButton(){
+    const saved = isSaved();
+    saveBtn.classList.toggle('saved',saved);
+    saveBtn.querySelector('.symbol').textContent = saved?'▣':'♧';
+    saveBtn.querySelector('small').textContent = saved?'محفوظ':'حفظ';
+  }
+  updateSaveButton();
 
   likeBtn.addEventListener('click',async()=>{
     likeBtn.disabled = true;
+
     if(myLike){
       const {error} = await supabase.from('post_likes')
         .delete()
@@ -751,14 +680,12 @@ function createPostCard(post,likes,commentCount){
     }else{
       const {error} = await supabase.from('post_likes')
         .insert({post_id:post.id,user_id:currentUser.id});
-      if(error && error.code !== '23505') toast('تعذر تسجيل الإعجاب.');
+      if(error && error.code !== '23505')
+        toast('تعذر تسجيل الإعجاب.');
     }
+
     await loadFeed();
   });
-
-  const commentBtn = document.createElement('button');
-  commentBtn.className = 'action-btn';
-  commentBtn.textContent = '💬 التعليقات';
 
   const commentsArea = document.createElement('div');
   commentsArea.className = 'comments-area';
@@ -769,14 +696,62 @@ function createPostCard(post,likes,commentCount){
     if(opening) await loadComments(post.id,commentsArea);
   });
 
-  actions.append(likeBtn,commentBtn);
-  card.append(actions,commentsArea);
+  repostBtn.addEventListener('click',()=>{
+    toast('ميزة إعادة النشر ستُفعّل بعد إعداد قاعدة بياناتها.');
+  });
 
+  shareBtn.addEventListener('click',async()=>{
+    const url = location.origin+location.pathname+'#post-'+post.id;
+    try{
+      if(navigator.share){
+        await navigator.share({
+          title:'CAMPUS ONE',
+          text:'شاهد هذا المنشور على CAMPUS ONE',
+          url
+        });
+      }else{
+        await navigator.clipboard.writeText(url);
+        toast('تم نسخ رابط المنشور.');
+      }
+    }catch(error){
+      if(error.name !== 'AbortError'){
+        try{
+          await navigator.clipboard.writeText(url);
+          toast('تم نسخ رابط المنشور.');
+        }catch{
+          toast('تعذرت المشاركة من هذا المتصفح.');
+        }
+      }
+    }
+  });
+
+  saveBtn.addEventListener('click',()=>{
+    let saved = [];
+    try{
+      saved = JSON.parse(localStorage.getItem(savedKey)||'[]');
+    }catch{}
+
+    if(saved.includes(post.id)){
+      saved = saved.filter(id=>id!==post.id);
+      toast('تمت إزالة المنشور من المحفوظات.');
+    }else{
+      saved.push(post.id);
+      toast('تم حفظ المنشور على هذا الجهاز.');
+    }
+
+    localStorage.setItem(savedKey,JSON.stringify(saved));
+    updateSaveButton();
+  });
+
+  actions.append(
+    likeBtn,commentBtn,repostBtn,shareBtn,saveBtn
+  );
+
+  card.append(actions,commentsArea);
   return card;
 }
 
 async function loadComments(postId,area){
-
   area.innerHTML = '<div class="status">جارٍ تحميل التعليقات...</div>';
 
   const {data:comments,error} = await supabase
@@ -805,8 +780,7 @@ async function loadComments(postId,area){
     row.className = 'comment-row';
 
     const profile = profiles[comment.author_id] || {
-      id:comment.author_id,
-      full_name:'طالب'
+      id:comment.author_id,full_name:'طالب'
     };
 
     row.appendChild(makeAvatar(profile,36));
@@ -827,13 +801,16 @@ async function loadComments(postId,area){
 
     row.appendChild(body);
 
-    if(comment.author_id === currentUser.id || myProfile.role === 'admin'){
+    if(comment.author_id === currentUser.id ||
+       myProfile.role === 'admin'){
       const del = document.createElement('button');
       del.className = 'delete-comment';
       del.textContent = 'حذف';
+
       del.addEventListener('click',async()=>{
         const {error} = await supabase.from('comments')
           .delete().eq('id',comment.id);
+
         if(error) toast('تعذر حذف التعليق.');
         else{
           toast('تم حذف التعليق.');
@@ -889,7 +866,6 @@ async function loadComments(postId,area){
 }
 
 async function publishPost(){
-
   const text = $('postText').value.trim();
   const file = selectedImage;
 
@@ -905,7 +881,6 @@ async function publishPost(){
   let imagePath = null;
 
   try{
-
     if(file){
       const ext = file.type === 'image/png'?'png':
         file.type === 'image/webp'?'webp':'jpg';
@@ -939,7 +914,8 @@ async function publishPost(){
   }catch(error){
     console.error(error);
     if(imagePath){
-      await supabase.storage.from('community-media').remove([imagePath]);
+      await supabase.storage.from('community-media')
+        .remove([imagePath]);
     }
     toast('تعذر النشر. تحقق من الاتصال والصلاحيات.');
   }finally{
@@ -949,7 +925,6 @@ async function publishPost(){
 }
 
 async function deletePost(post){
-
   if(!confirm('هل أنت متأكد أنك تريد حذف هذا المنشور؟')) return;
 
   const {error} = await supabase.from('posts')
@@ -1007,7 +982,8 @@ $('refreshBtn').addEventListener('click',loadFeed);
 
 start().catch(error=>{
   console.error(error);
-  $('feed').textContent = 'حدث خطأ غير متوقع أثناء تحميل المجتمع.';
+  $('feed').textContent =
+    'حدث خطأ غير متوقع أثناء تحميل المجتمع.';
 });
 </script>
 
