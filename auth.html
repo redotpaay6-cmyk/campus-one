@@ -5,33 +5,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CAMPUS ONE | حساب الطالب</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#102b46;min-height:100vh;display:grid;place-items:center;padding:20px}
-.card{background:white;width:100%;max-width:430px;padding:28px;border-radius:18px;box-shadow:0 8px 30px #102b4615}
+body{
+ margin:0;font-family:Arial,sans-serif;
+ background:#f1f5f9;color:#102b46;
+ min-height:100vh;display:grid;
+ place-items:center;padding:20px
+}
+.card{
+ background:white;width:100%;max-width:430px;
+ padding:28px;border-radius:18px;
+ box-shadow:0 8px 30px #102b4615
+}
 h1{text-align:center;margin-bottom:8px}
 .sub{text-align:center;color:#64748b;margin-bottom:24px}
-input{width:100%;padding:13px;margin:7px 0;border:1px solid #cbd5e1;border-radius:9px;font-size:15px}
-button{width:100%;padding:14px;margin-top:12px;background:#1768a5;color:white;border:0;border-radius:9px;font-size:16px;cursor:pointer}
-button:disabled{opacity:.6}
+input{
+ width:100%;padding:13px;margin:7px 0;
+ border:1px solid #cbd5e1;border-radius:9px;
+ font-size:15px;outline:none
+}
+input:focus{border-color:#1768a5}
+button{
+ width:100%;padding:14px;margin-top:12px;
+ background:#1768a5;color:white;border:0;
+ border-radius:9px;font-size:16px;cursor:pointer
+}
+button:disabled{opacity:.6;cursor:not-allowed}
 .switch{background:none;color:#1768a5;margin-top:8px}
-#message{text-align:center;margin-top:15px;line-height:1.6;overflow-wrap:anywhere}
+#message{
+ text-align:center;margin-top:15px;
+ line-height:1.6;overflow-wrap:anywhere
+}
+.hint{font-size:12px;color:#64748b;margin:3px 0 7px}
+#usernameStatus{font-size:12px;margin:3px 0 7px;min-height:16px}
 .hidden{display:none}
 </style>
 </head>
+
 <body>
 <main class="card">
-<h1>CAMPUS ONE</h1>
+<h1>🎓 CAMPUS ONE</h1>
 <p class="sub">كل ما يحتاجه الطالب، في مكان واحد</p>
 
 <div id="register">
 <h3>إنشاء حساب طالب</h3>
+
 <input id="name" placeholder="الاسم الكامل">
+
+<input id="username" placeholder="اسم المستخدم (مثال: mohamed_vet)"
+autocomplete="username" maxlength="20">
+
+<p class="hint">3 إلى 20 حرفًا. استخدم الإنجليزية والأرقام والشرطة السفلية _ فقط.</p>
+<p id="usernameStatus"></p>
+
 <input id="phone" type="tel" placeholder="رقم الهاتف">
 <input id="email" type="email" placeholder="البريد الإلكتروني">
 <input id="password" type="password" placeholder="كلمة المرور">
 <input id="university" placeholder="الجامعة">
 <input id="specialty" placeholder="التخصص">
+
 <button id="registerBtn">إنشاء الحساب</button>
 <button class="switch" id="showLogin">لديك حساب؟ تسجيل الدخول</button>
 </div>
@@ -81,12 +115,75 @@ $(id).classList.toggle("hidden",id!==section);
 message("");
 }
 
+// فحص صيغة اسم المستخدم
+function validUsername(value){
+return /^[a-z0-9_]{3,20}$/.test(value);
+}
+
+let usernameAvailable=false;
+let usernameTimer=null;
+let checkingUsername=false;
+
+$("username").addEventListener("input",()=>{
+const username=$("username").value.trim().toLowerCase();
+$("usernameStatus").textContent="";
+$("usernameStatus").style.color="#64748b";
+usernameAvailable=false;
+
+clearTimeout(usernameTimer);
+
+if(!username){
+$("usernameStatus").textContent="";
+return;
+}
+
+if(!validUsername(username)){
+$("usernameStatus").textContent=
+"استخدم 3 إلى 20 حرفًا إنجليزيًا أو رقمًا أو _ فقط.";
+$("usernameStatus").style.color="#dc2626";
+return;
+}
+
+$("usernameStatus").textContent="جارٍ التحقق من الاسم...";
+usernameTimer=setTimeout(async()=>{
+checkingUsername=true;
+try{
+const {data,error}=await supabase.rpc(
+"is_username_available",
+{candidate_username:username}
+);
+
+if(error)throw error;
+
+if($("username").value.trim().toLowerCase()!==username)return;
+
+usernameAvailable=data===true;
+
+$("usernameStatus").textContent=usernameAvailable?
+"✓ اسم المستخدم متاح":
+"✗ اسم المستخدم مستعمل بالفعل";
+
+$("usernameStatus").style.color=usernameAvailable?
+"#15803d":"#dc2626";
+
+}catch(error){
+$("usernameStatus").textContent=
+"تعذر التحقق الآن. سنعيد الفحص عند التسجيل.";
+$("usernameStatus").style.color="#dc2626";
+}finally{
+checkingUsername=false;
+}
+},450);
+});
+
 $("showLogin").onclick=()=>show("login");
 $("showRegister").onclick=()=>show("register");
+
 $("forgotBtn").onclick=()=>{
 $("forgotEmail").value=$("loginEmail").value.trim();
 show("forgot");
 };
+
 $("backLogin1").onclick=()=>show("login");
 
 // التحقق من الحساب وتوجيه المستخدم
@@ -112,7 +209,7 @@ return;
 }
 
 if(!profile){
-message("لم يتم العثور على سجل مرتبط بمعرف الحساب: "+user.id);
+message("لم يتم العثور على سجل مرتبط بمعرف الحساب.");
 return;
 }
 
@@ -133,28 +230,54 @@ window.location.replace("index.html");
 // إنشاء حساب طالب
 $("registerBtn").onclick=async()=>{
 const full_name=$("name").value.trim();
+const username=$("username").value.trim().toLowerCase();
 const phone=$("phone").value.trim();
 const email=$("email").value.trim();
 const password=$("password").value;
 const university=$("university").value.trim();
 const specialty=$("specialty").value.trim();
 
-if(!full_name||!phone||!email||!password||!university||!specialty)
+if(!full_name||!username||!phone||!email||!password||!university||!specialty)
 return message("يرجى ملء جميع الخانات.");
+
+if(!validUsername(username))
+return message("اسم المستخدم غير صالح.");
 
 if(password.length<8)
 return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
 
 const button=$("registerBtn");
 button.disabled=true;
-message("جارٍ إنشاء الحساب...");
+message("جارٍ التحقق من اسم المستخدم...");
 
 try{
+
+const {data:available,error:checkError}=await supabase.rpc(
+"is_username_available",
+{candidate_username:username}
+);
+
+if(checkError)throw checkError;
+
+if(!available){
+$("usernameStatus").textContent="✗ اسم المستخدم مستعمل بالفعل";
+$("usernameStatus").style.color="#dc2626";
+throw new Error("اسم المستخدم غير متاح. اختر اسمًا آخر.");
+}
+
+message("جارٍ إنشاء الحساب...");
+
 const {data,error}=await supabase.auth.signUp({
 email,password,
 options:{
 emailRedirectTo:"https://redotpaay6-cmyk.github.io/campus-one/auth.html",
-data:{full_name,phone,university,specialty}
+data:{
+full_name,
+username,
+phone,
+university,
+specialty
+}
 }
 });
 
@@ -163,7 +286,8 @@ if(!data.user)throw new Error("لم يتم إرجاع بيانات المستخ�
 
 const metadata=data.user.user_metadata||{};
 
-if(metadata.full_name!==full_name||
+if(metadata.username!==username||
+metadata.full_name!==full_name||
 metadata.phone!==phone||
 metadata.university!==university||
 metadata.specialty!==specialty){
@@ -171,8 +295,8 @@ return message("تم إنشاء الحساب، لكن بيانات الطالب 
 }
 
 message(data.session?
-"تم إنشاء حسابك بنجاح! ملفك الشخصي قيد المراجعة.":
-"تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيده. ملفك قيد المراجعة.");
+"تم إنشاء حسابك بنجاح! اسمك @" + username + " وملفك قيد المراجعة.":
+"تم إنشاء الحساب! اسم المستخدم @" + username + ". تحقق من بريدك الإلكتروني لتأكيده. ملفك قيد المراجعة.");
 
 }catch(error){
 message("تعذر إنشاء الحساب: "+error.message);
@@ -204,7 +328,7 @@ button.disabled=false;
 }
 };
 
-// إرسال رابط استعادة كلمة المرور
+// استعادة كلمة المرور
 $("sendRecoveryBtn").onclick=async()=>{
 const email=$("forgotEmail").value.trim();
 if(!email)return message("أدخل البريد الإلكتروني.");
