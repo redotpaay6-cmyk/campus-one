@@ -4,546 +4,181 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#102b50">
+<meta name="theme-color" content="#0b1930">
 <title>CAMPUS ONE | الملف الشخصي</title>
 
 <style>
 *{box-sizing:border-box}
 :root{
- --navy:#102b50;
- --blue:#2563eb;
- --bg:#f0f2f5;
- --text:#172b46;
- --muted:#68778d;
- --border:#e4e8ef;
+ --navy:#0b1930;--blue:#2563eb;--light:#f3f6fb;
+ --text:#17243a;--muted:#8290a5;--border:#e8edf5;
 }
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:var(--bg);
- color:var(--text);
-}
+body{margin:0;font-family:Arial,sans-serif;background:var(--light);color:var(--text)}
 button,a{font-family:inherit}
 a{text-decoration:none}
 header{
- height:65px;
- background:var(--navy);
- color:white;
- display:flex;
- justify-content:space-between;
- align-items:center;
- padding:0 5%;
- position:sticky;
- top:0;
- z-index:20;
+ height:68px;background:var(--navy);color:white;
+ display:flex;align-items:center;justify-content:space-between;padding:0 6%;
 }
-.logo{font-size:20px;font-weight:bold}
+.logo{font-size:21px;font-weight:bold}
 .header-links{display:flex;gap:20px}
-.header-links a{color:#dbeafe;font-size:13px}
-main{
- max-width:1050px;
- margin:20px auto;
- padding:0 14px 100px;
+.header-links a{color:#dce8fa;font-size:14px}
+main{max-width:950px;margin:24px auto;padding:0 15px 100px}
+.profile-cover{
+ height:240px;border-radius:20px 20px 0 0;
+ background:radial-gradient(circle at 80% 20%,#4385ed55,transparent 35%),linear-gradient(120deg,#0b1930,#174a86,#2563eb);
+ position:relative;overflow:hidden;cursor:default;
 }
-.cover{
- height:270px;
- position:relative;
- overflow:hidden;
- background:
- radial-gradient(circle at 20% 20%,#60a5fa55,transparent 35%),
- linear-gradient(120deg,#0b1930,#174a86,#2563eb);
- border-radius:13px 13px 0 0;
-}
-.cover:after{
- content:"CAMPUS ONE";
- position:absolute;
- left:30px;
- bottom:25px;
- color:#ffffff35;
- font-size:30px;
- font-weight:bold;
- letter-spacing:4px;
- pointer-events:none;
-}
-.cover img{
- width:100%;
- height:100%;
- object-fit:cover;
- display:none;
- position:absolute;
- inset:0;
-}
-.cover-button{
- position:absolute;
- left:15px;
- bottom:15px;
- z-index:3;
- border:0;
- border-radius:9px;
- padding:10px 13px;
- background:#ffffffed;
- color:#102b50;
- font-weight:bold;
- cursor:pointer;
+.cover-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.cover-edit{
+ position:absolute;top:15px;left:15px;z-index:3;
+ border:0;border-radius:10px;padding:11px 15px;
+ background:#ffffffed;color:#174b96;font-weight:bold;cursor:pointer;
 }
 .profile-card{
- background:white;
- padding:0 25px 20px;
- border-radius:0 0 13px 13px;
- box-shadow:0 2px 5px #00000008;
+ background:white;border:1px solid var(--border);
+ border-radius:0 0 20px 20px;padding:0 25px 25px;
+ box-shadow:0 8px 30px #102b5008;
 }
 .profile-top{
- display:flex;
- align-items:flex-end;
- gap:18px;
- flex-wrap:wrap;
- margin-top:-83px;
- position:relative;
- z-index:4;
+ display:flex;flex-direction:column;align-items:center;
+ text-align:center;position:relative;margin-top:-78px;
 }
-.avatar-wrap{position:relative}
+.avatar-wrap{position:relative;z-index:4}
 .avatar{
- width:165px;
- height:165px;
- border:6px solid white;
- border-radius:50%;
- background:linear-gradient(135deg,#2563eb,#102b50);
- overflow:hidden;
- display:flex;
- align-items:center;
- justify-content:center;
- color:white;
- font-size:55px;
- font-weight:bold;
+ width:150px;height:150px;border-radius:50%;
+ background:linear-gradient(135deg,#2563eb,#0b1930);
+ border:7px solid white;display:flex;align-items:center;
+ justify-content:center;color:white;font-size:48px;font-weight:bold;
+ box-shadow:0 5px 22px #102b5030;overflow:hidden;cursor:default;
 }
-.avatar img{
- width:100%;
- height:100%;
- object-fit:cover;
- display:none;
+.avatar img{width:100%;height:100%;object-fit:cover;display:none}
+.avatar-wrap.editable .avatar{cursor:pointer}
+.avatar-edit{
+ position:absolute;bottom:5px;left:5px;width:42px;height:42px;
+ border-radius:50%;border:4px solid white;background:#2563eb;
+ color:white;cursor:pointer;font-size:18px;display:none;
 }
-.avatar-button{
- position:absolute;
- left:5px;
- bottom:10px;
- border:3px solid white;
- background:#e4e6eb;
- border-radius:50%;
- width:42px;
- height:42px;
- font-size:18px;
- cursor:pointer;
-}
-.identity{
- flex:1;
- min-width:190px;
- padding-bottom:10px;
-}
-.name-line{
- display:flex;
- align-items:center;
- gap:8px;
- flex-wrap:wrap;
-}
-.name-line h1{
- font-size:27px;
- margin:0;
- color:#111827;
-}
+.avatar-wrap.show-actions .avatar-edit{display:block}
+.identity{width:100%;padding:12px 10px 0}
+.name-line{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
+.name-line h1{font-size:27px;margin:0;color:#102b50}
 .verified{
- display:none;
- color:#1684f8;
- font-size:21px;
- font-weight:bold;
+ width:23px;height:23px;border-radius:50%;background:#1684f8;
+ color:white;display:none;align-items:center;justify-content:center;
+ font-size:15px;font-weight:bold;
 }
-.username{
- direction:ltr;
- text-align:right;
- color:#2563eb;
- font-size:13px;
- font-weight:bold;
- margin-top:7px;
+.role{color:var(--muted);font-size:14px;margin-top:9px}
+.username-display{
+ color:#2563eb;font-size:15px;font-weight:bold;margin-top:9px;
+ direction:ltr;text-align:center;
 }
-.role{color:var(--muted);font-size:13px;margin-top:7px}
-.bio{
- color:#526176;
- font-size:14px;
- line-height:1.8;
- margin-top:12px;
- white-space:pre-wrap;
-}
-.actions{
- display:flex;
- gap:9px;
- flex-wrap:wrap;
- padding-bottom:12px;
-}
-.btn{
- border:0;
- border-radius:9px;
- padding:12px 18px;
- cursor:pointer;
- font-weight:bold;
- font-size:13px;
-}
-.btn-primary{background:var(--blue);color:white}
-.btn-light{background:#e4e6eb;color:#172b46}
-.btn:disabled{opacity:.6;cursor:wait}
-.stats{
- display:flex;
- gap:25px;
- flex-wrap:wrap;
- border-top:1px solid var(--border);
- padding-top:18px;
- margin-top:10px;
-}
-.stat{
- color:var(--muted);
- font-size:13px;
-}
-.stat strong{
- color:#172b46;
- font-size:18px;
- margin-left:5px;
-}
-.info-tags{
- display:flex;
- flex-wrap:wrap;
- gap:9px;
- margin-top:15px;
-}
-.info-tags span{
- background:#f0f2f5;
- border-radius:8px;
- padding:8px 11px;
- font-size:12px;
- color:#526176;
-}
+.community-line{font-size:15px;color:#64748b;margin-top:13px}
 .username-box{
- margin-top:14px;
- padding:13px;
- border:1px solid var(--border);
- border-radius:12px;
- max-width:370px;
+ margin:14px auto 0;background:#f7f9fd;border:1px solid #e5ebf5;
+ border-radius:12px;padding:13px;max-width:350px;text-align:right;
 }
-.username-box label{
- display:block;
- font-size:12px;
- font-weight:bold;
- margin-bottom:8px;
-}
+.username-box label{display:block;font-size:12px;font-weight:bold;margin-bottom:8px}
 .username-box input{
- width:100%;
- padding:11px;
- border:1px solid var(--border);
- border-radius:8px;
- direction:ltr;
- text-align:left;
- font-size:14px;
+ width:100%;padding:11px;border:1px solid #dce4f0;
+ border-radius:8px;font-size:14px;outline:none;direction:ltr;text-align:left;
 }
-.username-box button{
- width:100%;
- margin-top:8px;
- padding:11px;
- border:0;
- border-radius:8px;
- color:white;
- background:var(--blue);
- font-weight:bold;
+.username-save{
+ margin-top:9px;width:100%;border:0;border-radius:8px;
+ padding:11px;background:#2563eb;color:white;font-weight:bold;cursor:pointer;
 }
-.username-message{font-size:12px;margin-top:8px}
-.tabs-card{
- margin-top:15px;
- background:white;
- border-radius:12px;
- box-shadow:0 2px 5px #00000008;
- overflow:hidden;
+.username-message{margin-top:8px;font-size:12px}
+.edit-area{
+ width:100%;display:flex;justify-content:center;gap:12px;
+ flex-wrap:wrap;margin-top:22px;
 }
-.tabs{
- display:flex;
- overflow-x:auto;
- border-bottom:1px solid var(--border);
+.edit-btn,.follow-btn{
+ border:0;border-radius:11px;padding:14px 22px;
+ font-size:14px;font-weight:bold;cursor:pointer;
 }
-.tab{
- flex:1;
- min-width:90px;
- border:0;
- background:white;
- padding:17px 10px;
- color:#68778d;
- font-size:14px;
- font-weight:bold;
- cursor:pointer;
- border-bottom:3px solid transparent;
+.edit-btn{background:#edf3ff;color:#2054b5}
+.follow-btn{background:#2563eb;color:white}
+.follow-btn.following{background:#eaf1fc;color:#174b96}
+.follow-btn:disabled{opacity:.6}
+#uploadStatus{text-align:center;margin-top:13px;font-size:13px;line-height:1.7}
+.stats{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:12px;margin:25px auto 20px;max-width:600px;
 }
-.tab.active{
- color:var(--blue);
- border-bottom-color:var(--blue);
-}
-.panel{padding:18px}
-.hidden{display:none!important}
-.panel-title{
- font-size:18px;
- font-weight:bold;
- margin:3px 0 15px;
-}
-.empty{
- background:#f8fafc;
- border-radius:12px;
- text-align:center;
- padding:35px 15px;
- color:var(--muted);
- line-height:1.9;
-}
-.empty-icon{font-size:35px;margin-bottom:10px}
-.post{
- border:1px solid var(--border);
- border-radius:13px;
- padding:15px;
- margin-bottom:15px;
- background:white;
-}
-.post-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:10px;
-}
-.actor{
- display:flex;
- align-items:center;
- gap:10px;
- min-width:0;
-}
-.actor img{
- width:43px;
- height:43px;
- min-width:43px;
- border-radius:50%;
- object-fit:cover;
- background:#dbeafe;
-}
-.actor-name{
- color:#172b46;
- font-size:14px;
- font-weight:bold;
-}
-.actor-name:hover{color:var(--blue)}
-.post-date{
- color:#94a3b8;
- font-size:11px;
- margin-top:5px;
-}
-.post-text{
- font-size:15px;
- line-height:1.9;
- white-space:pre-wrap;
- overflow-wrap:anywhere;
- margin:15px 0;
-}
-.post-image{
- width:100%;
- max-height:450px;
- object-fit:contain;
- background:#f1f5f9;
- border-radius:10px;
-}
-.post-stats{
- display:flex;
- justify-content:space-between;
- padding:12px 2px;
- color:var(--muted);
- font-size:12px;
- border-bottom:1px solid var(--border);
-}
-.post-actions{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:8px;
- padding-top:9px;
-}
-.post-actions button{
- background:white;
- border:0;
- border-radius:8px;
- padding:11px 5px;
- color:#64748b;
- font-weight:bold;
- cursor:pointer;
-}
-.post-actions button:hover{background:#f1f5f9}
-.post-actions button.liked{color:var(--blue)}
-.comments{
- display:none;
- border-top:1px solid var(--border);
- margin-top:12px;
- padding-top:12px;
-}
-.comment{
- display:flex;
- gap:9px;
- margin:12px 0;
-}
-.comment img{
- width:35px;
- height:35px;
- border-radius:50%;
- object-fit:cover;
-}
-.comment-body{
- background:#f0f2f5;
- padding:10px;
- border-radius:12px;
- flex:1;
- min-width:0;
-}
-.comment-body strong{font-size:12px}
-.comment-body p{
- margin:6px 0 0;
- font-size:13px;
- line-height:1.7;
- white-space:pre-wrap;
- overflow-wrap:anywhere;
-}
-.comment-form{
- display:flex;
- gap:8px;
- margin-top:12px;
-}
-.comment-form input{
- flex:1;
- min-width:0;
- border:1px solid var(--border);
- border-radius:9px;
- padding:11px;
- outline:none;
-}
-.comment-form button{
- background:var(--blue);
- color:white;
- border:0;
- border-radius:9px;
- padding:0 15px;
-}
-.photos-grid{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:5px;
-}
-.photos-grid img{
- width:100%;
- aspect-ratio:1;
- object-fit:cover;
- border-radius:7px;
- background:#e5e7eb;
-}
-.details-grid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:12px;
-}
-.detail{
- padding:15px;
- background:#f7f9fc;
- border:1px solid var(--border);
- border-radius:11px;
-}
-.detail small{
- display:block;
- color:var(--muted);
- margin-bottom:8px;
-}
-.detail strong{
- font-size:14px;
- overflow-wrap:anywhere;
-}
-.status{
- margin-top:15px;
- display:inline-block;
- padding:8px 13px;
- border-radius:20px;
- background:#fff7ed;
- color:#c2410c;
- font-size:12px;
-}
+.stat{text-align:center;padding:15px 5px;border:1px solid var(--border);border-radius:13px;background:#fbfcff}
+.stat strong{display:block;font-size:22px;color:var(--navy);margin-bottom:6px}
+.stat span{color:var(--muted);font-size:12px}
+.bio{border-top:1px solid var(--border);padding-top:19px;line-height:1.9;text-align:center}
+.bio-title{font-weight:bold;margin-bottom:5px}
+.bio p{margin:0;color:#65748a;white-space:pre-wrap}
+.university-line{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:13px;color:#52637b;font-size:13px}
+.university-line span{background:#f1f5fb;padding:8px 12px;border-radius:9px}
+.status-row{margin-top:15px}
+.status{display:inline-block;padding:7px 13px;border-radius:20px;background:#fff7ed;color:#c2410c;font-size:12px}
 .status.approved{background:#eaf5ff;color:#0874d1}
-.notice{
- padding:13px;
- margin-top:15px;
- border-radius:10px;
- background:#eff6ff;
- color:#315b9d;
- font-size:13px;
- line-height:1.8;
-}
-#uploadStatus{font-size:12px;margin-top:10px}
-.message{
- background:white;
- border-radius:13px;
- padding:35px 15px;
- text-align:center;
- color:var(--muted);
-}
-.bottom-nav{
- display:none;
-}
+.status.rejected{background:#fef2f2;color:#b91c1c}
+.content-card{background:white;border:1px solid var(--border);border-radius:18px;margin-top:22px;overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid var(--border)}
+.tab{flex:1;border:0;background:white;padding:17px 8px;color:#8491a5;font-size:14px;cursor:pointer;border-bottom:3px solid transparent}
+.tab.active{color:#205bd0;font-weight:bold;border-bottom-color:#2563eb}
+.tab-content{padding:24px 18px;min-height:190px}
+.empty-state{text-align:center;padding:22px 10px}
+.empty-icon{width:62px;height:62px;border-radius:18px;background:#edf3ff;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:27px}
+.empty-state h3{margin:0 0 9px;font-size:17px}
+.empty-state p{color:var(--muted);font-size:13px;line-height:1.8;margin:0}
+.details-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.detail{background:#f7f9fc;border:1px solid var(--border);border-radius:12px;padding:15px;min-width:0}
+.detail small{display:block;color:var(--muted);margin-bottom:8px}
+.detail strong{font-size:14px;overflow-wrap:anywhere}
+.admin-area{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.action-link{background:#102b50;color:white;border-radius:10px;padding:12px 17px;font-size:13px}
+.action-link.secondary{background:#eaf1fc;color:#174b96}
+.logout{border:0;background:#fff0f0;color:#d22e36;padding:12px 17px;border-radius:10px;cursor:pointer;font-size:13px}
+.notice{margin-top:20px;padding:16px;border-radius:13px;background:#f1f6ff;color:#315b9d;font-size:13px;line-height:1.8}
+.message{background:white;padding:35px 20px;border-radius:15px;text-align:center;color:var(--muted)}
+.hidden{display:none!important}
+footer{text-align:center;color:#9aa6b8;padding:25px;font-size:12px}
+.bottom-nav{display:none}
 input[type=file]{display:none}
-footer{
- text-align:center;
- color:#94a3b8;
- font-size:12px;
- padding:25px;
-}
 @media(max-width:650px){
- header{height:58px;padding:0 15px}
- .logo{font-size:17px}
- .header-links{gap:13px}
+ header{height:62px;padding:0 15px}
+ .logo{font-size:18px}
+ .header-links{gap:12px}
  .header-links a{font-size:12px}
- main{margin:10px auto;padding:0 0 100px}
- .cover{height:205px;border-radius:0}
- .cover:after{font-size:22px}
- .profile-card{padding:0 15px 17px;border-radius:0}
- .profile-top{margin-top:-65px;gap:12px}
- .avatar{width:130px;height:130px;font-size:43px;border-width:5px}
- .avatar-button{width:37px;height:37px}
- .identity{min-width:140px;padding-bottom:5px}
- .name-line h1{font-size:22px}
- .actions{width:100%;padding-top:5px}
- .actions .btn{flex:1}
- .stats{justify-content:space-around;gap:8px}
- .stat strong{font-size:16px}
- .stat{font-size:11px}
- .tabs-card{margin-top:10px;border-radius:0}
- .tab{font-size:12px;padding:15px 5px}
- .panel{padding:13px}
+ main{margin:13px auto;padding:0 10px 105px}
+ .profile-cover{height:190px;border-radius:16px 16px 0 0}
+ .profile-card{padding:0 14px 19px;border-radius:0 0 16px 16px}
+ .profile-top{margin-top:-66px}
+ .avatar{width:130px;height:130px;border-width:6px;font-size:40px}
+ .name-line h1{font-size:23px}
+ .identity{padding-top:10px}
+ .role{font-size:13px}
+ .username-display{font-size:14px}
+ .community-line{font-size:14px}
+ .edit-area{gap:9px;margin-top:18px}
+ .edit-btn,.follow-btn{flex:1;padding:13px 9px;font-size:13px}
+ .stats{gap:7px;margin:22px 0 17px}
+ .stat{padding:12px 3px}
+ .stat strong{font-size:20px}
+ .stat span{font-size:11px}
+ .tab{font-size:12px;padding:15px 4px}
+ .tab-content{padding:18px 11px}
  .details-grid{grid-template-columns:1fr}
- .photos-grid{grid-template-columns:repeat(3,1fr)}
+ .admin-area>*{flex:1;text-align:center}
  .bottom-nav{
-  display:flex;
-  position:fixed;
-  bottom:0;left:0;right:0;
-  height:68px;
-  background:white;
-  border-top:1px solid var(--border);
-  justify-content:space-around;
-  align-items:center;
-  z-index:30;
+  display:flex;position:fixed;bottom:0;right:0;left:0;height:70px;
+  background:white;border-top:1px solid #e5eaf1;
+  justify-content:space-around;align-items:center;z-index:20;
  }
- .bottom-nav a{
-  color:#8290a5;
-  font-size:11px;
-  text-align:center;
-  line-height:1.7;
- }
- .bottom-nav a.active{color:var(--blue);font-weight:bold}
- .bottom-nav b{display:block;font-size:20px}
- footer{padding-bottom:85px}
+ .bottom-nav a{color:#8190a5;text-align:center;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:5px}
+ .bottom-nav a.active{color:#2563eb;font-weight:bold}
+ .bottom-nav b{font-size:21px}
+ footer{padding-bottom:90px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
  <div class="logo">🎓 CAMPUS ONE</div>
  <nav class="header-links">
@@ -553,123 +188,120 @@ footer{
 </header>
 
 <main>
-
  <div id="loading" class="message">جارٍ تحميل الملف الشخصي...</div>
- <div id="errorBox" class="message hidden"></div>
+
+ <div id="errorBox" class="message hidden">
+  <p id="errorText">تعذر تحميل الحساب.</p>
+  <a href="auth.html" class="action-link">تسجيل الدخول</a>
+ </div>
 
  <div id="content" class="hidden">
-
-  <div class="cover">
-   <img id="coverImage" alt="صورة الغلاف">
-   <button id="coverButton" class="cover-button hidden">📷 تغيير الغلاف</button>
+  <div class="profile-cover" id="coverArea">
+   <img id="coverImage" class="cover-image" alt="صورة الغلاف">
+   <button id="coverButton" class="cover-edit hidden">📷 تغيير صورة الغلاف</button>
   </div>
 
   <section class="profile-card">
-
    <div class="profile-top">
 
-    <div class="avatar-wrap">
-     <div class="avatar">
+    <div class="avatar-wrap" id="avatarWrap">
+     <div class="avatar" id="avatar" title="الصورة الشخصية">
       <span id="avatarLetter">C</span>
       <img id="avatarImage" alt="الصورة الشخصية">
      </div>
-     <button id="avatarButton" class="avatar-button hidden">📷</button>
+     <button id="avatarButton" class="avatar-edit hidden" title="تغيير الصورة">📷</button>
     </div>
 
     <div class="identity">
      <div class="name-line">
       <h1 id="fullName">الطالب</h1>
-      <span id="verified" class="verified">✔</span>
+      <span class="verified" id="verified">✓</span>
      </div>
 
-     <div id="usernameDisplay" class="username hidden"></div>
-     <div id="roleLabel" class="role">طالب جامعي</div>
-     <div id="bioText" class="bio">طالب في مجتمع CAMPUS ONE 🎓</div>
+     <div id="usernameDisplay" class="username-display hidden"></div>
+     <div class="role" id="roleLabel">طالب جامعي</div>
+     <div class="community-line">طالب في مجتمع CAMPUS ONE 🎓</div>
 
      <div id="usernameBox" class="username-box hidden">
       <label for="usernameInput">اختر اسم المستخدم الخاص بك</label>
-      <input id="usernameInput" maxlength="20"
-       placeholder="mouhamed_25" autocomplete="off">
-      <button id="usernameSave">تحقق وحفظ اسم المستخدم</button>
+      <input id="usernameInput" type="text" maxlength="20" minlength="3" placeholder="mouhamed_25" autocomplete="off">
+      <button id="usernameSave" class="username-save">تحقق وحفظ اسم المستخدم</button>
       <div id="usernameMessage" class="username-message"></div>
      </div>
     </div>
 
-    <div class="actions">
-     <button id="followButton" class="btn btn-primary hidden">متابعة</button>
-     <button id="detailsButton" class="btn btn-light">معلومات الحساب</button>
-     <button id="avatarAction" class="btn btn-light hidden">تعديل الصورة</button>
+    <div class="edit-area">
+     <a href="#accountDetails" id="detailsLink" class="edit-btn">معلومات الحساب</a>
+     <button id="followButton" class="follow-btn hidden">متابعة</button>
     </div>
-
    </div>
 
    <div id="uploadStatus"></div>
 
    <div class="stats">
-    <div class="stat"><strong id="postCount">0</strong> منشور</div>
-    <div class="stat"><strong id="followerCount">0</strong> متابع</div>
-    <div class="stat"><strong id="followingCount">0</strong> يتابع</div>
+    <div class="stat"><strong id="postCount">0</strong><span>المنشورات</span></div>
+    <div class="stat"><strong id="followerCount">0</strong><span>المتابعون</span></div>
+    <div class="stat"><strong id="followingCount">0</strong><span>يتابع</span></div>
    </div>
 
-   <div class="info-tags">
-    <span>🏛️ <b id="university">—</b></span>
-    <span>📚 <b id="specialty">—</b></span>
-    <span id="verification" class="status">قيد المراجعة</span>
+   <div class="bio">
+    <div class="bio-title">نبذة عن الطالب</div>
+    <p id="bioText">طالب في مجتمع CAMPUS ONE 🎓</p>
+    <div class="university-line">
+     <span>🏛️ <b id="university">—</b></span>
+     <span>📚 <b id="specialty">—</b></span>
+    </div>
+    <div class="status-row">
+     <span id="verification" class="status">قيد الانتظار</span>
+    </div>
    </div>
-
-   <div id="statusNotice" class="notice hidden"></div>
-
   </section>
 
-  <section class="tabs-card">
-
+  <section class="content-card" id="accountDetails">
    <div class="tabs">
-    <button class="tab active" data-tab="posts">المنشورات</button>
-    <button class="tab" data-tab="photos">الصور</button>
-    <button class="tab" data-tab="about">المعلومات</button>
-    <button class="tab" data-tab="activity">النشاط</button>
+    <button class="tab active" data-tab="posts">▦ المنشورات</button>
+    <button class="tab" data-tab="about">◉ المعلومات</button>
+    <button class="tab" data-tab="activity">✦ النشاط</button>
    </div>
 
-   <div class="panel" id="postsPanel">
-    <div class="panel-title">📰 منشورات الطالب</div>
-    <div id="postsList" class="message">جارٍ تحميل المنشورات...</div>
-   </div>
-
-   <div class="panel hidden" id="photosPanel">
-    <div class="panel-title">📷 الصور</div>
-    <div id="photosGrid" class="photos-grid"></div>
-    <div id="photosEmpty" class="message hidden">لا توجد صور منشورة بعد.</div>
-   </div>
-
-   <div class="panel hidden" id="aboutPanel">
-    <div class="panel-title">معلومات الحساب</div>
-    <div class="details-grid">
-     <div class="detail"><small>الاسم الكامل</small><strong id="detailName">—</strong></div>
-     <div class="detail"><small>اسم المستخدم</small><strong id="detailUsername">—</strong></div>
-     <div class="detail"><small>الجامعة</small><strong id="detailUniversity">—</strong></div>
-     <div class="detail"><small>التخصص</small><strong id="detailSpecialty">—</strong></div>
-     <div class="detail private-detail"><small>البريد الإلكتروني</small><strong id="email">—</strong></div>
-     <div class="detail private-detail"><small>رقم الهاتف</small><strong id="phone">—</strong></div>
-     <div class="detail private-detail"><small>نوع الحساب</small><strong id="accountRole">طالب</strong></div>
+   <div class="tab-content">
+    <div id="postsPanel" class="panel">
+     <div class="empty-state">
+      <div class="empty-icon">📝</div>
+      <h3>المنشورات</h3>
+      <p>ستظهر هنا منشورات هذا الطالب.</p>
+     </div>
     </div>
-    <div class="actions" style="margin-top:18px">
-     <a id="adminLink" class="btn btn-primary hidden" href="admin.html">لوحة الإدارة</a>
-     <a id="publicProfileLink" class="btn btn-light hidden" href="profile.html">الملف العام للإدارة</a>
-     <button id="logoutBtn" class="btn btn-light">تسجيل الخروج</button>
-    </div>
-   </div>
 
-   <div class="panel hidden" id="activityPanel">
-    <div class="panel-title">✦ النشاط الجامعي</div>
-    <div class="details-grid">
-     <div class="detail"><small>إجمالي المنشورات</small><strong id="activityPosts">0</strong></div>
-     <div class="detail"><small>إجمالي المتابعين</small><strong id="activityFollowers">0</strong></div>
-     <div class="detail"><small>يتابع</small><strong id="activityFollowing">0</strong></div>
+    <div id="aboutPanel" class="panel hidden">
+     <div class="details-grid">
+      <div class="detail"><small>الاسم الكامل</small><strong id="detailName">—</strong></div>
+      <div class="detail"><small>اسم المستخدم</small><strong id="detailUsername">—</strong></div>
+      <div class="detail private-detail"><small>البريد الإلكتروني</small><strong id="email">—</strong></div>
+      <div class="detail private-detail"><small>رقم الهاتف</small><strong id="phone">—</strong></div>
+      <div class="detail"><small>الجامعة</small><strong id="detailUniversity">—</strong></div>
+      <div class="detail"><small>التخصص</small><strong id="detailSpecialty">—</strong></div>
+      <div class="detail private-detail"><small>نوع الحساب</small><strong id="accountRole">طالب</strong></div>
+     </div>
+    </div>
+
+    <div id="activityPanel" class="panel hidden">
+     <div class="empty-state">
+      <div class="empty-icon">✦</div>
+      <h3>النشاط الجامعي</h3>
+      <p>ستظهر هنا تفاعلات الطالب وإسهاماته داخل مجتمع CAMPUS ONE.</p>
+     </div>
     </div>
    </div>
-
   </section>
 
+  <div class="admin-area">
+   <a id="adminLink" class="action-link hidden" href="admin.html">لوحة الإدارة</a>
+   <a id="publicProfileLink" class="action-link secondary hidden" href="profile.html">الملف العام للإدارة</a>
+   <button id="logoutBtn" class="logout">تسجيل الخروج</button>
+  </div>
+
+  <div id="statusNotice" class="notice hidden"></div>
  </div>
 </main>
 
@@ -684,779 +316,403 @@ footer{
  <a href="student.html" class="active"><b>●</b>حسابي</a>
 </nav>
 
-<footer>CAMPUS ONE © 2026 · منصة الطالب الجامعي الجزائري 🇩🇿</footer>
+<footer>CAMPUS ONE © 2026<br>منصة الطالب الجامعي الجزائري 🇩🇿</footer>
 
 <script type="module">
-import { createClient } from
-'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const supabase=createClient(
+const supabase = createClient(
  'https://rpvoajlzkoynimfowzgl.supabase.co',
  'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552'
 );
 
-const $=id=>document.getElementById(id);
+const $ = id => document.getElementById(id);
+let currentUser=null,currentProfile=null;
+let viewingOwnProfile=true,targetId=null,isFollowing=false;
 
-let currentUser=null;
-let currentProfile=null;
-let targetId=null;
-let viewingOwnProfile=true;
-let isFollowing=false;
-let profilePosts=[];
-let profiles={};
-
-function text(id,value){
- $(id).textContent=value ?? '—';
-}
+function setText(id,value){$(id).textContent=value || '—'}
 
 function showError(message){
  $('loading').classList.add('hidden');
  $('content').classList.add('hidden');
  $('errorBox').classList.remove('hidden');
- $('errorBox').textContent=message;
+ setText('errorText',message);
 }
 
-function dateText(value){
- if(!value)return '';
- return new Date(value).toLocaleString('ar-DZ',{
-  dateStyle:'medium',timeStyle:'short'
- });
+function showUploadMessage(message,isError=false){
+ $('uploadStatus').textContent=message;
+ $('uploadStatus').style.color=isError?'#c2410c':'#2563eb';
 }
 
-function initial(name){
- return [...(name||'ط').trim()][0]||'ط';
+function getExtension(file){
+ return {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type] || null;
 }
 
-async function signedImage(path){
- if(!path)return null;
- const {data,error}=await supabase.storage
-  .from('community-media')
-  .createSignedUrl(path,3600);
- if(error)return null;
- return data?.signedUrl||null;
-}
-
-async function showImage(path,element,letter=null){
+async function displayPrivateImage(path,imageElement,letterElement=null){
  if(!path){
-  element.style.display='none';
-  if(letter)letter.style.display='block';
+  imageElement.style.display='none';
+  if(letterElement)letterElement.style.display='block';
   return;
  }
- const url=await signedImage(path);
- if(url){
-  element.src=url;
-  element.style.display='block';
-  if(letter)letter.style.display='none';
- }else{
-  element.style.display='none';
-  if(letter)letter.style.display='block';
- }
-}
-
-function profileLink(profile){
- const a=document.createElement('a');
- a.className='actor-name';
- a.href='student.html?user='+encodeURIComponent(profile.id);
- a.textContent=profile.full_name||'طالب';
- if(profile.verification_status==='approved'){
-  const check=document.createElement('span');
-  check.className='verified';
-  check.style.display='inline';
-  check.textContent=' ✓';
-  a.append(check);
- }
- return a;
-}
-
-async function loadProfiles(ids){
- const unique=[...new Set(ids.filter(Boolean))];
- if(!unique.length)return;
-
- const {data,error}=await supabase.rpc('get_public_profiles');
- if(error){
+ const {data,error}=await supabase.storage.from('community-media').createSignedUrl(path,3600);
+ if(error || !data?.signedUrl){
+  imageElement.style.display='none';
+  if(letterElement)letterElement.style.display='block';
   console.error(error);
   return;
  }
- for(const p of data||[])profiles[p.id]=p;
-
- if(currentProfile)profiles[targetId]=currentProfile;
-}
-
-function makeAvatar(profile,size=43){
- const img=document.createElement('img');
- img.style.width=size+'px';
- img.style.height=size+'px';
- img.style.minWidth=size+'px';
- img.alt='الصورة الشخصية';
- img.src='';
-
- if(profile?.profile_avatar_path){
-  signedImage(profile.profile_avatar_path).then(url=>{
-   if(url)img.src=url;
-  });
- }
- return img;
-}
-
-function setVerification(profile){
- const status=profile.verification_status||'pending';
- if(status==='approved'){
-  text('verification','حساب موثق ✓');
-  $('verification').className='status approved';
-  $('verified').style.display='inline';
- }else if(status==='rejected'){
-  text('verification','غير معتمد');
- }else{
-  text('verification','قيد المراجعة');
- }
+ imageElement.src=data.signedUrl;
+ imageElement.style.display='block';
+ if(letterElement)letterElement.style.display='none';
 }
 
 function displayUsername(username){
  if(username){
-  text('usernameDisplay','@'+username);
+  $('usernameDisplay').textContent='@'+username;
   $('usernameDisplay').classList.remove('hidden');
   $('usernameBox').classList.add('hidden');
-  text('detailUsername','@'+username);
+  setText('detailUsername','@'+username);
  }else if(viewingOwnProfile){
   $('usernameDisplay').classList.add('hidden');
   $('usernameBox').classList.remove('hidden');
-  text('detailUsername','لم يتم اختياره');
+  setText('detailUsername','لم يتم اختياره بعد');
  }else{
   $('usernameDisplay').classList.add('hidden');
   $('usernameBox').classList.add('hidden');
-  text('detailUsername','—');
+  setText('detailUsername','—');
  }
 }
 
 async function saveUsername(){
- const username=$('usernameInput').value.trim().toLowerCase();
- const msg=$('usernameMessage');
- const btn=$('usernameSave');
+ if(!viewingOwnProfile || !currentUser || !currentProfile)return;
+ const input=$('usernameInput'),button=$('usernameSave'),message=$('usernameMessage');
+ const username=input.value.trim().toLowerCase();
 
  if(!/^[a-z0-9_]{3,20}$/.test(username)){
-  msg.style.color='#c2410c';
-  msg.textContent='استخدم 3 إلى 20 حرفاً أو رقماً أو _ فقط.';
+  message.style.color='#c2410c';
+  message.textContent='استعمل 3 إلى 20 حرفاً إنجليزياً أو رقماً أو _ فقط.';
   return;
  }
 
- btn.disabled=true;
- try{
-  const {data:available,error}=await supabase.rpc(
-   'is_username_available',
-   {candidate_username:username}
-  );
-  if(error)throw error;
+ button.disabled=true;
+ button.textContent='جارٍ التحقق...';
 
+ try{
+  const {data:available,error:checkError}=await supabase.rpc('is_username_available',{candidate_username:username});
+  if(checkError)throw checkError;
   if(!available){
-   msg.style.color='#c2410c';
-   msg.textContent='اسم المستخدم غير متاح.';
+   message.style.color='#c2410c';
+   message.textContent='اسم المستخدم غير متاح. اختر اسماً آخر.';
    return;
   }
 
-  const {data:result,error:saveError}=await supabase.rpc(
-   'set_my_username',
-   {candidate_username:username}
-  );
+  button.textContent='جارٍ الحفظ...';
+  const {data:result,error:saveError}=await supabase.rpc('set_my_username',{candidate_username:username});
   if(saveError)throw saveError;
 
   if(result==='success'){
    currentProfile.username=username;
    displayUsername(username);
-   msg.style.color='#15803d';
-   msg.textContent='تم حفظ اسم المستخدم بنجاح ✓';
-   $('usernameInput').value='';
+   message.style.color='#15803d';
+   message.textContent='تم حفظ اسم المستخدم بنجاح ✓';
+   input.value='';
   }else{
-   msg.style.color='#c2410c';
-   msg.textContent='تعذر الحفظ: '+result;
+   message.style.color='#c2410c';
+   message.textContent='تعذر حفظ الاسم: '+result;
   }
  }catch(error){
   console.error(error);
-  msg.style.color='#c2410c';
-  msg.textContent='حدث خطأ أثناء الحفظ.';
+  message.style.color='#c2410c';
+  message.textContent='حدث خطأ أثناء الحفظ. حاول مجدداً.';
  }finally{
-  btn.disabled=false;
+  button.disabled=false;
+  button.textContent='تحقق وحفظ اسم المستخدم';
  }
 }
 
 $('usernameSave').addEventListener('click',saveUsername);
+$('usernameInput').addEventListener('keydown',e=>{
+ if(e.key==='Enter'){e.preventDefault();saveUsername()}
+});
+
+function setVerification(profile){
+ const status=profile.verification_status || 'pending';
+ if(status==='approved'){
+  $('verification').textContent='حساب موثق ✓';
+  $('verification').className='status approved';
+  $('verified').style.display='inline-flex';
+ }else if(status==='rejected'){
+  $('verification').textContent='غير معتمد';
+  $('verification').className='status rejected';
+ }else{
+  $('verification').textContent='قيد المراجعة';
+  $('verification').className='status';
+ }
+}
 
 async function loadFollowData(){
  const [followers,following,relation]=await Promise.all([
-  supabase.from('follows').select('id',{count:'exact',head:true})
-   .eq('following_id',targetId),
-  supabase.from('follows').select('id',{count:'exact',head:true})
-   .eq('follower_id',targetId),
-  supabase.from('follows').select('id')
-   .eq('follower_id',currentUser.id)
-   .eq('following_id',targetId)
-   .maybeSingle()
+  supabase.from('follows').select('id',{count:'exact',head:true}).eq('following_id',targetId),
+  supabase.from('follows').select('id',{count:'exact',head:true}).eq('follower_id',targetId),
+  supabase.from('follows').select('id').eq('follower_id',currentUser.id).eq('following_id',targetId).maybeSingle()
  ]);
-
- text('followerCount',followers.count??0);
- text('followingCount',following.count??0);
+ if(followers.error)console.error(followers.error);
+ if(following.error)console.error(following.error);
+ if(relation.error)console.error(relation.error);
+ setText('followerCount',followers.count??0);
+ setText('followingCount',following.count??0);
  isFollowing=!!relation.data;
  updateFollowButton();
- updateActivity();
 }
 
 function updateFollowButton(){
- const btn=$('followButton');
- btn.textContent=isFollowing?'✓ تتابعه':'＋ متابعة';
- btn.classList.toggle('btn-light',isFollowing);
- btn.classList.toggle('btn-primary',!isFollowing);
+ $('followButton').textContent=isFollowing?'إلغاء المتابعة':'متابعة';
+ $('followButton').classList.toggle('following',isFollowing);
 }
 
-function updateActivity(){
- text('activityPosts',profilePosts.length);
- text('activityFollowers',$('followerCount').textContent);
- text('activityFollowing',$('followingCount').textContent);
+async function loadFollowCountsOnly(){
+ const [followers,following]=await Promise.all([
+  supabase.from('follows').select('id',{count:'exact',head:true}).eq('following_id',targetId),
+  supabase.from('follows').select('id',{count:'exact',head:true}).eq('follower_id',targetId)
+ ]);
+ if(!followers.error)setText('followerCount',followers.count??0);
+ if(!following.error)setText('followingCount',following.count??0);
 }
 
 async function toggleFollow(){
- const btn=$('followButton');
- btn.disabled=true;
+ const button=$('followButton');
+ button.disabled=true;
  try{
   if(isFollowing){
    const {error}=await supabase.from('follows').delete()
-    .eq('follower_id',currentUser.id)
-    .eq('following_id',targetId);
+    .eq('follower_id',currentUser.id).eq('following_id',targetId);
    if(error)throw error;
    isFollowing=false;
   }else{
    const {error}=await supabase.from('follows').insert({
-    follower_id:currentUser.id,
-    following_id:targetId
+    follower_id:currentUser.id,following_id:targetId
    });
    if(error)throw error;
    isFollowing=true;
   }
   updateFollowButton();
-  await loadFollowData();
+  await loadFollowCountsOnly();
  }catch(error){
   console.error(error);
-  alert('تعذر تنفيذ المتابعة. تحقق من حالة اعتماد حسابك.');
- }finally{
-  btn.disabled=false;
- }
+  alert('تعذر تنفيذ العملية. تأكد من اعتماد حسابك وحاول مجدداً.');
+ }finally{button.disabled=false}
 }
 $('followButton').addEventListener('click',toggleFollow);
 
-async function uploadImage(kind,file){
- if(!viewingOwnProfile||!file)return;
+async function uploadProfileImage(kind,file){
+ if(!viewingOwnProfile || !currentUser || !currentProfile)return;
+ const isAdmin=currentProfile.role==='admin';
+ const isApproved=currentProfile.verification_status==='approved';
 
- if(currentProfile.role!=='admin' &&
-    currentProfile.verification_status!=='approved'){
-  alert('يجب اعتماد حسابك أولاً.');
+ if(!isAdmin && !isApproved){
+  showUploadMessage('يجب اعتماد حسابك أولاً لرفع الصور.',true);
   return;
  }
+ if(!file)return;
 
- const extensions={
-  'image/jpeg':'jpg',
-  'image/png':'png',
-  'image/webp':'webp'
- };
- const ext=extensions[file.type];
-
- if(!ext){
-  alert('اختر صورة JPG أو PNG أو WEBP.');
+ const extension=getExtension(file);
+ if(!extension){
+  showUploadMessage('اختر صورة بصيغة JPG أو PNG أو WEBP.',true);
   return;
  }
  if(file.size>5*1024*1024){
-  alert('حجم الصورة يجب ألا يتجاوز 5 ميغابايت.');
+  showUploadMessage('حجم الصورة يجب ألا يتجاوز 5 ميغابايت.',true);
   return;
  }
 
- const oldPath=kind==='avatar'
-  ?currentProfile.profile_avatar_path
-  :currentProfile.cover_url;
+ const oldPath=kind==='avatar'?currentProfile.profile_avatar_path:currentProfile.cover_url;
+ const newPath=`${currentUser.id}/${kind}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
 
- const newPath=`${currentUser.id}/${kind}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
-
- text('uploadStatus','جارٍ رفع الصورة...');
-
- const {error:uploadError}=await supabase.storage
-  .from('community-media')
-  .upload(newPath,file,{
-   contentType:file.type,
-   upsert:false
-  });
+ showUploadMessage('جارٍ رفع الصورة...');
+ const {error:uploadError}=await supabase.storage.from('community-media')
+  .upload(newPath,file,{contentType:file.type,upsert:false});
 
  if(uploadError){
   console.error(uploadError);
-  text('uploadStatus','تعذر رفع الصورة.');
+  showUploadMessage('تعذر رفع الصورة. تحقق من الاتصال والصلاحيات.',true);
   return;
  }
 
- const nextAvatar=kind==='avatar'
-  ?newPath:currentProfile.profile_avatar_path;
- const nextCover=kind==='cover'
-  ?newPath:currentProfile.cover_url;
+ const nextAvatar=kind==='avatar'?newPath:currentProfile.profile_avatar_path;
+ const nextCover=kind==='cover'?newPath:currentProfile.cover_url;
 
- const {error:saveError}=await supabase.rpc(
-  'set_profile_media_paths',{
-   p_avatar_path:nextAvatar,
-   p_cover_path:nextCover
-  }
- );
+ const {error:saveError}=await supabase.rpc('set_profile_media_paths',{
+  p_avatar_path:nextAvatar,p_cover_path:nextCover
+ });
 
  if(saveError){
   await supabase.storage.from('community-media').remove([newPath]);
   console.error(saveError);
-  text('uploadStatus','تعذر حفظ الصورة.');
+  showUploadMessage('تعذر حفظ الصورة في الملف الشخصي.',true);
   return;
  }
 
  if(kind==='avatar'){
   currentProfile.profile_avatar_path=newPath;
-  await showImage(newPath,$('avatarImage'),$('avatarLetter'));
+  await displayPrivateImage(newPath,$('avatarImage'),$('avatarLetter'));
  }else{
   currentProfile.cover_url=newPath;
-  await showImage(newPath,$('coverImage'));
+  await displayPrivateImage(newPath,$('coverImage'));
  }
 
- text('uploadStatus','تم تحديث الصورة بنجاح ✓');
-
+ showUploadMessage('تم تحديث الصورة بنجاح ✓');
  if(oldPath){
-  await supabase.storage.from('community-media').remove([oldPath]);
+  const {error}=await supabase.storage.from('community-media').remove([oldPath]);
+  if(error)console.warn(error);
  }
 }
 
-$('avatarButton').addEventListener('click',()=>$('avatarInput').click());
-$('avatarAction').addEventListener('click',()=>$('avatarInput').click());
-$('coverButton').addEventListener('click',()=>$('coverInput').click());
+/* أدوات تعديل الصور تظهر عند الضغط عليها فقط */
+$('avatarWrap').addEventListener('click',()=>{
+ if(!viewingOwnProfile)return;
+ $('avatarWrap').classList.toggle('show-actions');
+});
+
+$('avatarButton').addEventListener('click',e=>{
+ e.stopPropagation();
+ $('avatarInput').click();
+});
+
+$('coverArea').addEventListener('click',()=>{
+ if(!viewingOwnProfile)return;
+ $('coverButton').classList.toggle('hidden');
+});
+
+$('coverButton').addEventListener('click',e=>{
+ e.stopPropagation();
+ $('coverInput').click();
+});
 
 $('avatarInput').addEventListener('change',async e=>{
- await uploadImage('avatar',e.target.files?.[0]);
+ await uploadProfileImage('avatar',e.target.files?.[0]);
  e.target.value='';
+ $('avatarWrap').classList.remove('show-actions');
 });
+
 $('coverInput').addEventListener('change',async e=>{
- await uploadImage('cover',e.target.files?.[0]);
+ await uploadProfileImage('cover',e.target.files?.[0]);
  e.target.value='';
+ $('coverButton').classList.add('hidden');
 });
-
-async function loadPosts(){
- $('postsList').textContent='جارٍ تحميل المنشورات...';
- $('photosGrid').innerHTML='';
- $('photosEmpty').classList.add('hidden');
-
- const {data,error}=await supabase.from('posts')
-  .select('id,author_id,content,image_path,created_at')
-  .eq('author_id',targetId)
-  .order('created_at',{ascending:false})
-  .limit(50);
-
- if(error){
-  console.error(error);
-  $('postsList').textContent='تعذر تحميل المنشورات.';
-  return;
- }
-
- profilePosts=data||[];
- text('postCount',profilePosts.length);
- updateActivity();
-
- if(!profilePosts.length){
-  $('postsList').innerHTML=
-   '<div class="empty"><div class="empty-icon">📝</div>لا توجد منشورات حتى الآن.</div>';
-  $('photosEmpty').classList.remove('hidden');
-  return;
- }
-
- await loadProfiles(profilePosts.map(p=>p.author_id));
-
- const ids=profilePosts.map(p=>p.id);
- const {data:likes}=await supabase.from('post_likes')
-  .select('id,post_id,user_id').in('post_id',ids);
-
- const {data:comments}=await supabase.from('comments')
-  .select('id,post_id').in('post_id',ids);
-
- const likesMap={};
- const commentsMap={};
-
- for(const like of likes||[]){
-  (likesMap[like.post_id] ||= []).push(like);
- }
- for(const c of comments||[]){
-  commentsMap[c.post_id]=(commentsMap[c.post_id]||0)+1;
- }
-
- $('postsList').innerHTML='';
-
- for(const post of profilePosts){
-  const card=createPost(post,likesMap[post.id]||[],commentsMap[post.id]||0);
-  $('postsList').appendChild(card);
-
-  if(post.image_path){
-   const img=document.createElement('img');
-   img.alt='صورة منشور';
-   img.loading='lazy';
-   signedImage(post.image_path).then(url=>{
-    if(url)img.src=url;
-   });
-   $('photosGrid').appendChild(img);
-  }
- }
-
- if(!$('photosGrid').children.length){
-  $('photosEmpty').classList.remove('hidden');
- }
-}
-
-function createPost(post,likes,commentCount){
- const card=document.createElement('article');
- card.className='post';
- card.id='post-'+post.id;
-
- const author=profiles[post.author_id]||currentProfile;
- const head=document.createElement('div');
- head.className='post-head';
-
- const actor=document.createElement('div');
- actor.className='actor';
- actor.appendChild(makeAvatar(author));
- const info=document.createElement('div');
- info.appendChild(profileLink(author));
-
- const date=document.createElement('div');
- date.className='post-date';
- date.textContent=dateText(post.created_at);
- info.appendChild(date);
- actor.appendChild(info);
- head.appendChild(actor);
-
- if(viewingOwnProfile || currentProfile.role==='admin'){
-  const del=document.createElement('button');
-  del.className='btn btn-light';
-  del.textContent='حذف';
-  del.addEventListener('click',()=>deletePost(post));
-  head.appendChild(del);
- }
-
- card.appendChild(head);
-
- if(post.content){
-  const content=document.createElement('div');
-  content.className='post-text';
-  content.textContent=post.content;
-  card.appendChild(content);
- }
-
- if(post.image_path){
-  const img=document.createElement('img');
-  img.className='post-image';
-  img.alt='صورة المنشور';
-  card.appendChild(img);
-  signedImage(post.image_path).then(url=>{
-   if(url)img.src=url;
-  });
- }
-
- const myLike=likes.some(l=>l.user_id===currentUser.id);
-
- const stats=document.createElement('div');
- stats.className='post-stats';
-
- const likeCount=document.createElement('span');
- likeCount.textContent='❤️ '+likes.length+' إعجاب';
-
- const commentCountText=document.createElement('span');
- commentCountText.textContent='💬 '+commentCount+' تعليق';
- stats.append(likeCount,commentCountText);
- card.appendChild(stats);
-
- const actions=document.createElement('div');
- actions.className='post-actions';
-
- const likeBtn=document.createElement('button');
- likeBtn.className=myLike?'liked':'';
- likeBtn.textContent=myLike?'❤️ أعجبني':'♡ إعجاب';
-
- likeBtn.addEventListener('click',async()=>{
-  likeBtn.disabled=true;
-  let error;
-
-  if(myLike){
-   ({error}=await supabase.from('post_likes').delete()
-    .eq('post_id',post.id).eq('user_id',currentUser.id));
-  }else{
-   ({error}=await supabase.from('post_likes').insert({
-    post_id:post.id,user_id:currentUser.id
-   }));
-  }
-
-  if(error)console.error(error);
-  await loadPosts();
- });
-
- const commentBtn=document.createElement('button');
- commentBtn.textContent='💬 التعليقات';
-
- const area=document.createElement('div');
- area.className='comments';
-
- commentBtn.addEventListener('click',async()=>{
-  const opening=area.style.display!=='block';
-  area.style.display=opening?'block':'none';
-  if(opening)await loadComments(post.id,area);
- });
-
- actions.append(likeBtn,commentBtn);
- card.append(actions,area);
- return card;
-}
-
-async function loadComments(postId,area){
- area.innerHTML='<div class="message">جارٍ تحميل التعليقات...</div>';
-
- const {data,error}=await supabase.from('comments')
-  .select('id,author_id,content,created_at')
-  .eq('post_id',postId)
-  .order('created_at',{ascending:true});
-
- if(error){
-  area.textContent='تعذر تحميل التعليقات.';
-  return;
- }
-
- await loadProfiles((data||[]).map(c=>c.author_id));
- area.innerHTML='';
-
- if(!data?.length){
-  const empty=document.createElement('div');
-  empty.className='muted';
-  empty.textContent='لا توجد تعليقات بعد.';
-  area.appendChild(empty);
- }
-
- for(const comment of data||[]){
-  const profile=profiles[comment.author_id]||{
-   id:comment.author_id,full_name:'طالب'
-  };
-
-  const row=document.createElement('div');
-  row.className='comment';
-  row.appendChild(makeAvatar(profile,35));
-
-  const body=document.createElement('div');
-  body.className='comment-body';
-  body.appendChild(profileLink(profile));
-
-  const p=document.createElement('p');
-  p.textContent=comment.content;
-  body.appendChild(p);
-
-  const date=document.createElement('div');
-  date.className='post-date';
-  date.textContent=dateText(comment.created_at);
-  body.appendChild(date);
-  row.appendChild(body);
-
-  if(comment.author_id===currentUser.id ||
-     currentProfile.role==='admin'){
-   const del=document.createElement('button');
-   del.className='btn btn-light';
-   del.textContent='حذف';
-   del.addEventListener('click',async()=>{
-    const {error}=await supabase.from('comments')
-     .delete().eq('id',comment.id);
-    if(error){
-     alert('تعذر حذف التعليق.');
-     return;
-    }
-    await loadComments(postId,area);
-    await loadPosts();
-   });
-   row.appendChild(del);
-  }
-
-  area.appendChild(row);
- }
-
- const form=document.createElement('form');
- form.className='comment-form';
-
- const input=document.createElement('input');
- input.placeholder='اكتب تعليقاً...';
- input.maxLength=1500;
- input.required=true;
-
- const send=document.createElement('button');
- send.textContent='إرسال';
- send.type='submit';
-
- form.append(input,send);
- form.addEventListener('submit',async e=>{
-  e.preventDefault();
-  const value=input.value.trim();
-  if(!value)return;
-
-  send.disabled=true;
-  const {error}=await supabase.from('comments').insert({
-   post_id:postId,
-   author_id:currentUser.id,
-   content:value
-  });
-
-  if(error){
-   alert('تعذر إضافة التعليق.');
-   send.disabled=false;
-   return;
-  }
-  await loadComments(postId,area);
-  await loadPosts();
- });
-
- area.appendChild(form);
-}
-
-async function deletePost(post){
- if(!confirm('هل تريد حذف هذا المنشور؟'))return;
-
- const {error}=await supabase.from('posts').delete()
-  .eq('id',post.id)
-  .eq('author_id',post.author_id);
-
- if(error){
-  alert('تعذر حذف المنشور.');
-  return;
- }
-
- if(post.image_path){
-  await supabase.storage.from('community-media')
-   .remove([post.image_path]);
- }
-
- await loadPosts();
-}
 
 async function loadStudent(){
  try{
-  const {data,error:authError}=await supabase.auth.getUser();
-  if(authError||!data.user){
-   window.location.href='auth.html';
-   return;
+  const {data:{user},error:authError}=await supabase.auth.getUser();
+  if(authError || !user){window.location.href='auth.html';return}
+  currentUser=user;
+
+  const params=new URLSearchParams(window.location.search);
+  const requestedId=params.get('user');
+  viewingOwnProfile=!requestedId || requestedId===user.id;
+  targetId=viewingOwnProfile?user.id:requestedId;
+
+  if(!viewingOwnProfile){
+   $('followButton').classList.remove('hidden');
+   $('detailsLink').classList.add('hidden');
+   $('logoutBtn').classList.add('hidden');
+   document.querySelectorAll('.private-detail').forEach(el=>el.classList.add('hidden'));
+  }else{
+   $('avatarWrap').classList.add('editable');
   }
 
-  currentUser=data.user;
-
-  const params=new URLSearchParams(location.search);
-  const requested=params.get('user');
-  viewingOwnProfile=!requested||requested===currentUser.id;
-  targetId=viewingOwnProfile?currentUser.id:requested;
-
   let profile;
-
   if(viewingOwnProfile){
    const {data,error}=await supabase.from('profiles')
     .select('id,full_name,phone,university,specialty,role,verification_status,bio,profile_avatar_path,cover_url,username')
-    .eq('id',targetId).single();
-   if(error||!data)throw new Error('تعذر العثور على حسابك.');
+    .eq('id',user.id).single();
+   if(error || !data)throw new Error('لم نتمكن من العثور على بيانات حسابك.');
    profile=data;
   }else{
-   const {data,error}=await supabase.rpc(
-    'get_student_profile',{target_id:targetId}
-   );
+   const {data,error}=await supabase.rpc('get_student_profile',{target_id:targetId});
    if(error)throw error;
-   if(!data?.length)throw new Error('هذا الحساب غير متاح.');
+   if(!data || data.length===0)throw new Error('هذا الحساب غير متاح أو لم يتم اعتماده.');
    profile=data[0];
-
-   $('followButton').classList.remove('hidden');
-   $('detailsButton').classList.add('hidden');
-   $('avatarAction').classList.add('hidden');
-   document.querySelectorAll('.private-detail')
-    .forEach(el=>el.classList.add('hidden'));
   }
 
   currentProfile=profile;
-  profiles[targetId]=profile;
+  const name=profile.full_name || 'طالب';
+  const isAdmin=profile.role==='admin';
 
-  const name=profile.full_name||'طالب CAMPUS ONE';
-
-  text('fullName',name);
-  text('avatarLetter',initial(name));
-  text('roleLabel',profile.role==='admin'?'إدارة CAMPUS ONE':'طالب جامعي');
-  text('bioText',profile.bio||'طالب في مجتمع CAMPUS ONE 🎓');
-  text('university',profile.university||'غير محدد');
-  text('specialty',profile.specialty||'غير محدد');
-
-  text('detailName',name);
-  text('detailUniversity',profile.university);
-  text('detailSpecialty',profile.specialty);
-  text('accountRole',profile.role==='admin'?'مدير المنصة':'طالب');
+  setText('fullName',name);
+  setText('detailName',name);
+  setText('university',profile.university);
+  setText('detailUniversity',profile.university);
+  setText('specialty',profile.specialty);
+  setText('detailSpecialty',profile.specialty);
+  setText('bioText',profile.bio || 'طالب في مجتمع CAMPUS ONE 🎓');
+  $('avatarLetter').textContent=[...name.trim()][0] || 'C';
+  $('roleLabel').textContent=isAdmin?'إدارة CAMPUS ONE':'طالب جامعي';
+  setText('accountRole',isAdmin?'مدير المنصة':'طالب');
 
   displayUsername(profile.username);
   setVerification(profile);
 
   if(viewingOwnProfile){
-   text('email',currentUser.email);
-   text('phone',profile.phone||'—');
+   setText('email',user.email);
+   setText('phone',profile.phone);
 
-   $('avatarAction').classList.remove('hidden');
-
-   const canEdit=profile.role==='admin'||
-    profile.verification_status==='approved';
-
-   if(canEdit){
-    $('avatarButton').classList.remove('hidden');
-    $('coverButton').classList.remove('hidden');
-   }
-
-   if(profile.role==='admin'){
+   if(isAdmin){
     $('adminLink').classList.remove('hidden');
     $('publicProfileLink').classList.remove('hidden');
    }
 
-   text('statusNotice',
-    profile.verification_status==='approved'
-    ?'حسابك معتمد. مرحباً بك في مجتمع CAMPUS ONE.'
-    :'حسابك قيد مراجعة الإدارة.'
-   );
+   const canEditMedia=isAdmin || profile.verification_status==='approved';
+   if(canEditMedia){
+    $('avatarButton').classList.remove('hidden');
+   }
+
+   $('statusNotice').textContent=profile.verification_status==='approved'
+    ? 'تم اعتماد حسابك بنجاح. مرحباً بك في مجتمع CAMPUS ONE.'
+    : 'حسابك قيد مراجعة الإدارة. ستظهر حالة التوثيق هنا.';
    $('statusNotice').classList.remove('hidden');
+  }else{
+   $('statusNotice').classList.add('hidden');
   }
 
-  await showImage(profile.profile_avatar_path,
-   $('avatarImage'),$('avatarLetter'));
-  await showImage(profile.cover_url,$('coverImage'));
+  /* زر الغلاف لا يظهر إلا لصاحب الحساب وبعد الضغط على الغلاف */
+  const canEditMedia=viewingOwnProfile &&
+   (isAdmin || profile.verification_status==='approved');
+  if(canEditMedia){
+   $('coverArea').style.cursor='pointer';
+  }
+
+  await displayPrivateImage(profile.profile_avatar_path,$('avatarImage'),$('avatarLetter'));
+  await displayPrivateImage(profile.cover_url,$('coverImage'));
+
+  if(viewingOwnProfile){
+   const {count,error}=await supabase.from('posts')
+    .select('id',{count:'exact',head:true}).eq('author_id',targetId);
+   if(!error)setText('postCount',count??0);
+  }
 
   await loadFollowData();
-  await loadPosts();
-
   $('loading').classList.add('hidden');
   $('content').classList.remove('hidden');
 
  }catch(error){
   console.error(error);
-  showError(error.message||'حدث خطأ أثناء تحميل الحساب.');
+  showError(error.message || 'حدث خطأ أثناء تحميل الحساب.');
  }
 }
 
-document.querySelectorAll('.tab').forEach(btn=>{
- btn.addEventListener('click',()=>{
-  document.querySelectorAll('.tab')
-   .forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.panel')
-   .forEach(p=>p.classList.add('hidden'));
-
-  btn.classList.add('active');
-  $(btn.dataset.tab+'Panel').classList.remove('hidden');
- });
-});
-
-$('detailsButton').addEventListener('click',()=>{
- document.querySelector('[data-tab="about"]').click();
- document.querySelector('.tabs-card').scrollIntoView({
-  behavior:'smooth'
+document.querySelectorAll('.tab').forEach(button=>{
+ button.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(tab=>tab.classList.remove('active'));
+  document.querySelectorAll('.tab-content .panel').forEach(panel=>panel.classList.add('hidden'));
+  button.classList.add('active');
+  $(button.dataset.tab+'Panel').classList.remove('hidden');
  });
 });
 
 $('logoutBtn').addEventListener('click',async()=>{
  const {error}=await supabase.auth.signOut();
- if(error){
-  alert('تعذر تسجيل الخروج.');
-  return;
- }
- location.href='auth.html';
+ if(error){alert('تعذر تسجيل الخروج. حاول مرة أخرى.');return}
+ window.location.href='auth.html';
 });
 
 loadStudent();
