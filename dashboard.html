@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b46">
+<title>CAMPUS ONE | الرئيسية</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,sans-serif;
+ background:#f3f6fb;
+ color:#172b4d;
+ padding-bottom:85px;
+}
+header{
+ background:#102b46;
+ color:white;
+ padding:16px 5%;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ position:sticky;
+ top:0;
+ z-index:10;
+ box-shadow:0 3px 12px #0002;
+}
+.logo{font-size:22px;font-weight:bold}
+.header-actions{display:flex;gap:15px;align-items:center}
+.icon-button{
+ background:none;border:0;color:white;
+ font-size:21px;cursor:pointer;
+}
+.container{max-width:1050px;margin:auto;padding:22px 16px}
+.welcome{
+ background:linear-gradient(135deg,#102b46,#1768a5);
+ color:white;padding:25px;border-radius:18px;
+ margin-bottom:22px;
+}
+.welcome h1{font-size:23px;margin-bottom:7px}
+.welcome p{color:#dbeafe;font-size:14px}
+.section-title{font-size:19px;margin:25px 0 14px}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;
+}
+.card{
+ background:white;
+ padding:19px 15px;
+ border-radius:14px;
+ border:1px solid #e5eaf1;
+ box-shadow:0 3px 12px #102b4608;
+ cursor:pointer;
+ transition:.2s;
+ text-align:right;
+ color:inherit;
+ text-decoration:none;
+ display:block;
+}
+.card:hover{transform:translateY(-3px)}
+.card-icon{
+ width:43px;height:43px;
+ border-radius:12px;
+ background:#eaf2ff;
+ display:flex;align-items:center;
+ justify-content:center;
+ font-size:22px;margin-bottom:12px;
+}
+.card h3{font-size:15px;margin-bottom:5px}
+.card p{font-size:12px;color:#718096}
+.notice{
+ background:white;border:1px solid #e5eaf1;
+ padding:18px;border-radius:14px;
+ margin-top:12px;
+}
+.notice h3{font-size:15px;margin-bottom:8px}
+.notice p{font-size:13px;color:#718096}
+.bottom-nav{
+ position:fixed;bottom:0;left:0;right:0;
+ background:white;
+ border-top:1px solid #e5eaf1;
+ display:flex;justify-content:space-around;
+ padding:10px 4px calc(10px + env(safe-area-inset-bottom));
+ z-index:20;
+}
+.nav-item{
+ border:0;background:none;
+ color:#718096;
+ display:flex;flex-direction:column;
+ align-items:center;gap:4px;
+ font-size:11px;cursor:pointer;
+ text-decoration:none;min-width:55px;
+}
+.nav-item span:first-child{font-size:21px}
+.nav-item.active{color:#2563eb;font-weight:bold}
+.logout{
+ background:#fff0f0;color:#c53030;
+ border:0;padding:10px 15px;
+ border-radius:8px;cursor:pointer;
+ margin-top:20px;font-weight:bold;
+}
+.loading{text-align:center;padding:50px;color:#718096}
+@media(min-width:700px){
+ .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .welcome{padding:35px}
+ .welcome h1{font-size:28px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">🎓 CAMPUS ONE</div>
+ <div class="header-actions">
+  <button class="icon-button" aria-label="الإشعارات"
+   onclick="location.href='notifications.html'">🔔</button>
+  <button class="icon-button" aria-label="حسابي"
+   onclick="location.href='profile.html'">👤</button>
+ </div>
+</header>
+
+<main class="container" id="mainContent">
+ <div class="loading">جارٍ تحميل حسابك...</div>
+</main>
+
+<nav class="bottom-nav">
+ <a class="nav-item active" href="dashboard.html">
+  <span>🏠</span><span>الرئيسية</span>
+ </a>
+ <a class="nav-item" href="community.html">
+  <span>👥</span><span>المجتمع</span>
+ </a>
+ <a class="nav-item" href="notifications.html">
+  <span>🔔</span><span>الإشعارات</span>
+ </a>
+ <a class="nav-item" href="student.html">
+  <span>👤</span><span>حسابي</span>
+ </a>
+</nav>
+
+<script type="module">
+import { createClient } from
+'https://esm.sh/@supabase/supabase-js@2';
+
+const supabase = createClient(
+ 'https://rpvoajlzkoynimfowzgl.supabase.co',
+ 'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552'
+);
+
+const main = document.getElementById('mainContent');
+
+async function loadDashboard(){
+ try{
+  const {data:{user},error:userError} =
+   await supabase.auth.getUser();
+
+  if(userError || !user){
+   location.replace('auth.html');
+   return;
+  }
+
+  const {data:profile,error:profileError} = await supabase
+   .from('profiles')
+   .select('full_name,university,specialty,role,verification_status')
+   .eq('id',user.id)
+   .single();
+
+  if(profileError || !profile){
+   main.innerHTML='<div class="loading">تعذر تحميل بيانات الحساب. حاول تحديث الصفحة.</div>';
+   return;
+  }
+
+  const name = profile.full_name || 'طالب CAMPUS ONE';
+  const verified = profile.verification_status === 'approved';
+  const role = profile.role === 'admin' ? 'إدارة CAMPUS ONE' : 'طالب جامعي';
+
+  main.innerHTML = `
+   <section class="welcome">
+    <h1>مرحباً، ${escapeHTML(name)} ${verified ? '🔵' : ''}</h1>
+    <p>${escapeHTML(role)} · ${escapeHTML(profile.university || 'الجامعة')}</p>
+    <p>${escapeHTML(profile.specialty || 'التخصص غير محدد')}</p>
+   </section>
+
+   <h2 class="section-title">مساحتك الجامعية</h2>
+
+   <section class="grid">
+    <a class="card" href="student.html">
+     <div class="card-icon">👤</div>
+     <h3>الملف الشخصي</h3>
+     <p>معلوماتك وصورتك وحالة التوثيق</p>
+    </a>
+
+    <a class="card" href="my-posts.html">
+     <div class="card-icon">📝</div>
+     <h3>منشوراتي</h3>
+     <p>جميع منشوراتك الجامعية</p>
+    </a>
+
+    <a class="card" href="notifications.html">
+     <div class="card-icon">🔔</div>
+     <h3>الإشعارات</h3>
+     <p>تابع آخر التنبيهات والتحديثات</p>
+    </a>
+
+    <a class="card" href="community.html">
+     <div class="card-icon">👥</div>
+     <h3>المجتمع الجامعي</h3>
+     <p>تواصل مع مجتمع الطلبة</p>
+    </a>
+   </section>
+
+   <h2 class="section-title">آخر المستجدات</h2>
+   <section class="notice">
+    <h3>📢 إعلانات CAMPUS ONE</h3>
+    <p>ستظهر هنا الإعلانات والأخبار الجامعية المهمة.</p>
+   </section>
+
+   ${profile.role === 'admin' ? `
+    <section class="notice">
+     <h3>⚙️ لوحة الإدارة</h3>
+     <p>إدارة حسابات الطلبة ومحتوى المنصة.</p>
+     <a href="admin.html">الانتقال إلى لوحة الإدارة ←</a>
+    </section>
+   ` : ''}
+
+   <button class="logout" id="logoutBtn">تسجيل الخروج</button>
+  `;
+
+  document.getElementById('logoutBtn').addEventListener('click',async()=>{
+   const {error} = await supabase.auth.signOut();
+   if(error){
+    alert('تعذر تسجيل الخروج. حاول مجدداً.');
+    return;
+   }
+   location.replace('auth.html');
+  });
+
+ }catch(error){
+  console.error(error);
+  main.innerHTML='<div class="loading">حدث خطأ أثناء تحميل الصفحة.</div>';
+ }
+}
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;',
+  '"':'&quot;',"'":'&#39;'
+ }[char]));
+}
+
+loadDashboard();
+</script>
+
+</body>
+</html>
