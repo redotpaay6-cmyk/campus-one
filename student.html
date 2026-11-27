@@ -25,16 +25,11 @@ header{
 .header-links a{color:#dce8fa;font-size:14px}
 main{max-width:950px;margin:24px auto;padding:0 15px 100px}
 .profile-cover{
- height:240px;border-radius:20px 20px 0 0;
+ height:220px;border-radius:20px 20px 0 0;
  background:radial-gradient(circle at 80% 20%,#4385ed55,transparent 35%),linear-gradient(120deg,#0b1930,#174a86,#2563eb);
- position:relative;overflow:hidden;cursor:default;
+ position:relative;overflow:hidden;
 }
 .cover-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
-.cover-edit{
- position:absolute;top:15px;left:15px;z-index:3;
- border:0;border-radius:10px;padding:11px 15px;
- background:#ffffffed;color:#174b96;font-weight:bold;cursor:pointer;
-}
 .profile-card{
  background:white;border:1px solid var(--border);
  border-radius:0 0 20px 20px;padding:0 25px 25px;
@@ -140,13 +135,48 @@ main{max-width:950px;margin:24px auto;padding:0 15px 100px}
 footer{text-align:center;color:#9aa6b8;padding:25px;font-size:12px}
 .bottom-nav{display:none}
 input[type=file]{display:none}
+
+/* المنشورات داخل الملف الشخصي */
+.posts-list{display:flex;flex-direction:column;gap:16px}
+.profile-post{
+ background:white;border:1px solid #e5eaf2;border-radius:15px;
+ padding:16px;text-align:right;box-shadow:0 4px 15px #102b5008;
+}
+.profile-post-header{display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.post-avatar{
+ width:40px;height:40px;border-radius:50%;object-fit:cover;
+ background:#edf3ff;display:flex;align-items:center;justify-content:center;
+ color:#2563eb;font-weight:bold;flex-shrink:0;
+}
+.profile-post-author{font-weight:bold;color:#102b50}
+.profile-post-date{color:#94a3b8;font-size:12px;margin-top:5px}
+.profile-post-text{
+ font-size:15px;line-height:1.9;white-space:pre-wrap;
+ overflow-wrap:anywhere;color:#26364d;
+}
+.profile-post-image{
+ width:100%;max-height:430px;object-fit:contain;
+ border-radius:12px;margin-top:12px;background:#f1f5f9;
+}
+.profile-post-footer{
+ display:flex;justify-content:space-between;gap:10px;
+ border-top:1px solid #edf0f5;margin-top:14px;padding-top:12px;
+ color:#64748b;font-size:13px;
+}
+.profile-post-open{
+ display:inline-block;margin-top:13px;background:#edf3ff;
+ color:#2054b5;padding:9px 14px;border-radius:9px;
+ font-size:13px;font-weight:bold;
+}
+.posts-empty{text-align:center;padding:35px 12px;color:#8290a5;line-height:1.9}
+
 @media(max-width:650px){
  header{height:62px;padding:0 15px}
  .logo{font-size:18px}
  .header-links{gap:12px}
  .header-links a{font-size:12px}
  main{margin:13px auto;padding:0 10px 105px}
- .profile-cover{height:190px;border-radius:16px 16px 0 0}
+ .profile-cover{height:180px;border-radius:16px 16px 0 0}
  .profile-card{padding:0 14px 19px;border-radius:0 0 16px 16px}
  .profile-top{margin-top:-66px}
  .avatar{width:130px;height:130px;border-width:6px;font-size:40px}
@@ -196,9 +226,8 @@ input[type=file]{display:none}
  </div>
 
  <div id="content" class="hidden">
-  <div class="profile-cover" id="coverArea">
+  <div class="profile-cover">
    <img id="coverImage" class="cover-image" alt="صورة الغلاف">
-   <button id="coverButton" class="cover-edit hidden">📷 تغيير صورة الغلاف</button>
   </div>
 
   <section class="profile-card">
@@ -217,7 +246,6 @@ input[type=file]{display:none}
       <h1 id="fullName">الطالب</h1>
       <span class="verified" id="verified">✓</span>
      </div>
-
      <div id="usernameDisplay" class="username-display hidden"></div>
      <div class="role" id="roleLabel">طالب جامعي</div>
      <div class="community-line">طالب في مجتمع CAMPUS ONE 🎓</div>
@@ -266,10 +294,8 @@ input[type=file]{display:none}
 
    <div class="tab-content">
     <div id="postsPanel" class="panel">
-     <div class="empty-state">
-      <div class="empty-icon">📝</div>
-      <h3>المنشورات</h3>
-      <p>ستظهر هنا منشورات هذا الطالب.</p>
+     <div id="postsList">
+      <div class="posts-empty">جارٍ تحميل المنشورات...</div>
      </div>
     </div>
 
@@ -289,7 +315,7 @@ input[type=file]{display:none}
      <div class="empty-state">
       <div class="empty-icon">✦</div>
       <h3>النشاط الجامعي</h3>
-      <p>ستظهر هنا تفاعلات الطالب وإسهاماته داخل مجتمع CAMPUS ONE.</p>
+      <p>ستظهر هنا تفاعلات الطالب وإسهاماته داخل مجتمع CAMPUS ONE لاحقاً.</p>
      </div>
     </div>
    </div>
@@ -306,7 +332,6 @@ input[type=file]{display:none}
 </main>
 
 <input id="avatarInput" type="file" accept="image/jpeg,image/png,image/webp">
-<input id="coverInput" type="file" accept="image/jpeg,image/png,image/webp">
 
 <nav class="bottom-nav">
  <a href="dashboard.html"><b>⌂</b>الرئيسية</a>
@@ -327,10 +352,16 @@ const supabase = createClient(
 );
 
 const $ = id => document.getElementById(id);
-let currentUser=null,currentProfile=null;
-let viewingOwnProfile=true,targetId=null,isFollowing=false;
 
-function setText(id,value){$(id).textContent=value || '—'}
+let currentUser=null;
+let currentProfile=null;
+let viewingOwnProfile=true;
+let targetId=null;
+let isFollowing=false;
+
+function setText(id,value){
+ $(id).textContent=value || '—';
+}
 
 function showError(message){
  $('loading').classList.add('hidden');
@@ -345,7 +376,11 @@ function showUploadMessage(message,isError=false){
 }
 
 function getExtension(file){
- return {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type] || null;
+ return {
+  'image/jpeg':'jpg',
+  'image/png':'png',
+  'image/webp':'webp'
+ }[file.type] || null;
 }
 
 async function displayPrivateImage(path,imageElement,letterElement=null){
@@ -354,13 +389,18 @@ async function displayPrivateImage(path,imageElement,letterElement=null){
   if(letterElement)letterElement.style.display='block';
   return;
  }
- const {data,error}=await supabase.storage.from('community-media').createSignedUrl(path,3600);
+
+ const {data,error}=await supabase.storage
+  .from('community-media')
+  .createSignedUrl(path,3600);
+
  if(error || !data?.signedUrl){
   imageElement.style.display='none';
   if(letterElement)letterElement.style.display='block';
   console.error(error);
   return;
  }
+
  imageElement.src=data.signedUrl;
  imageElement.style.display='block';
  if(letterElement)letterElement.style.display='none';
@@ -385,7 +425,10 @@ function displayUsername(username){
 
 async function saveUsername(){
  if(!viewingOwnProfile || !currentUser || !currentProfile)return;
- const input=$('usernameInput'),button=$('usernameSave'),message=$('usernameMessage');
+
+ const input=$('usernameInput');
+ const button=$('usernameSave');
+ const message=$('usernameMessage');
  const username=input.value.trim().toLowerCase();
 
  if(!/^[a-z0-9_]{3,20}$/.test(username)){
@@ -398,8 +441,12 @@ async function saveUsername(){
  button.textContent='جارٍ التحقق...';
 
  try{
-  const {data:available,error:checkError}=await supabase.rpc('is_username_available',{candidate_username:username});
+  const {data:available,error:checkError}=await supabase.rpc(
+   'is_username_available',
+   {candidate_username:username}
+  );
   if(checkError)throw checkError;
+
   if(!available){
    message.style.color='#c2410c';
    message.textContent='اسم المستخدم غير متاح. اختر اسماً آخر.';
@@ -407,7 +454,11 @@ async function saveUsername(){
   }
 
   button.textContent='جارٍ الحفظ...';
-  const {data:result,error:saveError}=await supabase.rpc('set_my_username',{candidate_username:username});
+
+  const {data:result,error:saveError}=await supabase.rpc(
+   'set_my_username',
+   {candidate_username:username}
+  );
   if(saveError)throw saveError;
 
   if(result==='success'){
@@ -432,11 +483,15 @@ async function saveUsername(){
 
 $('usernameSave').addEventListener('click',saveUsername);
 $('usernameInput').addEventListener('keydown',e=>{
- if(e.key==='Enter'){e.preventDefault();saveUsername()}
+ if(e.key==='Enter'){
+  e.preventDefault();
+  saveUsername();
+ }
 });
 
 function setVerification(profile){
  const status=profile.verification_status || 'pending';
+
  if(status==='approved'){
   $('verification').textContent='حساب موثق ✓';
   $('verification').className='status approved';
@@ -454,13 +509,19 @@ async function loadFollowData(){
  const [followers,following,relation]=await Promise.all([
   supabase.from('follows').select('id',{count:'exact',head:true}).eq('following_id',targetId),
   supabase.from('follows').select('id',{count:'exact',head:true}).eq('follower_id',targetId),
-  supabase.from('follows').select('id').eq('follower_id',currentUser.id).eq('following_id',targetId).maybeSingle()
+  supabase.from('follows').select('id')
+   .eq('follower_id',currentUser.id)
+   .eq('following_id',targetId)
+   .maybeSingle()
  ]);
+
  if(followers.error)console.error(followers.error);
  if(following.error)console.error(following.error);
  if(relation.error)console.error(relation.error);
+
  setText('followerCount',followers.count??0);
  setText('followingCount',following.count??0);
+
  isFollowing=!!relation.data;
  updateFollowButton();
 }
@@ -475,6 +536,7 @@ async function loadFollowCountsOnly(){
   supabase.from('follows').select('id',{count:'exact',head:true}).eq('following_id',targetId),
   supabase.from('follows').select('id',{count:'exact',head:true}).eq('follower_id',targetId)
  ]);
+
  if(!followers.error)setText('followerCount',followers.count??0);
  if(!following.error)setText('followingCount',following.count??0);
 }
@@ -482,30 +544,167 @@ async function loadFollowCountsOnly(){
 async function toggleFollow(){
  const button=$('followButton');
  button.disabled=true;
+
  try{
   if(isFollowing){
    const {error}=await supabase.from('follows').delete()
-    .eq('follower_id',currentUser.id).eq('following_id',targetId);
+    .eq('follower_id',currentUser.id)
+    .eq('following_id',targetId);
    if(error)throw error;
    isFollowing=false;
   }else{
    const {error}=await supabase.from('follows').insert({
-    follower_id:currentUser.id,following_id:targetId
+    follower_id:currentUser.id,
+    following_id:targetId
    });
    if(error)throw error;
    isFollowing=true;
   }
+
   updateFollowButton();
   await loadFollowCountsOnly();
  }catch(error){
   console.error(error);
   alert('تعذر تنفيذ العملية. تأكد من اعتماد حسابك وحاول مجدداً.');
- }finally{button.disabled=false}
+ }finally{
+  button.disabled=false;
+ }
 }
+
 $('followButton').addEventListener('click',toggleFollow);
 
-async function uploadProfileImage(kind,file){
- if(!viewingOwnProfile || !currentUser || !currentProfile)return;
+/* تحميل منشورات صاحب الملف الشخصي */
+async function loadProfilePosts(){
+ const list=$('postsList');
+
+ list.innerHTML='<div class="posts-empty">جارٍ تحميل المنشورات...</div>';
+
+ const {data:posts,error}=await supabase
+  .from('posts')
+  .select('id,author_id,content,image_path,created_at')
+  .eq('author_id',targetId)
+  .order('created_at',{ascending:false});
+
+ if(error){
+  console.error('Posts error:',error);
+  list.innerHTML='<div class="posts-empty">تعذر تحميل المنشورات. حاول تحديث الصفحة.</div>';
+  return;
+ }
+
+ setText('postCount',posts.length);
+
+ if(!posts.length){
+  list.innerHTML=`
+   <div class="posts-empty">
+    <div class="empty-icon">📝</div>
+    <h3>لا توجد منشورات بعد</h3>
+    <p>ستظهر هنا المنشورات التي يشاركها هذا الطالب.</p>
+   </div>`;
+  return;
+ }
+
+ list.innerHTML='';
+ list.className='posts-list';
+
+ for(const post of posts){
+  const card=document.createElement('article');
+  card.className='profile-post';
+
+  const header=document.createElement('div');
+  header.className='profile-post-header';
+
+  const avatar=document.createElement('div');
+  avatar.className='post-avatar';
+  avatar.textContent=[...(currentProfile.full_name||'ط').trim()][0]||'ط';
+
+  if(currentProfile.profile_avatar_path){
+   const {data:avatarData,error:avatarError}=await supabase.storage
+    .from('community-media')
+    .createSignedUrl(currentProfile.profile_avatar_path,3600);
+
+   if(!avatarError && avatarData?.signedUrl){
+    const img=document.createElement('img');
+    img.className='post-avatar';
+    img.src=avatarData.signedUrl;
+    img.alt='صورة صاحب المنشور';
+    avatar.replaceWith(img);
+   }
+  }
+
+  const authorInfo=document.createElement('div');
+  const author=document.createElement('div');
+  author.className='profile-post-author';
+  author.textContent=currentProfile.full_name||'طالب CAMPUS ONE';
+
+  const date=document.createElement('div');
+  date.className='profile-post-date';
+  date.textContent=new Date(post.created_at).toLocaleString('ar-DZ',{
+   dateStyle:'medium',
+   timeStyle:'short'
+  });
+
+  authorInfo.append(author,date);
+  header.append(avatar,authorInfo);
+  card.appendChild(header);
+
+  if(post.content){
+   const content=document.createElement('div');
+   content.className='profile-post-text';
+   content.textContent=post.content;
+   card.appendChild(content);
+  }
+
+  if(post.image_path){
+   const {data:imageData,error:imageError}=await supabase.storage
+    .from('community-media')
+    .createSignedUrl(post.image_path,3600);
+
+   if(!imageError && imageData?.signedUrl){
+    const img=document.createElement('img');
+    img.className='profile-post-image';
+    img.src=imageData.signedUrl;
+    img.alt='صورة المنشور';
+    img.loading='lazy';
+    card.appendChild(img);
+   }
+  }
+
+  const [likes,comments]=await Promise.all([
+   supabase.from('post_likes')
+    .select('id',{count:'exact',head:true})
+    .eq('post_id',post.id),
+
+   supabase.from('comments')
+    .select('id',{count:'exact',head:true})
+    .eq('post_id',post.id)
+  ]);
+
+  const footer=document.createElement('div');
+  footer.className='profile-post-footer';
+
+  const likesText=document.createElement('span');
+  likesText.textContent=`❤️ ${likes.count??0} إعجاب`;
+
+  const commentsText=document.createElement('span');
+  commentsText.textContent=`💬 ${comments.count??0} تعليق`;
+
+  footer.append(likesText,commentsText);
+  card.appendChild(footer);
+
+  const open=document.createElement('a');
+  open.className='profile-post-open';
+  open.href=`community.html#post-${encodeURIComponent(post.id)}`;
+  open.textContent='عرض المنشور والتعليقات ←';
+  card.appendChild(open);
+
+  list.appendChild(card);
+ }
+}
+
+/* رفع الصورة الشخصية */
+async function uploadProfileImage(file){
+ if(!viewingOwnProfile || !currentUser || !currentProfile || !file)return;
+
  const isAdmin=currentProfile.role==='admin';
  const isApproved=currentProfile.verification_status==='approved';
 
@@ -513,23 +712,25 @@ async function uploadProfileImage(kind,file){
   showUploadMessage('يجب اعتماد حسابك أولاً لرفع الصور.',true);
   return;
  }
- if(!file)return;
 
  const extension=getExtension(file);
  if(!extension){
   showUploadMessage('اختر صورة بصيغة JPG أو PNG أو WEBP.',true);
   return;
  }
+
  if(file.size>5*1024*1024){
   showUploadMessage('حجم الصورة يجب ألا يتجاوز 5 ميغابايت.',true);
   return;
  }
 
- const oldPath=kind==='avatar'?currentProfile.profile_avatar_path:currentProfile.cover_url;
- const newPath=`${currentUser.id}/${kind}/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+ const oldPath=currentProfile.profile_avatar_path;
+ const newPath=`${currentUser.id}/avatar/${Date.now()}-${crypto.randomUUID()}.${extension}`;
 
  showUploadMessage('جارٍ رفع الصورة...');
- const {error:uploadError}=await supabase.storage.from('community-media')
+
+ const {error:uploadError}=await supabase.storage
+  .from('community-media')
   .upload(newPath,file,{contentType:file.type,upsert:false});
 
  if(uploadError){
@@ -538,11 +739,9 @@ async function uploadProfileImage(kind,file){
   return;
  }
 
- const nextAvatar=kind==='avatar'?newPath:currentProfile.profile_avatar_path;
- const nextCover=kind==='cover'?newPath:currentProfile.cover_url;
-
  const {error:saveError}=await supabase.rpc('set_profile_media_paths',{
-  p_avatar_path:nextAvatar,p_cover_path:nextCover
+  p_avatar_path:newPath,
+  p_cover_path:currentProfile.cover_url
  });
 
  if(saveError){
@@ -552,24 +751,19 @@ async function uploadProfileImage(kind,file){
   return;
  }
 
- if(kind==='avatar'){
-  currentProfile.profile_avatar_path=newPath;
-  await displayPrivateImage(newPath,$('avatarImage'),$('avatarLetter'));
- }else{
-  currentProfile.cover_url=newPath;
-  await displayPrivateImage(newPath,$('coverImage'));
- }
+ currentProfile.profile_avatar_path=newPath;
+ await displayPrivateImage(newPath,$('avatarImage'),$('avatarLetter'));
 
- showUploadMessage('تم تحديث الصورة بنجاح ✓');
+ showUploadMessage('تم تحديث الصورة الشخصية بنجاح ✓');
+
  if(oldPath){
   const {error}=await supabase.storage.from('community-media').remove([oldPath]);
   if(error)console.warn(error);
  }
 }
 
-/* أدوات تعديل الصور تظهر عند الضغط عليها فقط */
 $('avatarWrap').addEventListener('click',()=>{
- if(!viewingOwnProfile)return;
+ if(!viewingOwnProfile || $('avatarButton').classList.contains('hidden'))return;
  $('avatarWrap').classList.toggle('show-actions');
 });
 
@@ -578,36 +772,26 @@ $('avatarButton').addEventListener('click',e=>{
  $('avatarInput').click();
 });
 
-$('coverArea').addEventListener('click',()=>{
- if(!viewingOwnProfile)return;
- $('coverButton').classList.toggle('hidden');
-});
-
-$('coverButton').addEventListener('click',e=>{
- e.stopPropagation();
- $('coverInput').click();
-});
-
 $('avatarInput').addEventListener('change',async e=>{
- await uploadProfileImage('avatar',e.target.files?.[0]);
+ await uploadProfileImage(e.target.files?.[0]);
  e.target.value='';
  $('avatarWrap').classList.remove('show-actions');
-});
-
-$('coverInput').addEventListener('change',async e=>{
- await uploadProfileImage('cover',e.target.files?.[0]);
- e.target.value='';
- $('coverButton').classList.add('hidden');
 });
 
 async function loadStudent(){
  try{
   const {data:{user},error:authError}=await supabase.auth.getUser();
-  if(authError || !user){window.location.href='auth.html';return}
+
+  if(authError || !user){
+   window.location.href='auth.html';
+   return;
+  }
+
   currentUser=user;
 
   const params=new URLSearchParams(window.location.search);
   const requestedId=params.get('user');
+
   viewingOwnProfile=!requestedId || requestedId===user.id;
   targetId=viewingOwnProfile?user.id:requestedId;
 
@@ -616,26 +800,31 @@ async function loadStudent(){
    $('detailsLink').classList.add('hidden');
    $('logoutBtn').classList.add('hidden');
    document.querySelectorAll('.private-detail').forEach(el=>el.classList.add('hidden'));
-  }else{
-   $('avatarWrap').classList.add('editable');
   }
 
   let profile;
+
   if(viewingOwnProfile){
    const {data,error}=await supabase.from('profiles')
     .select('id,full_name,phone,university,specialty,role,verification_status,bio,profile_avatar_path,cover_url,username')
-    .eq('id',user.id).single();
+    .eq('id',user.id)
+    .single();
+
    if(error || !data)throw new Error('لم نتمكن من العثور على بيانات حسابك.');
    profile=data;
   }else{
-   const {data,error}=await supabase.rpc('get_student_profile',{target_id:targetId});
+   const {data,error}=await supabase.rpc('get_student_profile',{
+    target_id:targetId
+   });
+
    if(error)throw error;
    if(!data || data.length===0)throw new Error('هذا الحساب غير متاح أو لم يتم اعتماده.');
    profile=data[0];
   }
 
   currentProfile=profile;
-  const name=profile.full_name || 'طالب';
+
+  const name=profile.full_name||'طالب';
   const isAdmin=profile.role==='admin';
 
   setText('fullName',name);
@@ -644,8 +833,9 @@ async function loadStudent(){
   setText('detailUniversity',profile.university);
   setText('specialty',profile.specialty);
   setText('detailSpecialty',profile.specialty);
-  setText('bioText',profile.bio || 'طالب في مجتمع CAMPUS ONE 🎓');
-  $('avatarLetter').textContent=[...name.trim()][0] || 'C';
+  setText('bioText',profile.bio||'طالب في مجتمع CAMPUS ONE 🎓');
+
+  $('avatarLetter').textContent=[...name.trim()][0]||'C';
   $('roleLabel').textContent=isAdmin?'إدارة CAMPUS ONE':'طالب جامعي';
   setText('accountRole',isAdmin?'مدير المنصة':'طالب');
 
@@ -661,57 +851,62 @@ async function loadStudent(){
     $('publicProfileLink').classList.remove('hidden');
    }
 
-   const canEditMedia=isAdmin || profile.verification_status==='approved';
+   const canEditMedia=isAdmin||profile.verification_status==='approved';
+
    if(canEditMedia){
+    $('avatarWrap').classList.add('editable');
     $('avatarButton').classList.remove('hidden');
    }
 
    $('statusNotice').textContent=profile.verification_status==='approved'
     ? 'تم اعتماد حسابك بنجاح. مرحباً بك في مجتمع CAMPUS ONE.'
     : 'حسابك قيد مراجعة الإدارة. ستظهر حالة التوثيق هنا.';
+
    $('statusNotice').classList.remove('hidden');
   }else{
    $('statusNotice').classList.add('hidden');
   }
 
-  /* زر الغلاف لا يظهر إلا لصاحب الحساب وبعد الضغط على الغلاف */
-  const canEditMedia=viewingOwnProfile &&
-   (isAdmin || profile.verification_status==='approved');
-  if(canEditMedia){
-   $('coverArea').style.cursor='pointer';
-  }
+  await displayPrivateImage(
+   profile.profile_avatar_path,
+   $('avatarImage'),
+   $('avatarLetter')
+  );
 
-  await displayPrivateImage(profile.profile_avatar_path,$('avatarImage'),$('avatarLetter'));
   await displayPrivateImage(profile.cover_url,$('coverImage'));
 
-  if(viewingOwnProfile){
-   const {count,error}=await supabase.from('posts')
-    .select('id',{count:'exact',head:true}).eq('author_id',targetId);
-   if(!error)setText('postCount',count??0);
-  }
-
+  await loadProfilePosts();
   await loadFollowData();
+
   $('loading').classList.add('hidden');
   $('content').classList.remove('hidden');
 
  }catch(error){
   console.error(error);
-  showError(error.message || 'حدث خطأ أثناء تحميل الحساب.');
+  showError(error.message||'حدث خطأ أثناء تحميل الحساب.');
  }
 }
 
+/* التبويبات */
 document.querySelectorAll('.tab').forEach(button=>{
  button.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(tab=>tab.classList.remove('active'));
-  document.querySelectorAll('.tab-content .panel').forEach(panel=>panel.classList.add('hidden'));
+  document.querySelectorAll('.panel').forEach(panel=>panel.classList.add('hidden'));
+
   button.classList.add('active');
   $(button.dataset.tab+'Panel').classList.remove('hidden');
  });
 });
 
+/* تسجيل الخروج */
 $('logoutBtn').addEventListener('click',async()=>{
  const {error}=await supabase.auth.signOut();
- if(error){alert('تعذر تسجيل الخروج. حاول مرة أخرى.');return}
+
+ if(error){
+  alert('تعذر تسجيل الخروج. حاول مرة أخرى.');
+  return;
+ }
+
  window.location.href='auth.html';
 });
 
