@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102b50">
+<title>CAMPUS ONE | المجتمع</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f6fb;
+  color:#172b46;
+}
+header{
+  background:#102b50;
+  color:white;
+  padding:18px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 3px 12px #0002;
+}
+.logo{font-size:20px;font-weight:bold}
+.header-label{font-size:13px;color:#dbeafe}
+.container{
+  max-width:760px;
+  margin:24px auto;
+  padding:0 14px 90px;
+}
+.back{
+  display:inline-block;
+  color:#2563eb;
+  text-decoration:none;
+  font-weight:bold;
+  margin-bottom:18px;
+}
+h2{font-size:21px;margin:0 0 16px}
+.panel,.post,.comment{
+  background:white;
+  border:1px solid #e2e8f0;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:13px;
+}
+.panel{text-align:center}
+.icon{font-size:38px;margin-bottom:10px}
+.muted{color:#64748b;font-size:14px}
+.actor{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:14px;
+}
+.avatar{
+  width:45px;
+  height:45px;
+  min-width:45px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#dbeafe;
+}
+.actor a{
+  color:#172b46;
+  text-decoration:none;
+  font-weight:bold;
+}
+.actor a:hover{color:#2563eb}
+.verified{color:#2563eb}
+.post-content{
+  font-size:15px;
+  line-height:1.8;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.post-image{
+  width:100%;
+  max-height:420px;
+  object-fit:contain;
+  border-radius:10px;
+  margin-top:12px;
+  background:#f1f5f9;
+}
+.post-time,.comment-time{
+  color:#94a3b8;
+  font-size:12px;
+  margin-top:9px;
+}
+.comment-title{
+  font-size:17px;
+  font-weight:bold;
+  margin:22px 0 12px;
+}
+.comment{
+  padding:13px;
+}
+.comment .avatar{
+  width:36px;
+  height:36px;
+  min-width:36px;
+}
+.comment-text{
+  line-height:1.7;
+  overflow-wrap:anywhere;
+}
+.status{
+  background:white;
+  padding:28px 16px;
+  text-align:center;
+  border-radius:14px;
+  color:#64748b;
+}
+.nav{
+  display:flex;
+  justify-content:space-around;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:white;
+  border-top:1px solid #e2e8f0;
+  padding:12px 4px;
+  z-index:5;
+}
+.nav a{
+  color:#64748b;
+  text-decoration:none;
+  font-size:12px;
+  text-align:center;
+}
+.nav a.active{color:#2563eb;font-weight:bold}
+button{
+  border:0;
+  border-radius:9px;
+  padding:11px 16px;
+  background:#2563eb;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+@media(max-width:480px){
+  .container{margin-top:18px}
+  .panel,.post{padding:13px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🎓 CAMPUS ONE</div>
+  <div class="header-label">المجتمع الجامعي</div>
+</header>
+
+<main class="container">
+
+  <a class="back" href="notifications.html">→ العودة إلى الإشعارات</a>
+
+  <h2 id="pageTitle">🔔 تفاصيل الإشعار</h2>
+
+  <div id="status" class="status">جارٍ تحميل التفاصيل...</div>
+  <div id="content"></div>
+
+</main>
+
+<nav class="nav">
+  <a href="dashboard.html">🏠<br>الرئيسية</a>
+  <a href="community.html" class="active">👥<br>المجتمع</a>
+  <a href="notifications.html">🔔<br>الإشعارات</a>
+  <a href="student.html">👤<br>حسابي</a>
+</nav>
+
+<script type="module">
+import { createClient } from
+'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL =
+'https://rpvoajlzkoynimfowzgl.supabase.co';
+
+const SUPABASE_KEY =
+'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552';
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const statusBox = document.getElementById('status');
+const content = document.getElementById('content');
+const pageTitle = document.getElementById('pageTitle');
+
+function showError(message){
+  statusBox.textContent = message;
+  statusBox.style.display = 'block';
+}
+
+function showContent(){
+  statusBox.style.display = 'none';
+}
+
+function formatDate(value){
+  if(!value) return '';
+  return new Date(value).toLocaleString('ar-DZ',{
+    dateStyle:'medium',
+    timeStyle:'short'
+  });
+}
+
+function notificationMessage(type){
+  const messages = {
+    follow:'بدأ هذا الطالب بمتابعتك.',
+    like:'أعجب هذا الطالب بمنشورك.',
+    comment:'كتب هذا الطالب تعليقاً على منشورك.'
+  };
+  return messages[type] || 'لديك إشعار جديد.';
+}
+
+async function getProfileMap(ids){
+  const uniqueIds = [...new Set(ids.filter(Boolean))];
+  const map = {};
+
+  if(!uniqueIds.length) return map;
+
+  const {data,error} = await supabase.rpc('get_public_profiles');
+
+  if(error) return map;
+
+  for(const profile of (data || [])){
+    if(uniqueIds.includes(profile.id)){
+      map[profile.id] = profile;
+    }
+  }
+
+  return map;
+}
+
+async function signedImage(path,bucket='community-media'){
+  if(!path) return null;
+
+  const {data,error} = await supabase
+    .storage
+    .from(bucket)
+    .createSignedUrl(path,3600);
+
+  if(error) return null;
+  return data?.signedUrl || null;
+}
+
+function makeActor(profile){
+  const row = document.createElement('div');
+  row.className = 'actor';
+
+  const link = document.createElement('a');
+  link.href = 'student.html?user=' +
+    encodeURIComponent(profile.id);
+
+  const img = document.createElement('img');
+  img.className = 'avatar';
+  img.alt = 'الصورة الشخصية';
+
+  link.appendChild(img);
+
+  const details = document.createElement('div');
+  const name = document.createElement('div');
+  name.textContent = profile.full_name || 'مستخدم CAMPUS ONE';
+
+  if(profile.verification_status === 'approved'){
+    const check = document.createElement('span');
+    check.className = 'verified';
+    check.textContent = ' ✓';
+    name.appendChild(check);
+  }
+
+  details.appendChild(name);
+
+  if(profile.username){
+    const username = document.createElement('div');
+    username.className = 'muted';
+    username.textContent = '@' + profile.username;
+    details.appendChild(username);
+  }
+
+  row.append(link,details);
+
+  signedImage(profile.profile_avatar_path).then(url=>{
+    if(url) img.src = url;
+  });
+
+  return row;
+}
+
+async function showNotification(notification){
+
+  const actorMap = await getProfileMap([notification.actor_id]);
+  const actor = actorMap[notification.actor_id];
+
+  const box = document.createElement('section');
+  box.className = 'panel';
+
+  const icon = document.createElement('div');
+  icon.className = 'icon';
+
+  icon.textContent = {
+    follow:'👤',
+    like:'❤️',
+    comment:'💬'
+  }[notification.type] || '🔔';
+
+  box.appendChild(icon);
+
+  if(actor){
+    box.appendChild(makeActor(actor));
+  }else{
+    const unknown = document.createElement('p');
+    unknown.textContent = 'مستخدم CAMPUS ONE';
+    box.appendChild(unknown);
+  }
+
+  const message = document.createElement('p');
+  message.textContent = notificationMessage(notification.type);
+  box.appendChild(message);
+
+  const date = document.createElement('div');
+  date.className = 'muted';
+  date.textContent = formatDate(notification.created_at);
+  box.appendChild(date);
+
+  content.appendChild(box);
+
+  if(notification.post_id){
+    await showPost(notification.post_id,notification.comment_id);
+  }else if(notification.type === 'follow'){
+    const note = document.createElement('div');
+    note.className = 'panel muted';
+    note.textContent =
+      'هذا إشعار متابعة. اضغط على اسم الشخص أو صورته لزيارة ملفه الشخصي.';
+    content.appendChild(note);
+  }
+}
+
+async function showPost(postId,commentId){
+
+  const {data:post,error} = await supabase
+    .from('posts')
+    .select('id,author_id,content,image_path,created_at')
+    .eq('id',postId)
+    .maybeSingle();
+
+  if(error || !post){
+    const errorBox = document.createElement('div');
+    errorBox.className = 'panel';
+    errorBox.textContent =
+      'لم نتمكن من العثور على المنشور. ربما حُذف أو لم يعد متاحاً.';
+    content.appendChild(errorBox);
+    return;
+  }
+
+  const {data:comments} = await supabase
+    .from('comments')
+    .select('id,author_id,content,created_at')
+    .eq('post_id',postId)
+    .order('created_at',{ascending:true});
+
+  const commentRows = comments || [];
+
+  const ids = [
+    post.author_id,
+    ...commentRows.map(comment=>comment.author_id)
+  ];
+
+  const profileMap = await getProfileMap(ids);
+
+  const postBox = document.createElement('article');
+  postBox.className = 'post';
+
+  const author = profileMap[post.author_id];
+
+  if(author){
+    postBox.appendChild(makeActor(author));
+  }
+
+  const text = document.createElement('div');
+  text.className = 'post-content';
+  text.textContent = post.content || '';
+  postBox.appendChild(text);
+
+  if(post.image_path){
+    const url = await signedImage(post.image_path);
+
+    if(url){
+      const image = document.createElement('img');
+      image.className = 'post-image';
+      image.src = url;
+      image.alt = 'صورة المنشور';
+      postBox.appendChild(image);
+    }
+  }
+
+  const postDate = document.createElement('div');
+  postDate.className = 'post-time';
+  postDate.textContent = formatDate(post.created_at);
+  postBox.appendChild(postDate);
+
+  content.appendChild(postBox);
+
+  const heading = document.createElement('div');
+  heading.className = 'comment-title';
+  heading.textContent = '💬 التعليقات';
+  content.appendChild(heading);
+
+  if(!commentRows.length){
+    const empty = document.createElement('div');
+    empty.className = 'status';
+    empty.textContent = 'لا توجد تعليقات على هذا المنشور.';
+    content.appendChild(empty);
+    return;
+  }
+
+  for(const comment of commentRows){
+
+    const commentBox = document.createElement('div');
+    commentBox.className = 'comment';
+
+    const profile = profileMap[comment.author_id];
+
+    if(profile){
+      commentBox.appendChild(makeActor(profile));
+    }
+
+    const commentText = document.createElement('div');
+    commentText.className = 'comment-text';
+    commentText.textContent = comment.content;
+    commentBox.appendChild(commentText);
+
+    const commentDate = document.createElement('div');
+    commentDate.className = 'comment-time';
+    commentDate.textContent = formatDate(comment.created_at);
+    commentBox.appendChild(commentDate);
+
+    if(comment.id === commentId){
+      commentBox.style.border = '2px solid #2563eb';
+      commentBox.style.background = '#eff6ff';
+      commentBox.id = 'target-comment';
+    }
+
+    content.appendChild(commentBox);
+  }
+
+  if(commentId){
+    setTimeout(()=>{
+      document.getElementById('target-comment')
+        ?.scrollIntoView({behavior:'smooth',block:'center'});
+    },300);
+  }
+}
+
+async function start(){
+
+  const {data:authData,error:authError} =
+    await supabase.auth.getUser();
+
+  if(authError || !authData.user){
+    showError('يجب تسجيل الدخول أولاً.');
+    return;
+  }
+
+  const hash = decodeURIComponent(
+    window.location.hash.slice(1)
+  );
+
+  if(hash.startsWith('notification-')){
+
+    const notificationId = hash.slice('notification-'.length);
+
+    const {data:notification,error} = await supabase
+      .from('notifications')
+      .select('id,recipient_id,actor_id,type,post_id,comment_id,is_read,created_at')
+      .eq('id',notificationId)
+      .eq('recipient_id',authData.user.id)
+      .maybeSingle();
+
+    if(error || !notification){
+      showError('لم يتم العثور على هذا الإشعار أو لا تملك صلاحية عرضه.');
+      return;
+    }
+
+    if(!notification.is_read){
+      await supabase
+        .from('notifications')
+        .update({is_read:true})
+        .eq('id',notification.id)
+        .eq('recipient_id',authData.user.id);
+    }
+
+    await showNotification(notification);
+    showContent();
+    return;
+  }
+
+  if(hash.startsWith('post-')){
+    const postId = hash.slice(5);
+    await showPost(postId,null);
+    showContent();
+    return;
+  }
+
+  if(hash.startsWith('profile-')){
+    const userId = hash.slice(8);
+    window.location.href =
+      'student.html?user=' + encodeURIComponent(userId);
+    return;
+  }
+
+  showError('اختر إشعاراً من صفحة الإشعارات لعرض تفاصيله.');
+}
+
+start();
+</script>
+
+</body>
+</html>
