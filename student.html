@@ -114,8 +114,12 @@ main{max-width:950px;margin:24px auto;padding:0 15px 100px}
 .status.approved{background:#eaf5ff;color:#0874d1}
 .status.rejected{background:#fef2f2;color:#b91c1c}
 .content-card{background:white;border:1px solid var(--border);border-radius:18px;margin-top:22px;overflow:hidden}
-.tabs{display:flex;border-bottom:1px solid var(--border)}
-.tab{flex:1;border:0;background:white;padding:17px 8px;color:#8491a5;font-size:14px;border-bottom:3px solid transparent}
+.tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto}
+.tab{
+ flex:1;min-width:max-content;border:0;background:white;
+ padding:17px 12px;color:#8491a5;font-size:13px;
+ border-bottom:3px solid transparent;white-space:nowrap;
+}
 .tab.active{color:#205bd0;font-weight:bold;border-bottom-color:#2563eb}
 .tab-content{padding:20px 18px;min-height:190px}
 .empty-state{text-align:center;padding:22px 10px}
@@ -151,31 +155,24 @@ input[type=file]{display:none}
 }
 .post-author{font-weight:bold;color:#102b50;font-size:14px}
 .post-date{color:#94a3b8;font-size:11px;margin-top:5px}
+.repost-label{font-size:11px;color:#64748b;margin:0 16px 10px}
 .post-content{
  padding:0 17px 14px;font-size:15px;line-height:1.9;
  white-space:pre-wrap;overflow-wrap:anywhere;color:#26364d;
 }
-.post-media{
- width:100%;max-height:480px;object-fit:contain;
- display:block;background:#f5f7fa;
-}
-.post-stats{
- display:flex;justify-content:space-between;gap:10px;
- padding:12px 16px;color:#718096;font-size:12px;
-}
-.post-actions{
- display:grid;grid-template-columns:repeat(5,1fr);
- border-top:1px solid #edf0f5;margin:0 13px;
-}
+.post-media{width:100%;max-height:480px;object-fit:contain;display:block;background:#f5f7fa}
+.post-stats{display:flex;justify-content:space-between;gap:10px;padding:12px 16px;color:#718096;font-size:12px}
+.post-actions{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #edf0f5;margin:0 13px}
 .post-action{
- border:0;background:white;padding:13px 2px;
- display:flex;align-items:center;justify-content:center;gap:6px;
- color:#64748b;font-size:12px;transition:.2s;
+ border:0;background:white;padding:13px 2px;display:flex;
+ align-items:center;justify-content:center;gap:6px;color:#64748b;
+ font-size:12px;transition:.2s;
 }
 .post-action .action-icon{font-size:19px;line-height:1}
 .post-action:hover{background:#f7f9fd;color:#2563eb}
 .post-action.liked{color:#e34b67;font-weight:bold}
 .post-action.saved{color:#2563eb;font-weight:bold}
+.post-action.reposted{color:#16845b;font-weight:bold}
 .post-comments{padding:13px 15px 16px;border-top:1px solid #edf0f5;background:#fbfcff}
 .comment-list{display:flex;flex-direction:column;gap:11px;margin-bottom:12px}
 .comment-item{background:white;border:1px solid #edf0f5;border-radius:11px;padding:10px 12px}
@@ -183,15 +180,9 @@ input[type=file]{display:none}
 .comment-text{font-size:13px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
 .comment-date{font-size:10px;color:#9aa6b8;margin-top:5px}
 .comment-form{display:flex;gap:8px}
-.comment-input{
- flex:1;min-width:0;border:1px solid #e1e7f0;border-radius:10px;
- padding:11px 12px;font-size:13px;outline:none;font-family:inherit;
-}
+.comment-input{flex:1;min-width:0;border:1px solid #e1e7f0;border-radius:10px;padding:11px 12px;font-size:13px;outline:none;font-family:inherit}
 .comment-input:focus{border-color:#2563eb}
-.comment-submit{
- border:0;border-radius:10px;background:#2563eb;color:white;
- padding:0 15px;font-weight:bold;font-size:12px;
-}
+.comment-submit{border:0;border-radius:10px;background:#2563eb;color:white;padding:0 15px;font-weight:bold;font-size:12px}
 .comment-submit:disabled{opacity:.5}
 .post-message{font-size:12px;color:#64748b;padding:8px 2px}
 .posts-empty{text-align:center;padding:35px 12px;color:#8290a5;line-height:1.9}
@@ -223,7 +214,7 @@ input[type=file]{display:none}
  .stat{padding:12px 3px}
  .stat strong{font-size:20px}
  .stat span{font-size:11px}
- .tab{font-size:12px;padding:15px 4px}
+ .tab{font-size:11px;padding:15px 10px}
  .tab-content{padding:16px 10px}
  .details-grid{grid-template-columns:1fr}
  .admin-area>*{flex:1;text-align:center}
@@ -321,16 +312,24 @@ input[type=file]{display:none}
 
   <section class="content-card" id="accountDetails">
    <div class="tabs">
-    <button class="tab active" data-tab="posts">▦ المنشورات</button>
+    <button class="tab active" data-tab="posts">▦ منشوراتي</button>
+    <button class="tab" data-tab="reposts">⇄ إعادات النشر</button>
+    <button class="tab" data-tab="saved" id="savedTab">♧ المحفوظات</button>
     <button class="tab" data-tab="about">◉ المعلومات</button>
     <button class="tab" data-tab="activity">✦ النشاط</button>
    </div>
 
    <div class="tab-content">
     <div id="postsPanel" class="panel">
-     <div id="postsList">
-      <div class="posts-empty">جارٍ تحميل المنشورات...</div>
-     </div>
+     <div id="postsList"><div class="posts-empty">جارٍ تحميل المنشورات...</div></div>
+    </div>
+
+    <div id="repostsPanel" class="panel hidden">
+     <div id="repostsList"><div class="posts-empty">جارٍ تحميل إعادات النشر...</div></div>
+    </div>
+
+    <div id="savedPanel" class="panel hidden">
+     <div id="savedList"><div class="posts-empty">جارٍ تحميل المحفوظات...</div></div>
     </div>
 
     <div id="aboutPanel" class="panel hidden">
@@ -393,10 +392,12 @@ let viewingOwnProfile=true;
 let targetId=null;
 let isFollowing=false;
 
-const savedKey='campus_saved_posts';
+let savedPostIds=new Set();
+let repostPostIds=new Set();
+let publicProfiles=[];
 
 function setText(id,value){
- $(id).textContent=value || '—';
+ $(id).textContent=value===null||value===undefined?'—':value;
 }
 
 function showError(message){
@@ -419,27 +420,6 @@ function toast(message){
  box.textContent=message;
  document.body.appendChild(box);
  setTimeout(()=>box.remove(),2600);
-}
-
-function getSavedPosts(){
- try{return JSON.parse(localStorage.getItem(savedKey)||'[]')}
- catch{return []}
-}
-
-function isSaved(postId){
- return getSavedPosts().includes(postId);
-}
-
-function toggleSaved(postId){
- let saved=getSavedPosts();
- if(saved.includes(postId)){
-  saved=saved.filter(id=>id!==postId);
-  toast('تمت إزالة المنشور من المحفوظات');
- }else{
-  saved.push(postId);
-  toast('تم حفظ المنشور على هذا الجهاز ✓');
- }
- localStorage.setItem(savedKey,JSON.stringify(saved));
 }
 
 function getExtension(file){
@@ -572,6 +552,7 @@ function setVerification(profile){
  }
 }
 
+/* المتابعة */
 async function loadFollowData(){
  const [followers,following,relation]=await Promise.all([
   supabase.from('follows').select('id',{count:'exact',head:true}).eq('following_id',targetId),
@@ -640,7 +621,42 @@ async function toggleFollow(){
 
 $('followButton').addEventListener('click',toggleFollow);
 
-/* أدوات المنشورات */
+/* تحميل أسماء أصحاب المنشورات */
+async function loadPublicProfiles(){
+ const {data,error}=await supabase.rpc('get_public_profiles');
+ if(error){
+  console.error(error);
+  publicProfiles=[];
+ }else{
+  publicProfiles=data||[];
+ }
+}
+
+function getProfileById(id){
+ if(id===currentProfile.id)return currentProfile;
+ return publicProfiles.find(p=>p.id===id)||null;
+}
+
+/* تحميل حالة الحفظ وإعادة النشر */
+async function loadPersonalPostActions(){
+ savedPostIds=new Set();
+ repostPostIds=new Set();
+
+ if(!currentUser)return;
+
+ const [saved,reposted]=await Promise.all([
+  supabase.from('saved_posts').select('post_id').eq('user_id',currentUser.id),
+  supabase.from('reposts').select('post_id').eq('author_id',currentUser.id)
+ ]);
+
+ if(saved.error)console.error('Saved posts:',saved.error);
+ else (saved.data||[]).forEach(row=>savedPostIds.add(row.post_id));
+
+ if(reposted.error)console.error('Reposts:',reposted.error);
+ else (reposted.data||[]).forEach(row=>repostPostIds.add(row.post_id));
+}
+
+/* إنشاء أزرار التفاعل */
 function createAction(icon,label,className,callback){
  const button=document.createElement('button');
  button.type='button';
@@ -658,6 +674,7 @@ function createAction(icon,label,className,callback){
  return button;
 }
 
+/* التعليقات */
 async function loadPostComments(postId,container,countElement){
  container.innerHTML='<div class="post-message">جارٍ تحميل التعليقات...</div>';
 
@@ -682,25 +699,15 @@ async function loadPostComments(postId,container,countElement){
 
  container.innerHTML='';
 
- const ids=[...new Set(comments.map(c=>c.author_id))];
- const names={};
-
- if(ids.length){
-  const {data:profiles,error:profileError}=await supabase.rpc('get_public_profiles');
-  if(!profileError){
-   (profiles||[]).filter(p=>ids.includes(p.id)).forEach(p=>{
-    names[p.id]=p.full_name;
-   });
-  }
- }
-
  comments.forEach(comment=>{
+  const profile=getProfileById(comment.author_id);
+
   const item=document.createElement('div');
   item.className='comment-item';
 
   const author=document.createElement('div');
   author.className='comment-author';
-  author.textContent=names[comment.author_id]||'طالب CAMPUS ONE';
+  author.textContent=profile?.full_name||'طالب CAMPUS ONE';
 
   const content=document.createElement('div');
   content.className='comment-text';
@@ -747,6 +754,7 @@ async function addComment(postId,input,submitButton,commentContainer,countElemen
  }
 }
 
+/* الإعجاب */
 async function togglePostLike(postId,button,countElement){
  if(!currentProfile || (currentProfile.role!=='admin' && currentProfile.verification_status!=='approved')){
   toast('يجب اعتماد حسابك أولاً للتفاعل.');
@@ -794,6 +802,101 @@ async function togglePostLike(postId,button,countElement){
  }
 }
 
+/* إعادة النشر */
+async function toggleRepost(postId,button){
+ if(!currentProfile || (currentProfile.role!=='admin' && currentProfile.verification_status!=='approved')){
+  toast('يجب اعتماد حسابك أولاً لإعادة النشر.');
+  return;
+ }
+
+ button.disabled=true;
+
+ try{
+  if(repostPostIds.has(postId)){
+   const {error}=await supabase.from('reposts')
+    .delete()
+    .eq('author_id',currentUser.id)
+    .eq('post_id',postId);
+
+   if(error)throw error;
+
+   repostPostIds.delete(postId);
+   button.classList.remove('reposted');
+   button.querySelector('.action-icon').textContent='⇄';
+   toast('تم إلغاء إعادة النشر.');
+  }else{
+   const {error}=await supabase.from('reposts').insert({
+    author_id:currentUser.id,
+    post_id:postId
+   });
+
+   if(error)throw error;
+
+   repostPostIds.add(postId);
+   button.classList.add('reposted');
+   button.querySelector('.action-icon').textContent='✓';
+   toast('تمت إعادة نشر المنشور بنجاح ✓');
+  }
+
+  if($('repostsPanel').classList.contains('hidden')===false){
+   await loadReposts();
+  }
+ }catch(error){
+  console.error(error);
+  toast('تعذر تنفيذ إعادة النشر. حاول مجدداً.');
+ }finally{
+  button.disabled=false;
+ }
+}
+
+/* حفظ المنشور */
+async function toggleSaved(postId,button){
+ if(!currentProfile || (currentProfile.role!=='admin' && currentProfile.verification_status!=='approved')){
+  toast('يجب اعتماد حسابك أولاً لحفظ المنشورات.');
+  return;
+ }
+
+ button.disabled=true;
+
+ try{
+  if(savedPostIds.has(postId)){
+   const {error}=await supabase.from('saved_posts')
+    .delete()
+    .eq('user_id',currentUser.id)
+    .eq('post_id',postId);
+
+   if(error)throw error;
+
+   savedPostIds.delete(postId);
+   button.classList.remove('saved');
+   button.querySelector('.action-icon').textContent='♧';
+   toast('تمت إزالة المنشور من المحفوظات.');
+  }else{
+   const {error}=await supabase.from('saved_posts').insert({
+    user_id:currentUser.id,
+    post_id:postId
+   });
+
+   if(error)throw error;
+
+   savedPostIds.add(postId);
+   button.classList.add('saved');
+   button.querySelector('.action-icon').textContent='▣';
+   toast('تم حفظ المنشور في حسابك ✓');
+  }
+
+  if($('savedPanel').classList.contains('hidden')===false){
+   await loadSavedPosts();
+  }
+ }catch(error){
+  console.error(error);
+  toast('تعذر حفظ المنشور. حاول مجدداً.');
+ }finally{
+  button.disabled=false;
+ }
+}
+
+/* المشاركة */
 async function sharePost(postId){
  const url=`${location.origin}${location.pathname.replace('student.html','community.html')}#post-${encodeURIComponent(postId)}`;
 
@@ -811,7 +914,167 @@ async function sharePost(postId){
  }
 }
 
-/* تحميل منشورات صاحب الملف الشخصي */
+/* إنشاء بطاقة منشور */
+async function createPostCard(post,options={}){
+ const card=document.createElement('article');
+ card.className='profile-post';
+ card.id='post-'+post.id;
+
+ const authorProfile=getProfileById(post.author_id);
+ const authorName=authorProfile?.full_name||'طالب CAMPUS ONE';
+
+ const header=document.createElement('div');
+ header.className='post-head';
+
+ const avatar=document.createElement('div');
+ avatar.className='post-avatar';
+ avatar.textContent=[...(authorName.trim())][0]||'ط';
+
+ if(authorProfile?.profile_avatar_path){
+  const {data}=await supabase.storage.from('community-media')
+   .createSignedUrl(authorProfile.profile_avatar_path,3600);
+
+  if(data?.signedUrl){
+   const img=document.createElement('img');
+   img.className='post-avatar';
+   img.src=data.signedUrl;
+   img.alt='صورة صاحب المنشور';
+   avatar.replaceWith(img);
+  }
+ }
+
+ const info=document.createElement('div');
+
+ const author=document.createElement('div');
+ author.className='post-author';
+ author.textContent=authorName;
+
+ const date=document.createElement('div');
+ date.className='post-date';
+ date.textContent=new Date(post.created_at).toLocaleString('ar-DZ',{
+  dateStyle:'medium',timeStyle:'short'
+ });
+
+ info.append(author,date);
+ header.append(avatar,info);
+ card.appendChild(header);
+
+ if(options.repostedBy){
+  const repostLabel=document.createElement('div');
+  repostLabel.className='repost-label';
+  repostLabel.textContent='⇄ أعاد '+options.repostedBy+' نشر هذا المنشور';
+  card.appendChild(repostLabel);
+ }
+
+ if(post.content){
+  const content=document.createElement('div');
+  content.className='post-content';
+  content.textContent=post.content;
+  card.appendChild(content);
+ }
+
+ if(post.image_path){
+  const {data:imageData,error:imageError}=await supabase.storage
+   .from('community-media')
+   .createSignedUrl(post.image_path,3600);
+
+  if(!imageError && imageData?.signedUrl){
+   const img=document.createElement('img');
+   img.className='post-media';
+   img.src=imageData.signedUrl;
+   img.alt='صورة المنشور';
+   img.loading='lazy';
+   card.appendChild(img);
+  }
+ }
+
+ const [likes,comments,ownLike]=await Promise.all([
+  supabase.from('post_likes').select('id',{count:'exact',head:true}).eq('post_id',post.id),
+  supabase.from('comments').select('id',{count:'exact',head:true}).eq('post_id',post.id),
+  supabase.from('post_likes').select('id').eq('post_id',post.id).eq('user_id',currentUser.id).maybeSingle()
+ ]);
+
+ const stats=document.createElement('div');
+ stats.className='post-stats';
+
+ const likeCount=document.createElement('span');
+ likeCount.textContent=`${likes.count??0} إعجاب`;
+
+ const commentCount=document.createElement('span');
+ commentCount.textContent=`${comments.count??0} تعليق`;
+
+ stats.append(likeCount,commentCount);
+ card.appendChild(stats);
+
+ const actions=document.createElement('div');
+ actions.className='post-actions';
+
+ const likeButton=createAction(
+  ownLike.data?'♥':'♡','إعجاب',ownLike.data?'liked':'',
+  ()=>togglePostLike(post.id,likeButton,likeCount)
+ );
+
+ const commentButton=createAction('▢','تعليق','',()=>{
+  commentsPanel.classList.toggle('hidden');
+  if(!commentsPanel.classList.contains('hidden')){
+   loadPostComments(post.id,commentList,commentCount);
+  }
+ });
+
+ const alreadyReposted=repostPostIds.has(post.id);
+ const repostButton=createAction(
+  alreadyReposted?'✓':'⇄',
+  'إعادة نشر',
+  alreadyReposted?'reposted':'',
+  ()=>toggleRepost(post.id,repostButton)
+ );
+
+ const shareButton=createAction('➤','مشاركة','',()=>sharePost(post.id));
+
+ const alreadySaved=savedPostIds.has(post.id);
+ const saveButton=createAction(
+  alreadySaved?'▣':'♧',
+  'حفظ',
+  alreadySaved?'saved':'',
+  ()=>toggleSaved(post.id,saveButton)
+ );
+
+ actions.append(likeButton,commentButton,repostButton,shareButton,saveButton);
+ card.appendChild(actions);
+
+ const commentsPanel=document.createElement('div');
+ commentsPanel.className='post-comments hidden';
+
+ const commentList=document.createElement('div');
+ commentList.className='comment-list';
+
+ const form=document.createElement('form');
+ form.className='comment-form';
+
+ const input=document.createElement('input');
+ input.className='comment-input';
+ input.type='text';
+ input.maxLength=1000;
+ input.placeholder='اكتب تعليقاً...';
+
+ const submit=document.createElement('button');
+ submit.className='comment-submit';
+ submit.type='submit';
+ submit.textContent='نشر';
+
+ form.append(input,submit);
+ commentsPanel.append(commentList,form);
+ card.appendChild(commentsPanel);
+
+ form.addEventListener('submit',e=>{
+  e.preventDefault();
+  addComment(post.id,input,submit,commentList,commentCount);
+ });
+
+ return card;
+}
+
+/* تحميل المنشورات الأصلية */
 async function loadProfilePosts(){
  const list=$('postsList');
  list.className='posts-list';
@@ -832,171 +1095,123 @@ async function loadProfilePosts(){
  setText('postCount',posts.length);
 
  if(!posts.length){
-  list.innerHTML=`
-   <div class="posts-empty">
-    <div class="empty-icon">📝</div>
-    <h3>لا توجد منشورات بعد</h3>
-    <p>ستظهر هنا المنشورات التي يشاركها هذا الطالب.</p>
-   </div>`;
+  list.innerHTML='<div class="posts-empty"><div class="empty-icon">📝</div><h3>لا توجد منشورات بعد</h3><p>ستظهر هنا المنشورات التي يشاركها هذا الطالب.</p></div>';
   return;
  }
 
  list.innerHTML='';
 
- let avatarUrl=null;
- if(currentProfile.profile_avatar_path){
-  const {data}=await supabase.storage.from('community-media')
-   .createSignedUrl(currentProfile.profile_avatar_path,3600);
-  avatarUrl=data?.signedUrl||null;
+ for(const post of posts){
+  const card=await createPostCard(post);
+  list.appendChild(card);
+ }
+}
+
+/* تحميل إعادات النشر */
+async function loadReposts(){
+ const list=$('repostsList');
+ list.className='posts-list';
+ list.innerHTML='<div class="posts-empty">جارٍ تحميل إعادات النشر...</div>';
+
+ const {data:reposts,error}=await supabase
+  .from('reposts')
+  .select('post_id,created_at')
+  .eq('author_id',targetId)
+  .order('created_at',{ascending:false});
+
+ if(error){
+  console.error('Reposts error:',error);
+  list.innerHTML='<div class="posts-empty">تعذر تحميل إعادات النشر.</div>';
+  return;
  }
 
- for(const post of posts){
-  const card=document.createElement('article');
-  card.className='profile-post';
-  card.id='post-'+post.id;
+ if(!reposts?.length){
+  list.innerHTML='<div class="posts-empty"><div class="empty-icon">⇄</div><h3>لا توجد إعادات نشر بعد</h3><p>ستظهر هنا المنشورات التي يعيد هذا الطالب نشرها.</p></div>';
+  return;
+ }
 
-  /* رأس المنشور */
-  const header=document.createElement('div');
-  header.className='post-head';
+ const ids=reposts.map(r=>r.post_id);
 
-  const avatar=document.createElement('div');
-  avatar.className='post-avatar';
-  avatar.textContent=[...(currentProfile.full_name||'ط').trim()][0]||'ط';
+ const {data:posts,error:postsError}=await supabase
+  .from('posts')
+  .select('id,author_id,content,image_path,created_at')
+  .in('id',ids);
 
-  if(avatarUrl){
-   const img=document.createElement('img');
-   img.className='post-avatar';
-   img.src=avatarUrl;
-   img.alt='صورة صاحب المنشور';
-   avatar.replaceWith(img);
-  }
+ if(postsError){
+  console.error(postsError);
+  list.innerHTML='<div class="posts-empty">تعذر تحميل المنشورات.</div>';
+  return;
+ }
 
-  const info=document.createElement('div');
-  const author=document.createElement('div');
-  author.className='post-author';
-  author.textContent=currentProfile.full_name||'طالب CAMPUS ONE';
+ const postMap=new Map((posts||[]).map(p=>[p.id,p]));
+ list.innerHTML='';
 
-  const date=document.createElement('div');
-  date.className='post-date';
-  date.textContent=new Date(post.created_at).toLocaleString('ar-DZ',{
-   dateStyle:'medium',timeStyle:'short'
+ for(const repost of reposts){
+  const post=postMap.get(repost.post_id);
+  if(!post)continue;
+
+  const card=await createPostCard(post,{
+   repostedBy:currentProfile.full_name||'طالب CAMPUS ONE'
   });
-
-  info.append(author,date);
-  header.append(avatar,info);
-  card.appendChild(header);
-
-  /* نص المنشور */
-  if(post.content){
-   const content=document.createElement('div');
-   content.className='post-content';
-   content.textContent=post.content;
-   card.appendChild(content);
-  }
-
-  /* صورة المنشور */
-  if(post.image_path){
-   const {data:imageData,error:imageError}=await supabase.storage
-    .from('community-media')
-    .createSignedUrl(post.image_path,3600);
-
-   if(!imageError && imageData?.signedUrl){
-    const img=document.createElement('img');
-    img.className='post-media';
-    img.src=imageData.signedUrl;
-    img.alt='صورة المنشور';
-    img.loading='lazy';
-    card.appendChild(img);
-   }
-  }
-
-  /* إحصائيات التفاعل */
-  const [likes,comments,ownLike]=await Promise.all([
-   supabase.from('post_likes').select('id',{count:'exact',head:true}).eq('post_id',post.id),
-   supabase.from('comments').select('id',{count:'exact',head:true}).eq('post_id',post.id),
-   supabase.from('post_likes').select('id').eq('post_id',post.id).eq('user_id',currentUser.id).maybeSingle()
-  ]);
-
-  const stats=document.createElement('div');
-  stats.className='post-stats';
-
-  const likeCount=document.createElement('span');
-  likeCount.textContent=`${likes.count??0} إعجاب`;
-
-  const commentCount=document.createElement('span');
-  commentCount.textContent=`${comments.count??0} تعليق`;
-
-  stats.append(likeCount,commentCount);
-  card.appendChild(stats);
-
-  /* أزرار التفاعل الخمسة */
-  const actions=document.createElement('div');
-  actions.className='post-actions';
-
-  const likeButton=createAction(
-   ownLike.data?'♥':'♡','إعجاب',ownLike.data?'liked':'',
-   ()=>togglePostLike(post.id,likeButton,likeCount)
-  );
-
-  const commentButton=createAction('▢','تعليق','',()=>{
-   commentsPanel.classList.toggle('hidden');
-   if(!commentsPanel.classList.contains('hidden')){
-    loadPostComments(post.id,commentList,commentCount);
-   }
-  });
-
-  const repostButton=createAction('⇄','إعادة نشر','',()=>{
-   toast('ميزة إعادة النشر ستُفعّل لاحقاً.');
-  });
-
-  const shareButton=createAction('➤','مشاركة','',()=>sharePost(post.id));
-
-  const saveButton=createAction(
-   isSaved(post.id)?'▣':'♧',
-   'حفظ',
-   isSaved(post.id)?'saved':'',
-   ()=>{
-    toggleSaved(post.id);
-    const saved=isSaved(post.id);
-    saveButton.classList.toggle('saved',saved);
-    saveButton.querySelector('.action-icon').textContent=saved?'▣':'♧';
-   }
-  );
-
-  actions.append(likeButton,commentButton,repostButton,shareButton,saveButton);
-  card.appendChild(actions);
-
-  /* مساحة التعليقات */
-  const commentsPanel=document.createElement('div');
-  commentsPanel.className='post-comments hidden';
-
-  const commentList=document.createElement('div');
-  commentList.className='comment-list';
-
-  const form=document.createElement('form');
-  form.className='comment-form';
-
-  const input=document.createElement('input');
-  input.className='comment-input';
-  input.type='text';
-  input.maxLength=1000;
-  input.placeholder='اكتب تعليقاً...';
-
-  const submit=document.createElement('button');
-  submit.className='comment-submit';
-  submit.type='submit';
-  submit.textContent='نشر';
-
-  form.append(input,submit);
-  commentsPanel.append(commentList,form);
-  card.appendChild(commentsPanel);
-
-  form.addEventListener('submit',e=>{
-   e.preventDefault();
-   addComment(post.id,input,submit,commentList,commentCount);
-  });
-
   list.appendChild(card);
+ }
+
+ if(!list.children.length){
+  list.innerHTML='<div class="posts-empty">لا توجد منشورات متاحة حالياً.</div>';
+ }
+}
+
+/* تحميل المحفوظات: لا تستدعى إلا لصاحب الحساب */
+async function loadSavedPosts(){
+ if(!viewingOwnProfile)return;
+
+ const list=$('savedList');
+ list.className='posts-list';
+ list.innerHTML='<div class="posts-empty">جارٍ تحميل المحفوظات...</div>';
+
+ const {data:saved,error}=await supabase
+  .from('saved_posts')
+  .select('post_id,created_at')
+  .eq('user_id',currentUser.id)
+  .order('created_at',{ascending:false});
+
+ if(error){
+  console.error('Saved posts error:',error);
+  list.innerHTML='<div class="posts-empty">تعذر تحميل المحفوظات.</div>';
+  return;
+ }
+
+ if(!saved?.length){
+  list.innerHTML='<div class="posts-empty"><div class="empty-icon">♧</div><h3>لا توجد منشورات محفوظة</h3><p>عندما تحفظ منشوراً سيظهر هنا، ولن يراه غيرك.</p></div>';
+  return;
+ }
+
+ const ids=saved.map(s=>s.post_id);
+
+ const {data:posts,error:postsError}=await supabase
+  .from('posts')
+  .select('id,author_id,content,image_path,created_at')
+  .in('id',ids);
+
+ if(postsError){
+  console.error(postsError);
+  list.innerHTML='<div class="posts-empty">تعذر تحميل المنشورات المحفوظة.</div>';
+  return;
+ }
+
+ const postMap=new Map((posts||[]).map(p=>[p.id,p]));
+ list.innerHTML='';
+
+ for(const savedItem of saved){
+  const post=postMap.get(savedItem.post_id);
+  if(!post)continue;
+
+  const card=await createPostCard(post);
+  list.appendChild(card);
+ }
+
+ if(!list.children.length){
+  list.innerHTML='<div class="posts-empty">لا توجد منشورات محفوظة متاحة حالياً.</div>';
  }
 }
 
@@ -1077,6 +1292,29 @@ $('avatarInput').addEventListener('change',async e=>{
  $('avatarWrap').classList.remove('show-actions');
 });
 
+/* التبويبات */
+async function openTab(tabName){
+ document.querySelectorAll('.tab').forEach(tab=>tab.classList.remove('active'));
+ document.querySelectorAll('.panel').forEach(panel=>panel.classList.add('hidden'));
+
+ const button=document.querySelector(`.tab[data-tab="${tabName}"]`);
+ if(button)button.classList.add('active');
+
+ const panel=$(tabName+'Panel');
+ if(panel)panel.classList.remove('hidden');
+
+ if(tabName==='posts')await loadProfilePosts();
+ if(tabName==='reposts')await loadReposts();
+ if(tabName==='saved' && viewingOwnProfile)await loadSavedPosts();
+}
+
+document.querySelectorAll('.tab').forEach(button=>{
+ button.addEventListener('click',()=>{
+  openTab(button.dataset.tab);
+ });
+});
+
+/* تحميل الحساب */
 async function loadStudent(){
  try{
   const {data:{user},error:authError}=await supabase.auth.getUser();
@@ -1098,6 +1336,8 @@ async function loadStudent(){
    $('followButton').classList.remove('hidden');
    $('detailsLink').classList.add('hidden');
    $('logoutBtn').classList.add('hidden');
+   $('savedTab').classList.add('hidden');
+   $('savedPanel').classList.add('hidden');
    document.querySelectorAll('.private-detail').forEach(el=>el.classList.add('hidden'));
   }
 
@@ -1166,14 +1406,11 @@ async function loadStudent(){
    $('statusNotice').classList.add('hidden');
   }
 
-  await displayPrivateImage(
-   profile.profile_avatar_path,
-   $('avatarImage'),
-   $('avatarLetter')
-  );
-
+  await displayPrivateImage(profile.profile_avatar_path,$('avatarImage'),$('avatarLetter'));
   await displayPrivateImage(profile.cover_url,$('coverImage'));
 
+  await loadPublicProfiles();
+  await loadPersonalPostActions();
   await loadProfilePosts();
   await loadFollowData();
 
@@ -1185,17 +1422,6 @@ async function loadStudent(){
   showError(error.message||'حدث خطأ أثناء تحميل الحساب.');
  }
 }
-
-/* التبويبات */
-document.querySelectorAll('.tab').forEach(button=>{
- button.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(tab=>tab.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(panel=>panel.classList.add('hidden'));
-
-  button.classList.add('active');
-  $(button.dataset.tab+'Panel').classList.remove('hidden');
- });
-});
 
 /* تسجيل الخروج */
 $('logoutBtn').addEventListener('click',async()=>{
