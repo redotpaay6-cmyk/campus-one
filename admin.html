@@ -2,186 +2,989 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAMPUS ONE | لوحة الإدارة</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f3f6fb;
-      color: #17243a;
-    }
-    header {
-      background: #102b50;
-      color: white;
-      padding: 22px 16px;
-      text-align: center;
-    }
-    main { max-width: 850px; margin: 25px auto; padding: 16px; }
-    .panel {
-      background: white;
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px #0000000c;
-    }
-    .student {
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 15px;
-      margin: 14px 0;
-    }
-    .student p { margin: 8px 0; }
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 11px 18px;
-      cursor: pointer;
-      font-size: 15px;
-      margin-top: 10px;
-    }
-    .approve { background: #16834b; color: white; }
-    .logout { background: #dce5f0; color: #17243a; }
-    #message { padding: 12px 0; color: #52647b; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>CAMPUS ONE</h1>
-    <p>لوحة تحكم الإدارة</p>
-  </header>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAMPUS ONE | الإدارة</title>
 
-  <main>
-    <section class="panel">
-      <h2>طلبات توثيق الطلاب</h2>
-      <p id="message">جارٍ التحقق من صلاحية الدخول...</p>
-      <div id="students"></div>
-      <button class="logout" id="logout" hidden>تسجيل الخروج</button>
-    </section>
+<style>
+*{box-sizing:border-box}
+
+:root{
+  --navy:#102b50;
+  --blue:#2563eb;
+  --bg:#f3f6fb;
+  --text:#17243a;
+  --muted:#718096;
+  --border:#e5eaf2;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,input{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.layout{
+  display:flex;
+  min-height:100vh;
+}
+
+.sidebar{
+  width:250px;
+  background:var(--navy);
+  color:white;
+  padding:25px 17px;
+  flex-shrink:0;
+}
+
+.brand{
+  padding:10px 12px 30px;
+  border-bottom:1px solid #ffffff20;
+}
+
+.brand h2{
+  margin:0;
+  font-size:23px;
+  letter-spacing:1px;
+}
+
+.brand p{
+  color:#b8c9df;
+  font-size:12px;
+}
+
+.admin-mini{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:23px 10px;
+}
+
+.avatar{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:#dbeafe;
+  color:#1d4ed8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  font-weight:bold;
+  flex-shrink:0;
+}
+
+.admin-mini strong{
+  display:block;
+  font-size:14px;
+}
+
+.admin-mini small{
+  color:#b8c9df;
+}
+
+.nav-title{
+  color:#91a8c5;
+  font-size:11px;
+  margin:15px 12px;
+}
+
+.nav-btn{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#d9e5f4;
+  text-align:right;
+  padding:14px 13px;
+  border-radius:9px;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.nav-btn.active,
+.nav-btn:hover{
+  background:#ffffff18;
+  color:white;
+}
+
+.sidebar-bottom{
+  margin-top:35px;
+}
+
+.logout{
+  width:100%;
+  padding:12px;
+  background:#ffffff15;
+  color:white;
+  border:1px solid #ffffff25;
+  border-radius:9px;
+}
+
+.main{
+  flex:1;
+  min-width:0;
+}
+
+.topbar{
+  background:white;
+  padding:19px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--border);
+}
+
+.topbar h3{
+  margin:0;
+  font-size:19px;
+}
+
+.topbar small{
+  color:var(--muted);
+}
+
+.content{
+  max-width:1150px;
+  padding:28px;
+  margin:auto;
+}
+
+.welcome{
+  background:linear-gradient(120deg,#102b50,#2563eb);
+  color:white;
+  padding:27px;
+  border-radius:16px;
+  margin-bottom:25px;
+}
+
+.welcome h2{
+  margin:0 0 10px;
+}
+
+.welcome p{
+  color:#dbeafe;
+  margin:0;
+  line-height:1.7;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:25px;
+}
+
+.stat{
+  background:white;
+  padding:21px;
+  border-radius:13px;
+  border:1px solid var(--border);
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.stat-number{
+  font-size:30px;
+  font-weight:bold;
+  margin-top:12px;
+  color:var(--navy);
+}
+
+.panel{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:23px;
+  margin-bottom:20px;
+}
+
+.panel h3{
+  margin:0 0 8px;
+}
+
+.description{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.student{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:17px;
+  margin-top:13px;
+}
+
+.student p{
+  margin:9px 0;
+  font-size:14px;
+}
+
+.approve{
+  background:#16834b;
+  color:white;
+  border:0;
+  padding:11px 16px;
+  border-radius:8px;
+  margin-top:10px;
+}
+
+.approve:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.status{
+  display:inline-block;
+  background:#fff7db;
+  color:#946200;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.profile-header{
+  display:flex;
+  align-items:center;
+  gap:17px;
+  margin-bottom:25px;
+}
+
+.profile-avatar{
+  width:75px;
+  height:75px;
+  border-radius:50%;
+  background:#dbeafe;
+  color:#1d4ed8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  font-weight:bold;
+}
+
+.profile-header h2{
+  margin:0 0 8px;
+}
+
+.profile-header p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.form-group{
+  margin:17px 0;
+}
+
+.form-group label{
+  display:block;
+  font-size:13px;
+  margin-bottom:8px;
+  font-weight:bold;
+}
+
+.form-group input{
+  width:100%;
+  padding:13px;
+  border:1px solid #dce3ed;
+  border-radius:9px;
+  outline:none;
+  font-size:14px;
+  background:white;
+}
+
+.form-group input:focus{
+  border-color:var(--blue);
+}
+
+.form-group input[readonly]{
+  background:#f4f6f9;
+  color:#718096;
+}
+
+.save{
+  background:var(--blue);
+  color:white;
+  border:0;
+  padding:13px 22px;
+  border-radius:9px;
+  font-size:14px;
+}
+
+.notice{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  margin-top:14px;
+}
+
+.message{
+  color:var(--muted);
+  padding:14px 0;
+  font-size:14px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+@media(max-width:750px){
+  .layout{
+    display:block;
+  }
+
+  .sidebar{
+    width:100%;
+    padding:13px;
+  }
+
+  .brand{
+    padding:8px 10px;
+  }
+
+  .brand p{
+    margin-bottom:0;
+  }
+
+  .admin-mini{
+    padding:12px 8px;
+  }
+
+  .nav-title{
+    display:none;
+  }
+
+  .nav-menu{
+    display:flex;
+    gap:7px;
+  }
+
+  .nav-btn{
+    flex:1;
+    text-align:center;
+    padding:12px 5px;
+    font-size:12px;
+    margin:0;
+  }
+
+  .sidebar-bottom{
+    margin-top:10px;
+  }
+
+  .logout{
+    padding:9px;
+  }
+
+  .topbar{
+    padding:15px;
+  }
+
+  .content{
+    padding:15px;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  .stat{
+    padding:16px;
+  }
+
+  .stat-number{
+    font-size:25px;
+  }
+
+  .panel{
+    padding:17px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      <h2>CAMPUS ONE</h2>
+      <p>منصة الطالب الجامعي</p>
+    </div>
+
+    <div class="admin-mini">
+      <div class="avatar" id="sideAvatar">A</div>
+      <div>
+        <strong id="sideName">المدير</strong>
+        <small>Administrator</small>
+      </div>
+    </div>
+
+    <p class="nav-title">القائمة الرئيسية</p>
+
+    <div class="nav-menu">
+      <button class="nav-btn active" data-page="dashboard">
+        ◫ الرئيسية
+      </button>
+
+      <button class="nav-btn" data-page="students">
+        ♙ طلبات الطلاب
+      </button>
+
+      <button class="nav-btn" data-page="profile">
+        ⚙ ملفي الشخصي
+      </button>
+    </div>
+
+    <div class="sidebar-bottom">
+      <button class="logout" id="logout">
+        تسجيل الخروج
+      </button>
+    </div>
+
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <h3 id="pageTitle">لوحة التحكم</h3>
+      <small id="adminEmail">جاري التحميل...</small>
+    </header>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+
+      <section id="dashboardPage">
+
+        <div class="welcome">
+          <h2>مرحباً بك في CAMPUS ONE 👋</h2>
+          <p>
+            لوحة الإدارة المركزية لإدارة الطلاب ومتابعة طلبات التوثيق
+            وتنظيم المنصة الجامعية.
+          </p>
+        </div>
+
+        <div class="stats">
+
+          <div class="stat">
+            <div class="stat-label">إجمالي الطلاب</div>
+            <div class="stat-number" id="totalStudents">—</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">حسابات موثقة</div>
+            <div class="stat-number" id="approvedStudents">—</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">طلبات معلقة</div>
+            <div class="stat-number" id="pendingStudents">—</div>
+          </div>
+
+        </div>
+
+        <div class="panel">
+          <h3>آخر طلبات التوثيق</h3>
+          <p class="description">
+            متابعة أحدث طلبات تسجيل الطلاب في المنصة.
+          </p>
+
+          <p id="dashboardMessage" class="message">
+            جارٍ تحميل البيانات...
+          </p>
+
+          <div id="recentStudents"></div>
+        </div>
+
+      </section>
+
+
+      <!-- STUDENTS -->
+
+      <section id="studentsPage" class="hidden">
+
+        <div class="panel">
+          <h3>طلبات توثيق الطلاب</h3>
+
+          <p class="description">
+            راجع بيانات الحسابات التجريبية ووافق على الحسابات المستحقة.
+          </p>
+
+          <p id="studentsMessage" class="message">
+            جارٍ تحميل الطلبات...
+          </p>
+
+          <div id="studentsList"></div>
+        </div>
+
+      </section>
+
+
+      <!-- PROFILE -->
+
+      <section id="profilePage" class="hidden">
+
+        <div class="panel">
+
+          <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">A</div>
+
+            <div>
+              <h2 id="profileDisplayName">المدير</h2>
+              <p>مدير منصة CAMPUS ONE</p>
+            </div>
+          </div>
+
+          <h3>المعلومات الشخصية</h3>
+
+          <p class="description">
+            يمكنك تحديث معلوماتك الشخصية المرتبطة بحساب الإدارة.
+          </p>
+
+          <form id="profileForm">
+
+            <div class="form-group">
+              <label for="fullName">الاسم الكامل</label>
+              <input id="fullName" type="text" required maxlength="100">
+            </div>
+
+            <div class="form-group">
+              <label for="email">البريد الإلكتروني</label>
+              <input id="email" type="email" readonly>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">رقم الهاتف</label>
+              <input id="phone" type="tel" maxlength="30">
+            </div>
+
+            <div class="form-group">
+              <label>الصفة</label>
+              <input type="text" value="مدير النظام" readonly>
+            </div>
+
+            <button class="save" id="saveProfile" type="submit">
+              حفظ التعديلات
+            </button>
+
+            <p id="profileMessage" class="message"></p>
+
+          </form>
+
+          <p class="notice">
+            ملاحظة: لا يمكن تغيير صلاحيات المدير من هذه الصفحة.
+            تغيير كلمة المرور يتم عبر خاصية استعادة كلمة المرور.
+          </p>
+
+        </div>
+
+      </section>
+
+    </div>
   </main>
 
-  <script type="module">
-    import { createClient } from
-      "https://esm.sh/@supabase/supabase-js@2";
+</div>
 
-    const SUPABASE_URL = "https://rpvoajlzkoynimfowzgl.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552";
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-    const message = document.getElementById("message");
-    const studentsBox = document.getElementById("students");
-    const logoutButton = document.getElementById("logout");
+<script type="module">
 
-    function safe(value) {
-      const div = document.createElement("div");
-      div.textContent = value ?? "غير متوفر";
-      return div.innerHTML;
+import { createClient } from
+"https://esm.sh/@supabase/supabase-js@2";
+
+const SUPABASE_URL =
+"https://rpvoajlzkoynimfowzgl.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552";
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let myProfile = null;
+
+
+function showPage(page){
+
+  const pages = {
+    dashboard:"dashboardPage",
+    students:"studentsPage",
+    profile:"profilePage"
+  };
+
+  Object.entries(pages).forEach(([key,id])=>{
+    $(id).classList.toggle("hidden",key !== page);
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(button=>{
+    button.classList.toggle(
+      "active",
+      button.dataset.page === page
+    );
+  });
+
+  const titles = {
+    dashboard:"لوحة التحكم",
+    students:"إدارة الطلاب",
+    profile:"ملفي الشخصي"
+  };
+
+  $("pageTitle").textContent = titles[page];
+}
+
+
+document.querySelectorAll(".nav-btn").forEach(button=>{
+  button.addEventListener("click",()=>{
+    showPage(button.dataset.page);
+  });
+});
+
+
+function initials(name){
+  return (name || "A").trim().charAt(0).toUpperCase();
+}
+
+
+function createTextElement(tag,text){
+  const element = document.createElement(tag);
+  element.textContent = text ?? "غير متوفر";
+  return element;
+}
+
+
+function createStudentCard(student){
+
+  const card = document.createElement("div");
+  card.className = "student";
+
+  const fields = [
+    ["الاسم",student.full_name],
+    ["الهاتف",student.phone],
+    ["الجامعة",student.university],
+    ["التخصص",student.specialty]
+  ];
+
+  fields.forEach(([label,value])=>{
+    const p = document.createElement("p");
+    const strong = document.createElement("strong");
+
+    strong.textContent = label + ": ";
+    p.append(strong,document.createTextNode(value || "غير متوفر"));
+
+    card.appendChild(p);
+  });
+
+  const status = document.createElement("span");
+  status.className = "status";
+  status.textContent = "قيد المراجعة";
+
+  card.appendChild(status);
+
+  const button = document.createElement("button");
+  button.className = "approve";
+  button.textContent = "الموافقة على الطالب";
+
+  button.addEventListener("click",async()=>{
+
+    if(!confirm("هل أنت متأكد من الموافقة على هذا الطالب؟")){
+      return;
     }
 
-    async function start() {
-      const { data: sessionData, error: sessionError } =
-        await supabase.auth.getSession();
+    button.disabled = true;
+    button.textContent = "جارٍ التحديث...";
 
-      if (sessionError || !sessionData.session) {
-        message.textContent = "يجب تسجيل الدخول أولاً من صفحة الحساب.";
-        return;
-      }
+    const {data,error} = await supabase
+      .from("profiles")
+      .update({verification_status:"approved"})
+      .eq("id",student.id)
+      .eq("role","student")
+      .eq("verification_status","pending")
+      .select("id");
 
-      logoutButton.hidden = false;
-
-      const userId = sessionData.session.user.id;
-
-      const { data: me, error: meError } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", userId)
-        .single();
-
-      if (meError || !me || me.role !== "admin") {
-        message.textContent = "ليس لديك صلاحية الدخول إلى لوحة الإدارة.";
-        return;
-      }
-
-      logoutButton.hidden = false;
-      await loadStudents();
+    if(error){
+      alert("فشلت العملية: " + error.message);
+      button.disabled = false;
+      button.textContent = "الموافقة على الطالب";
+      return;
     }
 
-    async function loadStudents() {
-      message.textContent = "جارٍ تحميل الطلبات...";
-      studentsBox.replaceChildren();
-
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id, full_name, phone, university, specialty, created_at")
-        .eq("role", "student")
-        .eq("verification_status", "pending")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        message.textContent = "تعذر تحميل الطلبات: " + error.message;
-        return;
-      }
-
-      if (!data || data.length === 0) {
-        message.textContent = "لا توجد طلبات توثيق معلقة حالياً.";
-        return;
-      }
-
-      message.textContent = "عدد الطلبات المعلقة: " + data.length;
-
-      data.forEach(student => {
-        const card = document.createElement("div");
-        card.className = "student";
-
-        const info = document.createElement("div");
-        info.innerHTML = `
-          <p><strong>الاسم:</strong> ${safe(student.full_name)}</p>
-          <p><strong>الهاتف:</strong> ${safe(student.phone)}</p>
-          <p><strong>الجامعة:</strong> ${safe(student.university)}</p>
-          <p><strong>التخصص:</strong> ${safe(student.specialty)}</p>
-        `;
-
-        const button = document.createElement("button");
-        button.className = "approve";
-        button.textContent = "الموافقة على الطالب";
-
-        button.addEventListener("click", async () => {
-          if (!confirm("هل أنت متأكد من الموافقة على هذا الطالب؟")) return;
-
-          button.disabled = true;
-          button.textContent = "جارٍ التحديث...";
-
-          const { error: updateError } = await supabase
-            .from("profiles")
-            .update({ verification_status: "approved" })
-            .eq("id", student.id)
-            .eq("verification_status", "pending");
-
-          if (updateError) {
-            alert("فشلت العملية: " + updateError.message);
-            button.disabled = false;
-            button.textContent = "الموافقة على الطالب";
-            return;
-          }
-
-          alert("تم تحديث حالة الطالب.");
-          await loadStudents();
-        });
-
-        card.append(info, button);
-        studentsBox.appendChild(card);
-      });
+    if(!data || data.length === 0){
+      alert("لم يتم تحديث الحساب. تحقق من حالته وصلاحياتك.");
+      button.disabled = false;
+      button.textContent = "الموافقة على الطالب";
+      return;
     }
 
-    logoutButton.addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      window.location.href = "auth.html";
-    });
+    alert("تمت الموافقة على الطالب بنجاح.");
 
-    start().catch(error => {
-      message.textContent = "حدث خطأ: " + error.message;
-    });
-  </script>
+    await loadStudents();
+    await loadStats();
+
+  });
+
+  card.appendChild(button);
+
+  return card;
+}
+
+
+async function loadStats(){
+
+  const [
+    totalResult,
+    approvedResult,
+    pendingResult
+  ] = await Promise.all([
+
+    supabase
+      .from("profiles")
+      .select("id",{count:"exact",head:true})
+      .eq("role","student"),
+
+    supabase
+      .from("profiles")
+      .select("id",{count:"exact",head:true})
+      .eq("role","student")
+      .eq("verification_status","approved"),
+
+    supabase
+      .from("profiles")
+      .select("id",{count:"exact",head:true})
+      .eq("role","student")
+      .eq("verification_status","pending")
+
+  ]);
+
+  if(totalResult.error || approvedResult.error || pendingResult.error){
+
+    $("totalStudents").textContent = "!";
+    $("approvedStudents").textContent = "!";
+    $("pendingStudents").textContent = "!";
+
+    return;
+  }
+
+  $("totalStudents").textContent = totalResult.count ?? 0;
+  $("approvedStudents").textContent = approvedResult.count ?? 0;
+  $("pendingStudents").textContent = pendingResult.count ?? 0;
+
+}
+
+
+async function loadStudents(){
+
+  $("studentsMessage").textContent = "جارٍ تحميل الطلبات...";
+  $("studentsList").replaceChildren();
+
+  $("dashboardMessage").textContent = "جارٍ تحميل البيانات...";
+  $("recentStudents").replaceChildren();
+
+  const {data,error} = await supabase
+    .from("profiles")
+    .select("id,full_name,phone,university,specialty,created_at")
+    .eq("role","student")
+    .eq("verification_status","pending")
+    .order("created_at",{ascending:false});
+
+  if(error){
+
+    $("studentsMessage").textContent =
+      "تعذر تحميل الطلبات: " + error.message;
+
+    $("dashboardMessage").textContent =
+      "تعذر تحميل البيانات.";
+
+    return;
+  }
+
+  if(!data || data.length === 0){
+
+    $("studentsMessage").textContent =
+      "لا توجد طلبات توثيق معلقة حالياً.";
+
+    $("dashboardMessage").textContent =
+      "لا توجد طلبات توثيق معلقة حالياً.";
+
+    return;
+  }
+
+  $("studentsMessage").textContent =
+    "عدد الطلبات المعلقة: " + data.length;
+
+  $("dashboardMessage").textContent =
+    "عدد الطلبات المعلقة: " + data.length;
+
+  data.forEach((student,index)=>{
+
+    $("studentsList").appendChild(
+      createStudentCard(student)
+    );
+
+    if(index < 3){
+      $("recentStudents").appendChild(
+        createStudentCard(student)
+      );
+    }
+
+  });
+
+}
+
+
+async function loadProfile(){
+
+  $("fullName").value = myProfile.full_name || "";
+  $("email").value = currentUser.email || "";
+  $("phone").value = myProfile.phone || "";
+
+  $("profileDisplayName").textContent =
+    myProfile.full_name || "المدير";
+
+  const letter = initials(myProfile.full_name);
+
+  $("profileAvatar").textContent = letter;
+  $("sideAvatar").textContent = letter;
+
+  $("sideName").textContent =
+    myProfile.full_name || "المدير";
+
+  $("adminEmail").textContent =
+    currentUser.email || "";
+
+}
+
+
+$("profileForm").addEventListener("submit",async event=>{
+
+  event.preventDefault();
+
+  const button = $("saveProfile");
+  const message = $("profileMessage");
+
+  const fullName = $("fullName").value.trim();
+  const phone = $("phone").value.trim();
+
+  if(!fullName){
+    message.textContent = "يرجى إدخال الاسم الكامل.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ الحفظ...";
+  message.textContent = "";
+
+  const {data,error} = await supabase
+    .from("profiles")
+    .update({
+      full_name:fullName,
+      phone:phone || null
+    })
+    .eq("id",currentUser.id)
+    .eq("role","admin")
+    .select("id,full_name,phone,role,created_at")
+    .single();
+
+  button.disabled = false;
+  button.textContent = "حفظ التعديلات";
+
+  if(error){
+
+    message.textContent =
+      "تعذر حفظ التعديلات: " + error.message;
+
+    return;
+  }
+
+  myProfile = data;
+
+  await loadProfile();
+
+  message.textContent = "تم حفظ معلوماتك بنجاح.";
+
+});
+
+
+$("logout").addEventListener("click",async()=>{
+
+  if(!confirm("هل تريد تسجيل الخروج؟")) return;
+
+  await supabase.auth.signOut();
+
+  window.location.replace("auth.html");
+
+});
+
+
+async function start(){
+
+  const {data:sessionData,error:sessionError} =
+    await supabase.auth.getSession();
+
+  if(sessionError || !sessionData.session){
+
+    window.location.replace("auth.html");
+    return;
+  }
+
+  currentUser = sessionData.session.user;
+
+  const {data:profile,error:profileError} =
+    await supabase
+      .from("profiles")
+      .select("id,full_name,phone,role,created_at")
+      .eq("id",currentUser.id)
+      .single();
+
+  if(profileError || !profile || profile.role !== "admin"){
+
+    document.body.innerHTML =
+      "<div style='padding:40px;text-align:center;font-family:Arial'>" +
+      "<h2>ليس لديك صلاحية الدخول إلى لوحة الإدارة.</h2>" +
+      "<a href='auth.html'>العودة إلى تسجيل الدخول</a>" +
+      "</div>";
+
+    return;
+  }
+
+  myProfile = profile;
+
+  await loadProfile();
+  await loadStats();
+  await loadStudents();
+
+  showPage("dashboard");
+
+}
+
+
+start().catch(error=>{
+
+  $("dashboardMessage").textContent =
+    "حدث خطأ: " + error.message;
+
+});
+
+</script>
+
 </body>
 </html>
