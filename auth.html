@@ -2,306 +2,278 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CAMPUS ONE | حساب الطالب</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f1f5f9;
-      color: #102b46;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-    }
-    .card {
-      background: white;
-      width: 100%;
-      max-width: 430px;
-      padding: 28px;
-      border-radius: 18px;
-      box-shadow: 0 8px 30px #102b4615;
-    }
-    h1 { text-align: center; margin-bottom: 8px; }
-    .sub {
-      text-align: center;
-      color: #64748b;
-      margin-bottom: 24px;
-    }
-    input {
-      width: 100%;
-      padding: 13px;
-      margin: 7px 0;
-      border: 1px solid #cbd5e1;
-      border-radius: 9px;
-      font-size: 15px;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 12px;
-      background: #1768a5;
-      color: white;
-      border: 0;
-      border-radius: 9px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:disabled { opacity: 0.6; }
-    .switch {
-      background: none;
-      color: #1768a5;
-      margin-top: 8px;
-    }
-    #message {
-      text-align: center;
-      margin-top: 15px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-    .hidden { display: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAMPUS ONE | حساب الطالب</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#102b46;min-height:100vh;display:grid;place-items:center;padding:20px}
+.card{background:white;width:100%;max-width:430px;padding:28px;border-radius:18px;box-shadow:0 8px 30px #102b4615}
+h1{text-align:center;margin-bottom:8px}
+.sub{text-align:center;color:#64748b;margin-bottom:24px}
+input{width:100%;padding:13px;margin:7px 0;border:1px solid #cbd5e1;border-radius:9px;font-size:15px}
+button{width:100%;padding:14px;margin-top:12px;background:#1768a5;color:white;border:0;border-radius:9px;font-size:16px;cursor:pointer}
+button:disabled{opacity:.6}
+.switch{background:none;color:#1768a5;margin-top:8px}
+#message{text-align:center;margin-top:15px;line-height:1.6;overflow-wrap:anywhere}
+.hidden{display:none}
+</style>
 </head>
 <body>
 <main class="card">
-  <h1>CAMPUS ONE</h1>
-  <p class="sub">كل ما يحتاجه الطالب، في مكان واحد</p>
+<h1>CAMPUS ONE</h1>
+<p class="sub">كل ما يحتاجه الطالب، في مكان واحد</p>
 
-  <div id="register">
-    <h3>إنشاء حساب طالب</h3>
-    <input id="name" placeholder="الاسم الكامل">
-    <input id="phone" type="tel" placeholder="رقم الهاتف">
-    <input id="email" type="email" placeholder="البريد الإلكتروني">
-    <input id="password" type="password" placeholder="كلمة المرور">
-    <input id="university" placeholder="الجامعة">
-    <input id="specialty" placeholder="التخصص">
-    <button id="registerBtn">إنشاء الحساب</button>
-    <button class="switch" id="showLogin">لديك حساب؟ تسجيل الدخول</button>
-  </div>
+<div id="register">
+<h3>إنشاء حساب طالب</h3>
+<input id="name" placeholder="الاسم الكامل">
+<input id="phone" type="tel" placeholder="رقم الهاتف">
+<input id="email" type="email" placeholder="البريد الإلكتروني">
+<input id="password" type="password" placeholder="كلمة المرور">
+<input id="university" placeholder="الجامعة">
+<input id="specialty" placeholder="التخصص">
+<button id="registerBtn">إنشاء الحساب</button>
+<button class="switch" id="showLogin">لديك حساب؟ تسجيل الدخول</button>
+</div>
 
-  <div id="login" class="hidden">
-    <h3>تسجيل الدخول</h3>
-    <input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
-    <input id="loginPassword" type="password" placeholder="كلمة المرور">
-    <button id="loginBtn">دخول</button>
-    <button class="switch" id="forgotBtn">نسيت كلمة المرور؟</button>
-    <button class="switch" id="showRegister">إنشاء حساب جديد</button>
-  </div>
+<div id="login" class="hidden">
+<h3>تسجيل الدخول</h3>
+<input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
+<input id="loginPassword" type="password" placeholder="كلمة المرور">
+<button id="loginBtn">دخول</button>
+<button class="switch" id="forgotBtn">نسيت كلمة المرور؟</button>
+<button class="switch" id="showRegister">إنشاء حساب جديد</button>
+</div>
 
-  <div id="forgot" class="hidden">
-    <h3>استعادة كلمة المرور</h3>
-    <p>أدخل بريدك الإلكتروني لإرسال رابط الاستعادة.</p>
-    <input id="forgotEmail" type="email" placeholder="البريد الإلكتروني">
-    <button id="sendRecoveryBtn">إرسال رابط الاستعادة</button>
-    <button class="switch" id="backLogin1">العودة لتسجيل الدخول</button>
-  </div>
+<div id="forgot" class="hidden">
+<h3>استعادة كلمة المرور</h3>
+<p>أدخل بريدك الإلكتروني لإرسال رابط الاستعادة.</p>
+<input id="forgotEmail" type="email" placeholder="البريد الإلكتروني">
+<button id="sendRecoveryBtn">إرسال رابط الاستعادة</button>
+<button class="switch" id="backLogin1">العودة لتسجيل الدخول</button>
+</div>
 
-  <div id="reset" class="hidden">
-    <h3>تعيين كلمة مرور جديدة</h3>
-    <input id="newPassword" type="password" placeholder="كلمة المرور الجديدة">
-    <input id="confirmPassword" type="password" placeholder="تأكيد كلمة المرور">
-    <button id="savePasswordBtn">حفظ كلمة المرور الجديدة</button>
-  </div>
+<div id="reset" class="hidden">
+<h3>تعيين كلمة مرور جديدة</h3>
+<input id="newPassword" type="password" placeholder="كلمة المرور الجديدة">
+<input id="confirmPassword" type="password" placeholder="تأكيد كلمة المرور">
+<button id="savePasswordBtn">حفظ كلمة المرور الجديدة</button>
+</div>
 
-  <p id="message" role="status"></p>
+<p id="message" role="status"></p>
 </main>
 
 <script type="module">
-import { createClient } from
-  "https://esm.sh/@supabase/supabase-js@2";
+import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
 
-const supabase = createClient(
-  "https://rpvoajlzkoynimfowzgl.supabase.co",
-  "sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552"
+const supabase=createClient(
+"https://rpvoajlzkoynimfowzgl.supabase.co",
+"sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552"
 );
 
-const $ = id => document.getElementById(id);
-const message = text => $("message").textContent = text;
+const $=id=>document.getElementById(id);
+const message=text=>$("message").textContent=text;
 
-function show(section) {
-  ["register", "login", "forgot", "reset"].forEach(id => {
-    $(id).classList.toggle("hidden", id !== section);
-  });
-  message("");
+function show(section){
+["register","login","forgot","reset"].forEach(id=>{
+$(id).classList.toggle("hidden",id!==section);
+});
+message("");
 }
 
-$("showLogin").onclick = () => show("login");
-$("showRegister").onclick = () => show("register");
-$("forgotBtn").onclick = () => {
-  $("forgotEmail").value = $("loginEmail").value.trim();
-  show("forgot");
+$("showLogin").onclick=()=>show("login");
+$("showRegister").onclick=()=>show("register");
+$("forgotBtn").onclick=()=>{
+$("forgotEmail").value=$("loginEmail").value.trim();
+show("forgot");
 };
-$("backLogin1").onclick = () => show("login");
+$("backLogin1").onclick=()=>show("login");
+
+// توجيه المستخدم حسب صلاحياته
+async function redirectUser(){
+message("جارٍ التحقق من الحساب...");
+
+const {data:{user},error:userError}=await supabase.auth.getUser();
+
+if(userError||!user){
+message("تعذر التحقق من الحساب. سجّل الدخول مجدداً.");
+return;
+}
+
+const {data:profile,error}=await supabase
+.from("profiles")
+.select("role,verification_status")
+.eq("id",user.id)
+.single();
+
+if(error||!profile){
+message("تعذر العثور على الملف الشخصي.");
+return;
+}
+
+if(profile.role==="admin"){
+window.location.replace("admin.html");
+return;
+}
+
+if(profile.verification_status!=="approved"){
+await supabase.auth.signOut();
+message("حسابك قيد المراجعة. انتظر موافقة الإدارة.");
+return;
+}
+
+window.location.replace("index.html");
+}
 
 // إنشاء حساب طالب
-$("registerBtn").onclick = async () => {
-  const full_name = $("name").value.trim();
-  const phone = $("phone").value.trim();
-  const email = $("email").value.trim();
-  const password = $("password").value;
-  const university = $("university").value.trim();
-  const specialty = $("specialty").value.trim();
+$("registerBtn").onclick=async()=>{
+const full_name=$("name").value.trim();
+const phone=$("phone").value.trim();
+const email=$("email").value.trim();
+const password=$("password").value;
+const university=$("university").value.trim();
+const specialty=$("specialty").value.trim();
 
-  if (!full_name || !phone || !email || !password ||
-      !university || !specialty) {
-    return message("يرجى ملء جميع الخانات.");
-  }
+if(!full_name||!phone||!email||!password||!university||!specialty)
+return message("يرجى ملء جميع الخانات.");
 
-  if (password.length < 8)
-    return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
+if(password.length<8)
+return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
 
-  const button = $("registerBtn");
-  button.disabled = true;
-  message("جارٍ إنشاء الحساب...");
+const button=$("registerBtn");
+button.disabled=true;
+message("جارٍ إنشاء الحساب...");
 
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo:
-          "https://redotpaay6-cmyk.github.io/campus-one/auth.html",
-        data: { full_name, phone, university, specialty }
-      }
-    });
+try{
+const {data,error}=await supabase.auth.signUp({
+email,password,
+options:{
+emailRedirectTo:"https://redotpaay6-cmyk.github.io/campus-one/auth.html",
+data:{full_name,phone,university,specialty}
+}
+});
 
-    if (error) throw error;
-    if (!data.user) throw new Error("لم يتم إرجاع بيانات المستخدم.");
+if(error)throw error;
+if(!data.user)throw new Error("لم يتم إرجاع بيانات المستخدم.");
 
-    const metadata = data.user.user_metadata || {};
+const metadata=data.user.user_metadata||{};
 
-    if (
-      metadata.full_name !== full_name ||
-      metadata.phone !== phone ||
-      metadata.university !== university ||
-      metadata.specialty !== specialty
-    ) {
-      return message("تم إنشاء الحساب، لكن بيانات الطالب لم تصل كما هو متوقع.");
-    }
+if(metadata.full_name!==full_name||
+metadata.phone!==phone||
+metadata.university!==university||
+metadata.specialty!==specialty){
+return message("تم إنشاء الحساب، لكن بيانات الطالب لم تصل كما هو متوقع.");
+}
 
-    message(data.session
-      ? "تم إنشاء حسابك بنجاح! ملفك الشخصي قيد المراجعة."
-      : "تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيده. ملفك قيد المراجعة."
-    );
-  } catch (error) {
-    message("تعذر إنشاء الحساب: " + error.message);
-  } finally {
-    button.disabled = false;
-  }
+message(data.session?
+"تم إنشاء حسابك بنجاح! ملفك الشخصي قيد المراجعة.":
+"تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيده. ملفك قيد المراجعة.");
+
+}catch(error){
+message("تعذر إنشاء الحساب: "+error.message);
+}finally{
+button.disabled=false;
+}
 };
 
 // تسجيل الدخول
-$("loginBtn").onclick = async () => {
-  const email = $("loginEmail").value.trim();
-  const password = $("loginPassword").value;
+$("loginBtn").onclick=async()=>{
+const email=$("loginEmail").value.trim();
+const password=$("loginPassword").value;
 
-  if (!email || !password)
-    return message("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
+if(!email||!password)
+return message("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
 
-  const button = $("loginBtn");
-  button.disabled = true;
-  message("جارٍ تسجيل الدخول...");
+const button=$("loginBtn");
+button.disabled=true;
+message("جارٍ تسجيل الدخول...");
 
-  try {
-    const { error } = await supabase.auth.signInWithPassword({
-      email, password
-    });
-    if (error) throw error;
-    message("تم تسجيل الدخول بنجاح!");
-  } catch (error) {
-    message("تعذر تسجيل الدخول: " + error.message);
-  } finally {
-    button.disabled = false;
-  }
+try{
+const {error}=await supabase.auth.signInWithPassword({email,password});
+if(error)throw error;
+await redirectUser();
+}catch(error){
+message("تعذر تسجيل الدخول: "+error.message);
+}finally{
+button.disabled=false;
+}
 };
 
-// إرسال رابط استعادة كلمة المرور
-$("sendRecoveryBtn").onclick = async () => {
-  const email = $("forgotEmail").value.trim();
-  if (!email) return message("أدخل البريد الإلكتروني.");
+// إرسال رابط الاستعادة
+$("sendRecoveryBtn").onclick=async()=>{
+const email=$("forgotEmail").value.trim();
+if(!email)return message("أدخل البريد الإلكتروني.");
 
-  const button = $("sendRecoveryBtn");
-  button.disabled = true;
-  message("جارٍ إرسال رابط الاستعادة...");
+const button=$("sendRecoveryBtn");
+button.disabled=true;
+message("جارٍ إرسال رابط الاستعادة...");
 
-  try {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo:
-        "https://redotpaay6-cmyk.github.io/campus-one/auth.html"
-    });
-    if (error) throw error;
-    message("تم إرسال رابط الاستعادة. تحقق من بريدك الإلكتروني.");
-  } catch (error) {
-    message("تعذر الإرسال: " + error.message);
-  } finally {
-    button.disabled = false;
-  }
+try{
+const {error}=await supabase.auth.resetPasswordForEmail(email,{
+redirectTo:"https://redotpaay6-cmyk.github.io/campus-one/auth.html"
+});
+if(error)throw error;
+message("تم إرسال رابط الاستعادة. تحقق من بريدك الإلكتروني.");
+}catch(error){
+message("تعذر الإرسال: "+error.message);
+}finally{
+button.disabled=false;
+}
 };
 
-// استقبال جلسة استعادة كلمة المرور
-let recoveryMode = false;
+// استقبال جلسة الاستعادة
+let recoveryMode=false;
 
-supabase.auth.onAuthStateChange((event, session) => {
-  if (event === "PASSWORD_RECOVERY" && session) {
-    recoveryMode = true;
-    show("reset");
-    message("أدخل كلمة المرور الجديدة.");
-  }
+supabase.auth.onAuthStateChange((event,session)=>{
+if(event==="PASSWORD_RECOVERY"&&session){
+recoveryMode=true;
+show("reset");
+message("أدخل كلمة المرور الجديدة.");
+}
 });
 
-// التحقق من رابط الاستعادة عند فتح الصفحة
-const { data: sessionData } = await supabase.auth.getSession();
-
-if (
-  sessionData.session &&
-  window.location.hash.includes("type=recovery")
-) {
-  recoveryMode = true;
-  show("reset");
-  message("أدخل كلمة المرور الجديدة.");
-}
-
 // حفظ كلمة المرور الجديدة
-$("savePasswordBtn").onclick = async () => {
-  if (!recoveryMode)
-    return message("رابط الاستعادة غير صالح. اطلب رابطاً جديداً.");
+$("savePasswordBtn").onclick=async()=>{
+if(!recoveryMode)
+return message("رابط الاستعادة غير صالح. اطلب رابطاً جديداً.");
 
-  const password = $("newPassword").value;
-  const confirm = $("confirmPassword").value;
+const password=$("newPassword").value;
+const confirm=$("confirmPassword").value;
 
-  if (password.length < 8)
-    return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
+if(password.length<8)
+return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
 
-  if (password !== confirm)
-    return message("كلمتا المرور غير متطابقتين.");
+if(password!==confirm)
+return message("كلمتا المرور غير متطابقتين.");
 
-  const button = $("savePasswordBtn");
-  button.disabled = true;
-  message("جارٍ تحديث كلمة المرور...");
+const button=$("savePasswordBtn");
+button.disabled=true;
+message("جارٍ تحديث كلمة المرور...");
 
-  try {
-    const { error } = await supabase.auth.updateUser({
-      password
-    });
+try{
+const {error}=await supabase.auth.updateUser({password});
+if(error)throw error;
 
-    if (error) throw error;
+recoveryMode=false;
+await supabase.auth.signOut();
+show("login");
+message("تم تغيير كلمة المرور بنجاح. سجّل الدخول بكلمتك الجديدة.");
 
-    recoveryMode = false;
-    message("تم تغيير كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.");
-    $("newPassword").value = "";
-    $("confirmPassword").value = "";
-    await supabase.auth.signOut();
-    show("login");
-    message("تم تغيير كلمة المرور بنجاح. سجّل الدخول بكلمتك الجديدة.");
-  } catch (error) {
-    message("تعذر تغيير كلمة المرور: " + error.message);
-  } finally {
-    button.disabled = false;
-  }
+}catch(error){
+message("تعذر تغيير كلمة المرور: "+error.message);
+}finally{
+button.disabled=false;
+}
 };
+
+// التحقق من رابط الاستعادة عند فتح الصفحة
+const {data:{session}}=await supabase.auth.getSession();
+
+if(session&&window.location.hash.includes("type=recovery")){
+recoveryMode=true;
+show("reset");
+message("أدخل كلمة المرور الجديدة.");
+}
 </script>
 </body>
 </html>
