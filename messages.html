@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102b46">
 <title>CAMPUS ONE | الرسائل</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#102b46;--blue:#2563eb;--light:#eff6ff;--bg:#f3f6fb;--text:#172b4d;--muted:#718096;--border:#e7edf5}
@@ -37,7 +38,7 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
 .chat-header{padding:14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;min-height:72px}
 .chat-header-info{flex:1;min-width:0}
 .chat-header-name{font-size:15px;font-weight:900}
-.chat-header-status{color:#16a34a;font-size:11px;margin-top:5px}
+.chat-header-status{color:#16a34a;font-size:11px;margin-top:5px;min-height:13px}
 .back-button{display:none;border:0;background:var(--light);color:var(--blue);border-radius:10px;width:35px;height:35px;font-size:20px;cursor:pointer}
 .chat-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:35px 20px;color:var(--muted)}
 .placeholder-icon{width:75px;height:75px;border-radius:25px;display:grid;place-items:center;background:var(--light);color:var(--blue);margin-bottom:15px}
@@ -82,6 +83,7 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
 }
 </style>
 </head>
+
 <body>
 <header>
  <div class="logo">🎓 CAMPUS ONE</div>
@@ -98,6 +100,7 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
 <main class="container">
  <h1 class="page-title">الرسائل الخاصة</h1>
  <p class="page-subtitle">تواصل مع زملائك في CAMPUS ONE</p>
+
  <div class="layout" id="layout">
   <section class="panel list-panel">
    <div class="panel-header"><h2>المحادثات</h2><span style="color:#2563eb;font-size:12px">رسائلك</span></div>
@@ -105,6 +108,7 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
    <div id="searchResults" class="search-results hidden"></div>
    <div id="conversationList" class="conversation-list"><div class="empty">جارٍ تحميل المحادثات...</div></div>
   </section>
+
   <section class="panel chat-panel">
    <div class="chat-header">
     <button id="backButton" class="back-button">›</button>
@@ -114,6 +118,7 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
      <div id="chatStatus" class="chat-header-status">اختر محادثة للبدء</div>
     </div>
    </div>
+
    <div id="chatPlaceholder" class="chat-placeholder">
     <div class="placeholder-icon">
      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5Z"/></svg>
@@ -121,7 +126,9 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
     <h3>محادثاتك الجامعية</h3>
     <p>اختر محادثة من القائمة أو ابحث عن طالب لبدء محادثة جديدة.</p>
    </div>
+
    <div id="messagesArea" class="messages-area hidden"></div>
+
    <form id="messageForm" class="chat-form hidden">
     <input id="messageInput" type="text" maxlength="5000" placeholder="اكتب رسالتك..." autocomplete="off">
     <button id="sendButton" class="send-button" type="submit">➤</button>
@@ -148,6 +155,7 @@ const supabase=createClient(
 );
 
 const $=id=>document.getElementById(id);
+
 let currentUser=null;
 let currentConversation=null;
 let currentPartner=null;
@@ -156,12 +164,20 @@ let searchTimer=null;
 let profilesMap=new Map();
 let conversationsData=[];
 
+let typingTimer=null;
+let remoteTypingTimer=null;
+let lastTypingSent=0;
+
 function escapeHTML(value){
  return String(value??'').replace(/[&<>"']/g,c=>({
  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
  }[c]));
 }
-function initials(name){return String(name||'ط').trim().charAt(0).toUpperCase()||'ط'}
+
+function initials(name){
+ return String(name||'ط').trim().charAt(0).toUpperCase()||'ط';
+}
+
 function formatTime(value){
  const date=new Date(value);
  return Number.isNaN(date.getTime())?'':date.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'});
@@ -172,6 +188,7 @@ async function loadPublicProfiles(){
  if(error){console.error(error);return}
  profilesMap=new Map((data||[]).map(p=>[p.id,p]));
 }
+
 function getPartner(conversation){
  const id=conversation.user_one===currentUser.id?conversation.user_two:conversation.user_one;
  return profilesMap.get(id)||{id,full_name:'طالب CAMPUS ONE',username:''};
@@ -179,6 +196,7 @@ function getPartner(conversation){
 
 async function loadConversations(){
  $('conversationList').innerHTML='<div class="empty">جارٍ تحميل المحادثات...</div>';
+
  const {data,error}=await supabase.from('conversations')
   .select('id,user_one,user_two,created_at,last_message_at')
   .or(`user_one.eq.${currentUser.id},user_two.eq.${currentUser.id}`)
@@ -189,22 +207,31 @@ async function loadConversations(){
   $('conversationList').innerHTML='<div class="empty">تعذر تحميل المحادثات. تحقق من صلاحيات قاعدة البيانات.</div>';
   return;
  }
+
  conversationsData=data||[];
+
  if(!conversationsData.length){
   $('conversationList').innerHTML='<div class="empty">لا توجد محادثات بعد.<br>ابحث عن طالب وابدأ أول محادثة.</div>';
   return;
  }
+
  const ids=conversationsData.map(c=>c.id);
+
  const {data:messages,error:msgError}=await supabase.from('messages')
   .select('conversation_id,content,message_type,created_at')
   .in('conversation_id',ids).order('created_at',{ascending:false});
+
  if(msgError)console.error(msgError);
+
  const latest=new Map();
- (messages||[]).forEach(m=>{if(!latest.has(m.conversation_id))latest.set(m.conversation_id,m)});
+ (messages||[]).forEach(m=>{
+  if(!latest.has(m.conversation_id))latest.set(m.conversation_id,m);
+ });
 
  $('conversationList').innerHTML=conversationsData.map(c=>{
   const p=getPartner(c),last=latest.get(c.id);
   const preview=last?(last.message_type==='image'?'📷 صورة':last.content):'ابدأ المحادثة الآن';
+
   return `<div class="conversation-item" data-conversation="${c.id}">
    <div class="avatar">${escapeHTML(initials(p.full_name))}</div>
    <div class="conversation-info">
@@ -223,113 +250,259 @@ async function loadConversations(){
 
 async function startConversation(partner){
  if(!partner||partner.id===currentUser.id)return;
+
  const filter=`and(user_one.eq.${currentUser.id},user_two.eq.${partner.id}),and(user_one.eq.${partner.id},user_two.eq.${currentUser.id})`;
+
  const {data:existing,error}=await supabase.from('conversations')
-  .select('id,user_one,user_two,created_at,last_message_at').or(filter).maybeSingle();
+  .select('id,user_one,user_two,created_at,last_message_at')
+  .or(filter).maybeSingle();
+
  if(error){console.error(error);alert('تعذر التحقق من المحادثة.');return}
+
  let conversation=existing;
+
  if(!conversation){
   const {data:newConversation,error:createError}=await supabase.from('conversations')
    .insert({user_one:currentUser.id,user_two:partner.id}).select().single();
+
   if(createError){
    const {data:retry}=await supabase.from('conversations')
-    .select('id,user_one,user_two,created_at,last_message_at').or(filter).maybeSingle();
-   if(!retry){console.error(createError);alert('تعذر إنشاء المحادثة. تحقق من صلاحيات Supabase.');return}
+    .select('id,user_one,user_two,created_at,last_message_at')
+    .or(filter).maybeSingle();
+
+   if(!retry){
+    console.error(createError);
+    alert('تعذر إنشاء المحادثة. تحقق من صلاحيات Supabase.');
+    return;
+   }
+
    conversation=retry;
-  }else conversation=newConversation;
+  }else{
+   conversation=newConversation;
+  }
  }
+
  await loadConversations();
  await openConversation(conversation);
 }
 
 async function openConversation(conversation){
+ if(messageChannel){
+  await supabase.removeChannel(messageChannel);
+  messageChannel=null;
+ }
+
+ clearTimeout(typingTimer);
+ clearTimeout(remoteTypingTimer);
+
  currentConversation=conversation;
  currentPartner=getPartner(conversation);
+
  $('layout').classList.add('chat-open');
  $('chatPlaceholder').classList.add('hidden');
  $('messagesArea').classList.remove('hidden');
  $('messageForm').classList.remove('hidden');
+
  $('chatName').textContent=currentPartner.full_name||'طالب';
  $('chatAvatar').textContent=initials(currentPartner.full_name);
  $('chatStatus').textContent='محادثة خاصة';
+
  document.querySelectorAll('.conversation-item').forEach(item=>{
   item.classList.toggle('selected',item.dataset.conversation===conversation.id);
  });
+
  await loadMessages();
  subscribeToMessages();
 }
 
 async function loadMessages(){
  if(!currentConversation)return;
+
  $('messagesArea').innerHTML='<div class="empty">جارٍ تحميل الرسائل...</div>';
+
  const {data,error}=await supabase.from('messages')
   .select('id,sender_id,content,message_type,created_at')
-  .eq('conversation_id',currentConversation.id).order('created_at',{ascending:true});
+  .eq('conversation_id',currentConversation.id)
+  .order('created_at',{ascending:true});
+
  if(error){
   console.error(error);
   $('messagesArea').innerHTML='<div class="empty">تعذر تحميل الرسائل.</div>';
   return;
  }
+
  renderMessages(data||[]);
 }
 
 function renderMessages(messages){
  const area=$('messagesArea');
+
  if(!messages.length){
   area.innerHTML='<div class="empty">هذه بداية المحادثة.<br>أرسل أول رسالة الآن.</div>';
   return;
  }
+
  area.innerHTML=messages.map(m=>{
   const mine=m.sender_id===currentUser.id;
   const content=m.message_type==='image'?'📷 صورة':escapeHTML(m.content);
+
   return `<div class="message ${mine?'mine':'theirs'}">${content}<span class="message-time">${formatTime(m.created_at)}</span></div>`;
  }).join('');
+
  area.scrollTop=area.scrollHeight;
 }
 
 function subscribeToMessages(){
- if(messageChannel){supabase.removeChannel(messageChannel);messageChannel=null}
  if(!currentConversation)return;
+
  const id=currentConversation.id;
- messageChannel=supabase.channel('messages-'+id)
-  .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'conversation_id=eq.'+id},async()=>{
+
+ messageChannel=supabase.channel('messages-'+id,{
+  config:{broadcast:{self:false}}
+ });
+
+ messageChannel
+  .on('postgres_changes',{
+   event:'INSERT',
+   schema:'public',
+   table:'messages',
+   filter:'conversation_id=eq.'+id
+  },async()=>{
    await loadMessages();
    await loadConversations();
-  }).subscribe();
+  })
+  .on('broadcast',{event:'typing'},({payload})=>{
+   if(!payload||payload.user_id===currentUser.id)return;
+
+   if(payload.is_typing){
+    $('chatStatus').textContent='يكتب الآن...';
+
+    clearTimeout(remoteTypingTimer);
+
+    remoteTypingTimer=setTimeout(()=>{
+     $('chatStatus').textContent='محادثة خاصة';
+    },2500);
+   }else{
+    clearTimeout(remoteTypingTimer);
+    $('chatStatus').textContent='محادثة خاصة';
+   }
+  })
+  .subscribe((status)=>{
+   if(status==='SUBSCRIBED'){
+    console.log('Typing indicator connected');
+   }
+  });
+}
+
+async function sendTypingStatus(isTyping){
+ if(!messageChannel||messageChannel.state!=='joined')return;
+
+ try{
+  await messageChannel.send({
+   type:'broadcast',
+   event:'typing',
+   payload:{
+    user_id:currentUser.id,
+    is_typing:isTyping
+   }
+  });
+ }catch(error){
+  console.error('Typing status error:',error);
+ }
+}
+
+function handleTyping(){
+ if(!currentConversation||!messageChannel)return;
+
+ const input=$('messageInput');
+
+ if(!input.value.trim()){
+  clearTimeout(typingTimer);
+  sendTypingStatus(false);
+  return;
+ }
+
+ const now=Date.now();
+
+ if(now-lastTypingSent>1000){
+  lastTypingSent=now;
+  sendTypingStatus(true);
+ }
+
+ clearTimeout(typingTimer);
+
+ typingTimer=setTimeout(()=>{
+  sendTypingStatus(false);
+ },1800);
 }
 
 async function sendMessage(event){
  event.preventDefault();
+
  if(!currentConversation||!currentUser)return;
+
  const input=$('messageInput');
  const content=input.value.trim();
+
  if(!content)return;
+
+ clearTimeout(typingTimer);
+ sendTypingStatus(false);
+
  $('sendButton').disabled=true;
  input.disabled=true;
+
  const {error}=await supabase.from('messages').insert({
   conversation_id:currentConversation.id,
   sender_id:currentUser.id,
   content,
   message_type:'text'
  });
+
  $('sendButton').disabled=false;
  input.disabled=false;
- if(error){console.error(error);alert('لم يتم إرسال الرسالة. حاول مجدداً.');return}
+
+ if(error){
+  console.error(error);
+  alert('لم يتم إرسال الرسالة. حاول مجدداً.');
+  return;
+ }
+
  input.value='';
+
  await loadMessages();
  await loadConversations();
+
  input.focus();
 }
 
 async function searchStudents(term){
  const results=$('searchResults');
- if(term.length<2){results.classList.add('hidden');results.innerHTML='';return}
+
+ if(term.length<2){
+  results.classList.add('hidden');
+  results.innerHTML='';
+  return;
+ }
+
  results.classList.remove('hidden');
  results.innerHTML='<div class="empty">جارٍ البحث...</div>';
+
  const {data,error}=await supabase.rpc('search_students',{search_term:term});
- if(error){console.error(error);results.innerHTML='<div class="empty">تعذر البحث عن الطلبة.</div>';return}
+
+ if(error){
+  console.error(error);
+  results.innerHTML='<div class="empty">تعذر البحث عن الطلبة.</div>';
+  return;
+ }
+
  const students=(data||[]).filter(s=>s.id!==currentUser.id);
- if(!students.length){results.innerHTML='<div class="empty">لم يتم العثور على طالب.</div>';return}
+
+ if(!students.length){
+  results.innerHTML='<div class="empty">لم يتم العثور على طالب.</div>';
+  return;
+ }
+
  results.innerHTML=students.map(s=>`
   <div class="result-item">
    <div class="avatar">${escapeHTML(initials(s.full_name))}</div>
@@ -339,12 +512,15 @@ async function searchStudents(term){
    </div>
    <button class="start-button" data-student="${s.id}">مراسلة</button>
   </div>`).join('');
+
  results.querySelectorAll('.start-button').forEach(button=>{
   button.addEventListener('click',async()=>{
    const student=students.find(s=>s.id===button.dataset.student);
    if(!student)return;
+
    results.classList.add('hidden');
    $('studentSearch').value='';
+
    await startConversation(student);
   });
  });
@@ -355,26 +531,51 @@ $('studentSearch').addEventListener('input',event=>{
  const term=event.target.value.trim();
  searchTimer=setTimeout(()=>searchStudents(term),400);
 });
+
+$('messageInput').addEventListener('input',handleTyping);
+
+$('messageInput').addEventListener('blur',()=>{
+ clearTimeout(typingTimer);
+ sendTypingStatus(false);
+});
+
 $('messageForm').addEventListener('submit',sendMessage);
-$('backButton').addEventListener('click',()=>$('layout').classList.remove('chat-open'));
+
+$('backButton').addEventListener('click',()=>{
+ clearTimeout(typingTimer);
+ clearTimeout(remoteTypingTimer);
+ sendTypingStatus(false);
+ $('layout').classList.remove('chat-open');
+});
 
 async function init(){
  const {data:{user},error}=await supabase.auth.getUser();
- if(error||!user){location.replace('auth.html');return}
+
+ if(error||!user){
+  location.replace('auth.html');
+  return;
+ }
+
  currentUser=user;
+
  const {data:profile,error:profileError}=await supabase.from('profiles')
-  .select('role,verification_status').eq('id',user.id).single();
+  .select('role,verification_status')
+  .eq('id',user.id).single();
+
  if(profileError||!profile){
   $('conversationList').innerHTML='<div class="empty">تعذر التحقق من حسابك.</div>';
   return;
  }
+
  if(profile.verification_status!=='approved'&&profile.role!=='admin'){
   $('conversationList').innerHTML='<div class="empty">الرسائل متاحة للحسابات المعتمدة فقط.</div>';
   return;
  }
+
  await loadPublicProfiles();
  await loadConversations();
 }
+
 init();
 </script>
 </body>
