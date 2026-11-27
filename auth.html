@@ -89,14 +89,14 @@ show("forgot");
 };
 $("backLogin1").onclick=()=>show("login");
 
-// توجيه المستخدم حسب صلاحياته
+// التحقق من الحساب وتوجيه المستخدم
 async function redirectUser(){
 message("جارٍ التحقق من الحساب...");
 
 const {data:{user},error:userError}=await supabase.auth.getUser();
 
 if(userError||!user){
-message("تعذر التحقق من الحساب. سجّل الدخول مجدداً.");
+message("تعذر التحقق من الحساب: "+(userError?.message||"لا يوجد مستخدم مسجل."));
 return;
 }
 
@@ -104,10 +104,15 @@ const {data:profile,error}=await supabase
 .from("profiles")
 .select("role,verification_status")
 .eq("id",user.id)
-.single();
+.maybeSingle();
 
-if(error||!profile){
-message("تعذر العثور على الملف الشخصي.");
+if(error){
+message("خطأ في جلب الملف الشخصي: "+error.message);
+return;
+}
+
+if(!profile){
+message("لم يتم العثور على سجل مرتبط بمعرف الحساب: "+user.id);
 return;
 }
 
@@ -199,7 +204,7 @@ button.disabled=false;
 }
 };
 
-// إرسال رابط الاستعادة
+// إرسال رابط استعادة كلمة المرور
 $("sendRecoveryBtn").onclick=async()=>{
 const email=$("forgotEmail").value.trim();
 if(!email)return message("أدخل البريد الإلكتروني.");
@@ -221,7 +226,7 @@ button.disabled=false;
 }
 };
 
-// استقبال جلسة الاستعادة
+// استقبال جلسة استعادة كلمة المرور
 let recoveryMode=false;
 
 supabase.auth.onAuthStateChange((event,session)=>{
@@ -266,7 +271,7 @@ button.disabled=false;
 }
 };
 
-// التحقق من رابط الاستعادة عند فتح الصفحة
+// التحقق من رابط الاستعادة
 const {data:{session}}=await supabase.auth.getSession();
 
 if(session&&window.location.hash.includes("type=recovery")){
