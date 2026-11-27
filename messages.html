@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102b46">
+<title>CAMPUS ONE | الرسائل</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#102b46;--blue:#2563eb;--light:#eff6ff;--bg:#f3f6fb;--text:#172b4d;--muted:#718096;--border:#e7edf5}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);padding-bottom:100px}
+header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.logo{font-size:20px;font-weight:900}
+.header-actions{display:flex;gap:10px}
+.icon-button{width:40px;height:40px;display:grid;place-items:center;background:#ffffff12;border:1px solid #ffffff18;color:white;border-radius:13px;cursor:pointer}
+.icon-button svg{width:21px;height:21px}
+.container{max-width:1000px;margin:auto;padding:20px 14px}
+.page-title{font-size:23px;font-weight:900;margin-bottom:6px}
+.page-subtitle{color:var(--muted);font-size:13px;margin-bottom:18px}
+.layout{display:grid;grid-template-columns:330px minmax(0,1fr);gap:15px;align-items:start}
+.panel{background:white;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 4px 18px #102b4608}
+.panel-header{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.panel-header h2{font-size:16px}
+.search-area{padding:13px}
+.search-input{width:100%;border:1px solid var(--border);background:#f8fafc;padding:13px;border-radius:12px;outline:none;font-size:14px;font-family:inherit}
+.search-input:focus{border-color:var(--blue);background:white}
+.conversation-list{max-height:570px;overflow-y:auto}
+.conversation-item{display:flex;align-items:center;gap:11px;padding:14px;border-bottom:1px solid #f0f3f8;cursor:pointer}
+.conversation-item:hover,.conversation-item.selected{background:var(--light)}
+.avatar{width:45px;height:45px;min-width:45px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#60a5fa);color:white;display:grid;place-items:center;font-size:18px;font-weight:bold}
+.conversation-info{min-width:0;flex:1}
+.conversation-name{font-size:14px;font-weight:800;margin-bottom:6px}
+.conversation-preview{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:13px;line-height:1.9}
+.chat-panel{min-height:590px;display:flex;flex-direction:column}
+.chat-header{padding:14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;min-height:72px}
+.chat-header-info{flex:1;min-width:0}
+.chat-header-name{font-size:15px;font-weight:900}
+.chat-header-status{color:#16a34a;font-size:11px;margin-top:5px}
+.back-button{display:none;border:0;background:var(--light);color:var(--blue);border-radius:10px;width:35px;height:35px;font-size:20px;cursor:pointer}
+.chat-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:35px 20px;color:var(--muted)}
+.placeholder-icon{width:75px;height:75px;border-radius:25px;display:grid;place-items:center;background:var(--light);color:var(--blue);margin-bottom:15px}
+.placeholder-icon svg{width:35px;height:35px}
+.chat-placeholder h3{color:var(--text);font-size:17px;margin-bottom:8px}
+.chat-placeholder p{font-size:13px;line-height:1.8;max-width:260px}
+.messages-area{flex:1;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:11px;min-height:350px;max-height:470px;background:#fbfcfe}
+.message{max-width:82%;padding:11px 13px;border-radius:15px;font-size:14px;line-height:1.7;overflow-wrap:anywhere;white-space:pre-wrap}
+.message.mine{align-self:flex-start;background:var(--blue);color:white;border-bottom-left-radius:4px}
+.message.theirs{align-self:flex-end;background:white;border:1px solid var(--border);border-bottom-right-radius:4px}
+.message-time{display:block;font-size:10px;margin-top:5px;opacity:.7;text-align:left}
+.chat-form{display:flex;align-items:center;gap:9px;padding:13px;border-top:1px solid var(--border);background:white}
+.chat-form input{flex:1;min-width:0;border:1px solid var(--border);border-radius:13px;padding:13px;outline:none;font-family:inherit;font-size:14px}
+.chat-form input:focus{border-color:var(--blue)}
+.send-button{width:45px;height:45px;border:0;border-radius:13px;background:var(--blue);color:white;font-size:20px;cursor:pointer}
+.send-button:disabled{opacity:.5;cursor:not-allowed}
+.search-results{padding:0 13px 13px}
+.result-item{display:flex;align-items:center;gap:10px;padding:11px 5px;border-bottom:1px solid var(--border)}
+.result-info{flex:1;min-width:0}
+.result-name{font-size:13px;font-weight:bold}
+.result-username{color:var(--muted);font-size:11px;margin-top:4px}
+.start-button{border:0;background:var(--light);color:var(--blue);padding:9px 12px;border-radius:10px;font-size:12px;font-weight:bold;cursor:pointer}
+.hidden{display:none!important}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(18px);border-top:1px solid #e5eaf1;display:flex;justify-content:space-around;align-items:center;padding:9px 3px calc(9px + env(safe-area-inset-bottom));z-index:100;box-shadow:0 -5px 25px #102b4608}
+.nav-item{position:relative;color:#8995a7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;font-weight:600;text-decoration:none;flex:1;min-width:0;padding:6px 1px;border-radius:13px}
+.nav-icon{width:25px;height:25px;display:grid;place-items:center}
+.nav-icon svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active{color:var(--blue);background:#eff6ff}
+.nav-item.active .nav-icon svg{stroke-width:2.4}
+.nav-label{white-space:nowrap}
+@media(max-width:700px){
+ .layout{display:block}
+ .chat-panel{display:none;min-height:calc(100vh - 190px)}
+ .layout.chat-open .list-panel{display:none}
+ .layout.chat-open .chat-panel{display:flex}
+ .back-button{display:block}
+ .messages-area{max-height:none;min-height:300px}
+ .conversation-list{max-height:none}
+}
+@media(min-width:701px){
+ .bottom-nav{max-width:650px;left:50%;right:auto;transform:translateX(-50%);bottom:12px;width:calc(100% - 30px);border:1px solid var(--border);border-radius:20px;padding:9px;box-shadow:0 8px 35px #102b4620}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">🎓 CAMPUS ONE</div>
+ <div class="header-actions">
+  <button class="icon-button" aria-label="الإشعارات" onclick="location.href='notifications.html'">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+  </button>
+  <button class="icon-button" aria-label="حسابي" onclick="location.href='student.html'">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>
+  </button>
+ </div>
+</header>
+
+<main class="container">
+ <h1 class="page-title">الرسائل الخاصة</h1>
+ <p class="page-subtitle">تواصل مع زملائك في CAMPUS ONE</p>
+ <div class="layout" id="layout">
+  <section class="panel list-panel">
+   <div class="panel-header"><h2>المحادثات</h2><span style="color:#2563eb;font-size:12px">رسائلك</span></div>
+   <div class="search-area"><input id="studentSearch" class="search-input" type="search" placeholder="ابحث عن طالب لبدء محادثة..." autocomplete="off"></div>
+   <div id="searchResults" class="search-results hidden"></div>
+   <div id="conversationList" class="conversation-list"><div class="empty">جارٍ تحميل المحادثات...</div></div>
+  </section>
+  <section class="panel chat-panel">
+   <div class="chat-header">
+    <button id="backButton" class="back-button">›</button>
+    <div id="chatAvatar" class="avatar">C</div>
+    <div class="chat-header-info">
+     <div id="chatName" class="chat-header-name">الرسائل</div>
+     <div id="chatStatus" class="chat-header-status">اختر محادثة للبدء</div>
+    </div>
+   </div>
+   <div id="chatPlaceholder" class="chat-placeholder">
+    <div class="placeholder-icon">
+     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5Z"/></svg>
+    </div>
+    <h3>محادثاتك الجامعية</h3>
+    <p>اختر محادثة من القائمة أو ابحث عن طالب لبدء محادثة جديدة.</p>
+   </div>
+   <div id="messagesArea" class="messages-area hidden"></div>
+   <form id="messageForm" class="chat-form hidden">
+    <input id="messageInput" type="text" maxlength="5000" placeholder="اكتب رسالتك..." autocomplete="off">
+    <button id="sendButton" class="send-button" type="submit">➤</button>
+   </form>
+  </section>
+ </div>
+</main>
+
+<nav class="bottom-nav" aria-label="التنقل الرئيسي">
+ <a class="nav-item" href="dashboard.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/></svg></span><span class="nav-label">الرئيسية</span></a>
+ <a class="nav-item" href="community.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="nav-label">المجتمع</span></a>
+ <a class="nav-item" href="search.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><span class="nav-label">البحث</span></a>
+ <a class="nav-item active" href="messages.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg></span><span class="nav-label">الرسائل</span></a>
+ <a class="nav-item" href="notifications.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span><span class="nav-label">الإشعارات</span></a>
+ <a class="nav-item" href="student.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg></span><span class="nav-label">حسابي</span></a>
+</nav>
+
+<script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2';
+
+const supabase=createClient(
+ 'https://rpvoajlzkoynimfowzgl.supabase.co',
+ 'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552'
+);
+
+const $=id=>document.getElementById(id);
+let currentUser=null;
+let currentConversation=null;
+let currentPartner=null;
+let messageChannel=null;
+let searchTimer=null;
+let profilesMap=new Map();
+let conversationsData=[];
+
+function escapeHTML(value){
+ return String(value??'').replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+function initials(name){return String(name||'ط').trim().charAt(0).toUpperCase()||'ط'}
+function formatTime(value){
+ const date=new Date(value);
+ return Number.isNaN(date.getTime())?'':date.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'});
+}
+
+async function loadPublicProfiles(){
+ const {data,error}=await supabase.rpc('get_public_profiles');
+ if(error){console.error(error);return}
+ profilesMap=new Map((data||[]).map(p=>[p.id,p]));
+}
+function getPartner(conversation){
+ const id=conversation.user_one===currentUser.id?conversation.user_two:conversation.user_one;
+ return profilesMap.get(id)||{id,full_name:'طالب CAMPUS ONE',username:''};
+}
+
+async function loadConversations(){
+ $('conversationList').innerHTML='<div class="empty">جارٍ تحميل المحادثات...</div>';
+ const {data,error}=await supabase.from('conversations')
+  .select('id,user_one,user_two,created_at,last_message_at')
+  .or(`user_one.eq.${currentUser.id},user_two.eq.${currentUser.id}`)
+  .order('last_message_at',{ascending:false});
+
+ if(error){
+  console.error(error);
+  $('conversationList').innerHTML='<div class="empty">تعذر تحميل المحادثات. تحقق من صلاحيات قاعدة البيانات.</div>';
+  return;
+ }
+ conversationsData=data||[];
+ if(!conversationsData.length){
+  $('conversationList').innerHTML='<div class="empty">لا توجد محادثات بعد.<br>ابحث عن طالب وابدأ أول محادثة.</div>';
+  return;
+ }
+ const ids=conversationsData.map(c=>c.id);
+ const {data:messages,error:msgError}=await supabase.from('messages')
+  .select('conversation_id,content,message_type,created_at')
+  .in('conversation_id',ids).order('created_at',{ascending:false});
+ if(msgError)console.error(msgError);
+ const latest=new Map();
+ (messages||[]).forEach(m=>{if(!latest.has(m.conversation_id))latest.set(m.conversation_id,m)});
+
+ $('conversationList').innerHTML=conversationsData.map(c=>{
+  const p=getPartner(c),last=latest.get(c.id);
+  const preview=last?(last.message_type==='image'?'📷 صورة':last.content):'ابدأ المحادثة الآن';
+  return `<div class="conversation-item" data-conversation="${c.id}">
+   <div class="avatar">${escapeHTML(initials(p.full_name))}</div>
+   <div class="conversation-info">
+    <div class="conversation-name">${escapeHTML(p.full_name)}</div>
+    <div class="conversation-preview">${escapeHTML(preview)}</div>
+   </div></div>`;
+ }).join('');
+
+ document.querySelectorAll('.conversation-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+   const c=conversationsData.find(x=>x.id===item.dataset.conversation);
+   if(c)openConversation(c);
+  });
+ });
+}
+
+async function startConversation(partner){
+ if(!partner||partner.id===currentUser.id)return;
+ const filter=`and(user_one.eq.${currentUser.id},user_two.eq.${partner.id}),and(user_one.eq.${partner.id},user_two.eq.${currentUser.id})`;
+ const {data:existing,error}=await supabase.from('conversations')
+  .select('id,user_one,user_two,created_at,last_message_at').or(filter).maybeSingle();
+ if(error){console.error(error);alert('تعذر التحقق من المحادثة.');return}
+ let conversation=existing;
+ if(!conversation){
+  const {data:newConversation,error:createError}=await supabase.from('conversations')
+   .insert({user_one:currentUser.id,user_two:partner.id}).select().single();
+  if(createError){
+   const {data:retry}=await supabase.from('conversations')
+    .select('id,user_one,user_two,created_at,last_message_at').or(filter).maybeSingle();
+   if(!retry){console.error(createError);alert('تعذر إنشاء المحادثة. تحقق من صلاحيات Supabase.');return}
+   conversation=retry;
+  }else conversation=newConversation;
+ }
+ await loadConversations();
+ await openConversation(conversation);
+}
+
+async function openConversation(conversation){
+ currentConversation=conversation;
+ currentPartner=getPartner(conversation);
+ $('layout').classList.add('chat-open');
+ $('chatPlaceholder').classList.add('hidden');
+ $('messagesArea').classList.remove('hidden');
+ $('messageForm').classList.remove('hidden');
+ $('chatName').textContent=currentPartner.full_name||'طالب';
+ $('chatAvatar').textContent=initials(currentPartner.full_name);
+ $('chatStatus').textContent='محادثة خاصة';
+ document.querySelectorAll('.conversation-item').forEach(item=>{
+  item.classList.toggle('selected',item.dataset.conversation===conversation.id);
+ });
+ await loadMessages();
+ subscribeToMessages();
+}
+
+async function loadMessages(){
+ if(!currentConversation)return;
+ $('messagesArea').innerHTML='<div class="empty">جارٍ تحميل الرسائل...</div>';
+ const {data,error}=await supabase.from('messages')
+  .select('id,sender_id,content,message_type,created_at')
+  .eq('conversation_id',currentConversation.id).order('created_at',{ascending:true});
+ if(error){
+  console.error(error);
+  $('messagesArea').innerHTML='<div class="empty">تعذر تحميل الرسائل.</div>';
+  return;
+ }
+ renderMessages(data||[]);
+}
+
+function renderMessages(messages){
+ const area=$('messagesArea');
+ if(!messages.length){
+  area.innerHTML='<div class="empty">هذه بداية المحادثة.<br>أرسل أول رسالة الآن.</div>';
+  return;
+ }
+ area.innerHTML=messages.map(m=>{
+  const mine=m.sender_id===currentUser.id;
+  const content=m.message_type==='image'?'📷 صورة':escapeHTML(m.content);
+  return `<div class="message ${mine?'mine':'theirs'}">${content}<span class="message-time">${formatTime(m.created_at)}</span></div>`;
+ }).join('');
+ area.scrollTop=area.scrollHeight;
+}
+
+function subscribeToMessages(){
+ if(messageChannel){supabase.removeChannel(messageChannel);messageChannel=null}
+ if(!currentConversation)return;
+ const id=currentConversation.id;
+ messageChannel=supabase.channel('messages-'+id)
+  .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'conversation_id=eq.'+id},async()=>{
+   await loadMessages();
+   await loadConversations();
+  }).subscribe();
+}
+
+async function sendMessage(event){
+ event.preventDefault();
+ if(!currentConversation||!currentUser)return;
+ const input=$('messageInput');
+ const content=input.value.trim();
+ if(!content)return;
+ $('sendButton').disabled=true;
+ input.disabled=true;
+ const {error}=await supabase.from('messages').insert({
+  conversation_id:currentConversation.id,
+  sender_id:currentUser.id,
+  content,
+  message_type:'text'
+ });
+ $('sendButton').disabled=false;
+ input.disabled=false;
+ if(error){console.error(error);alert('لم يتم إرسال الرسالة. حاول مجدداً.');return}
+ input.value='';
+ await loadMessages();
+ await loadConversations();
+ input.focus();
+}
+
+async function searchStudents(term){
+ const results=$('searchResults');
+ if(term.length<2){results.classList.add('hidden');results.innerHTML='';return}
+ results.classList.remove('hidden');
+ results.innerHTML='<div class="empty">جارٍ البحث...</div>';
+ const {data,error}=await supabase.rpc('search_students',{search_term:term});
+ if(error){console.error(error);results.innerHTML='<div class="empty">تعذر البحث عن الطلبة.</div>';return}
+ const students=(data||[]).filter(s=>s.id!==currentUser.id);
+ if(!students.length){results.innerHTML='<div class="empty">لم يتم العثور على طالب.</div>';return}
+ results.innerHTML=students.map(s=>`
+  <div class="result-item">
+   <div class="avatar">${escapeHTML(initials(s.full_name))}</div>
+   <div class="result-info">
+    <div class="result-name">${escapeHTML(s.full_name)}</div>
+    <div class="result-username">${s.username?'@'+escapeHTML(s.username):'طالب CAMPUS ONE'}</div>
+   </div>
+   <button class="start-button" data-student="${s.id}">مراسلة</button>
+  </div>`).join('');
+ results.querySelectorAll('.start-button').forEach(button=>{
+  button.addEventListener('click',async()=>{
+   const student=students.find(s=>s.id===button.dataset.student);
+   if(!student)return;
+   results.classList.add('hidden');
+   $('studentSearch').value='';
+   await startConversation(student);
+  });
+ });
+}
+
+$('studentSearch').addEventListener('input',event=>{
+ clearTimeout(searchTimer);
+ const term=event.target.value.trim();
+ searchTimer=setTimeout(()=>searchStudents(term),400);
+});
+$('messageForm').addEventListener('submit',sendMessage);
+$('backButton').addEventListener('click',()=>$('layout').classList.remove('chat-open'));
+
+async function init(){
+ const {data:{user},error}=await supabase.auth.getUser();
+ if(error||!user){location.replace('auth.html');return}
+ currentUser=user;
+ const {data:profile,error:profileError}=await supabase.from('profiles')
+  .select('role,verification_status').eq('id',user.id).single();
+ if(profileError||!profile){
+  $('conversationList').innerHTML='<div class="empty">تعذر التحقق من حسابك.</div>';
+  return;
+ }
+ if(profile.verification_status!=='approved'&&profile.role!=='admin'){
+  $('conversationList').innerHTML='<div class="empty">الرسائل متاحة للحسابات المعتمدة فقط.</div>';
+  return;
+ }
+ await loadPublicProfiles();
+ await loadConversations();
+}
+init();
+</script>
+</body>
+</html>
