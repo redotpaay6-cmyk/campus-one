@@ -1,15 +1,12 @@
 
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CAMPUS ONE | حساب الطالب</title>
-
   <style>
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -20,7 +17,6 @@
       place-items: center;
       padding: 20px;
     }
-
     .card {
       background: white;
       width: 100%;
@@ -29,18 +25,12 @@
       border-radius: 18px;
       box-shadow: 0 8px 30px #102b4615;
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
+    h1 { text-align: center; margin-bottom: 8px; }
     .sub {
       text-align: center;
       color: #64748b;
       margin-bottom: 24px;
     }
-
     input {
       width: 100%;
       padding: 13px;
@@ -49,7 +39,6 @@
       border-radius: 9px;
       font-size: 15px;
     }
-
     button {
       width: 100%;
       padding: 14px;
@@ -61,242 +50,258 @@
       font-size: 16px;
       cursor: pointer;
     }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
+    button:disabled { opacity: 0.6; }
     .switch {
       background: none;
       color: #1768a5;
       margin-top: 8px;
     }
-
     #message {
       text-align: center;
       margin-top: 15px;
       line-height: 1.6;
+      overflow-wrap: anywhere;
     }
-
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
   </style>
 </head>
-
 <body>
+<main class="card">
+  <h1>CAMPUS ONE</h1>
+  <p class="sub">كل ما يحتاجه الطالب، في مكان واحد</p>
 
-  <main class="card">
+  <div id="register">
+    <h3>إنشاء حساب طالب</h3>
+    <input id="name" placeholder="الاسم الكامل">
+    <input id="phone" type="tel" placeholder="رقم الهاتف">
+    <input id="email" type="email" placeholder="البريد الإلكتروني">
+    <input id="password" type="password" placeholder="كلمة المرور">
+    <input id="university" placeholder="الجامعة">
+    <input id="specialty" placeholder="التخصص">
+    <button id="registerBtn">إنشاء الحساب</button>
+    <button class="switch" id="showLogin">لديك حساب؟ تسجيل الدخول</button>
+  </div>
 
-    <h1>CAMPUS ONE</h1>
-    <p class="sub">كل ما يحتاجه الطالب، في مكان واحد</p>
+  <div id="login" class="hidden">
+    <h3>تسجيل الدخول</h3>
+    <input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
+    <input id="loginPassword" type="password" placeholder="كلمة المرور">
+    <button id="loginBtn">دخول</button>
+    <button class="switch" id="forgotBtn">نسيت كلمة المرور؟</button>
+    <button class="switch" id="showRegister">إنشاء حساب جديد</button>
+  </div>
 
-    <div id="register">
+  <div id="forgot" class="hidden">
+    <h3>استعادة كلمة المرور</h3>
+    <p>أدخل بريدك الإلكتروني لإرسال رابط الاستعادة.</p>
+    <input id="forgotEmail" type="email" placeholder="البريد الإلكتروني">
+    <button id="sendRecoveryBtn">إرسال رابط الاستعادة</button>
+    <button class="switch" id="backLogin1">العودة لتسجيل الدخول</button>
+  </div>
 
-      <h3>إنشاء حساب طالب</h3>
+  <div id="reset" class="hidden">
+    <h3>تعيين كلمة مرور جديدة</h3>
+    <input id="newPassword" type="password" placeholder="كلمة المرور الجديدة">
+    <input id="confirmPassword" type="password" placeholder="تأكيد كلمة المرور">
+    <button id="savePasswordBtn">حفظ كلمة المرور الجديدة</button>
+  </div>
 
-      <input id="name" placeholder="الاسم الكامل">
+  <p id="message" role="status"></p>
+</main>
 
-      <input id="phone" type="tel" placeholder="رقم الهاتف">
+<script type="module">
+import { createClient } from
+  "https://esm.sh/@supabase/supabase-js@2";
 
-      <input id="email" type="email" placeholder="البريد الإلكتروني">
+const supabase = createClient(
+  "https://rpvoajlzkoynimfowzgl.supabase.co",
+  "sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552"
+);
 
-      <input id="password" type="password" placeholder="كلمة المرور">
+const $ = id => document.getElementById(id);
+const message = text => $("message").textContent = text;
 
-      <input id="university" placeholder="الجامعة">
+function show(section) {
+  ["register", "login", "forgot", "reset"].forEach(id => {
+    $(id).classList.toggle("hidden", id !== section);
+  });
+  message("");
+}
 
-      <input id="specialty" placeholder="التخصص">
+$("showLogin").onclick = () => show("login");
+$("showRegister").onclick = () => show("register");
+$("forgotBtn").onclick = () => {
+  $("forgotEmail").value = $("loginEmail").value.trim();
+  show("forgot");
+};
+$("backLogin1").onclick = () => show("login");
 
-      <button id="registerBtn">إنشاء الحساب</button>
+// إنشاء حساب طالب
+$("registerBtn").onclick = async () => {
+  const full_name = $("name").value.trim();
+  const phone = $("phone").value.trim();
+  const email = $("email").value.trim();
+  const password = $("password").value;
+  const university = $("university").value.trim();
+  const specialty = $("specialty").value.trim();
 
-      <button class="switch" id="showLogin">
-        لديك حساب؟ تسجيل الدخول
-      </button>
+  if (!full_name || !phone || !email || !password ||
+      !university || !specialty) {
+    return message("يرجى ملء جميع الخانات.");
+  }
 
-    </div>
+  if (password.length < 8)
+    return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
 
-    <div id="login" class="hidden">
+  const button = $("registerBtn");
+  button.disabled = true;
+  message("جارٍ إنشاء الحساب...");
 
-      <h3>تسجيل الدخول</h3>
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo:
+          "https://redotpaay6-cmyk.github.io/campus-one/auth.html",
+        data: { full_name, phone, university, specialty }
+      }
+    });
 
-      <input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
+    if (error) throw error;
+    if (!data.user) throw new Error("لم يتم إرجاع بيانات المستخدم.");
 
-      <input id="loginPassword" type="password" placeholder="كلمة المرور">
+    const metadata = data.user.user_metadata || {};
 
-      <button id="loginBtn">دخول</button>
+    if (
+      metadata.full_name !== full_name ||
+      metadata.phone !== phone ||
+      metadata.university !== university ||
+      metadata.specialty !== specialty
+    ) {
+      return message("تم إنشاء الحساب، لكن بيانات الطالب لم تصل كما هو متوقع.");
+    }
 
-      <button class="switch" id="showRegister">
-        إنشاء حساب جديد
-      </button>
-
-    </div>
-
-    <p id="message" role="status"></p>
-
-  </main>
-
-  <script type="module">
-
-    import { createClient } from
-      "https://esm.sh/@supabase/supabase-js@2";
-
-    const supabase = createClient(
-      "https://rpvoajlzkoynimfowzgl.supabase.co",
-      "sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552"
+    message(data.session
+      ? "تم إنشاء حسابك بنجاح! ملفك الشخصي قيد المراجعة."
+      : "تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيده. ملفك قيد المراجعة."
     );
+  } catch (error) {
+    message("تعذر إنشاء الحساب: " + error.message);
+  } finally {
+    button.disabled = false;
+  }
+};
 
-    const $ = id => document.getElementById(id);
+// تسجيل الدخول
+$("loginBtn").onclick = async () => {
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
 
-    const message = text => {
-      $("message").textContent = text;
-    };
+  if (!email || !password)
+    return message("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
 
-    $("showLogin").onclick = () => {
-      $("register").classList.add("hidden");
-      $("login").classList.remove("hidden");
-      message("");
-    };
+  const button = $("loginBtn");
+  button.disabled = true;
+  message("جارٍ تسجيل الدخول...");
 
-    $("showRegister").onclick = () => {
-      $("login").classList.add("hidden");
-      $("register").classList.remove("hidden");
-      message("");
-    };
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email, password
+    });
+    if (error) throw error;
+    message("تم تسجيل الدخول بنجاح!");
+  } catch (error) {
+    message("تعذر تسجيل الدخول: " + error.message);
+  } finally {
+    button.disabled = false;
+  }
+};
 
-    // إنشاء حساب طالب
-    $("registerBtn").onclick = async () => {
+// إرسال رابط استعادة كلمة المرور
+$("sendRecoveryBtn").onclick = async () => {
+  const email = $("forgotEmail").value.trim();
+  if (!email) return message("أدخل البريد الإلكتروني.");
 
-      const full_name = $("name").value.trim();
-      const phone = $("phone").value.trim();
-      const email = $("email").value.trim();
-      const password = $("password").value;
-      const university = $("university").value.trim();
-      const specialty = $("specialty").value.trim();
+  const button = $("sendRecoveryBtn");
+  button.disabled = true;
+  message("جارٍ إرسال رابط الاستعادة...");
 
-      if (
-        !full_name ||
-        !phone ||
-        !email ||
-        !password ||
-        !university ||
-        !specialty
-      ) {
-        return message("يرجى ملء جميع الخانات.");
-      }
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo:
+        "https://redotpaay6-cmyk.github.io/campus-one/auth.html"
+    });
+    if (error) throw error;
+    message("تم إرسال رابط الاستعادة. تحقق من بريدك الإلكتروني.");
+  } catch (error) {
+    message("تعذر الإرسال: " + error.message);
+  } finally {
+    button.disabled = false;
+  }
+};
 
-      if (password.length < 8) {
-        return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
-      }
+// استقبال جلسة استعادة كلمة المرور
+let recoveryMode = false;
 
-      const button = $("registerBtn");
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === "PASSWORD_RECOVERY" && session) {
+    recoveryMode = true;
+    show("reset");
+    message("أدخل كلمة المرور الجديدة.");
+  }
+});
 
-      button.disabled = true;
-      message("جارٍ إنشاء الحساب...");
+// التحقق من رابط الاستعادة عند فتح الصفحة
+const { data: sessionData } = await supabase.auth.getSession();
 
-      try {
+if (
+  sessionData.session &&
+  window.location.hash.includes("type=recovery")
+) {
+  recoveryMode = true;
+  show("reset");
+  message("أدخل كلمة المرور الجديدة.");
+}
 
-        const { data, error } =
-          await supabase.auth.signUp({
+// حفظ كلمة المرور الجديدة
+$("savePasswordBtn").onclick = async () => {
+  if (!recoveryMode)
+    return message("رابط الاستعادة غير صالح. اطلب رابطاً جديداً.");
 
-            email: email,
-            password: password,
+  const password = $("newPassword").value;
+  const confirm = $("confirmPassword").value;
 
-            options: {
+  if (password.length < 8)
+    return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
 
-              emailRedirectTo:
-                "https://redotpaay6-cmyk.github.io/campus-one/auth.html",
+  if (password !== confirm)
+    return message("كلمتا المرور غير متطابقتين.");
 
-              data: {
-                full_name: full_name,
-                phone: phone,
-                university: university,
-                specialty: specialty
-              }
+  const button = $("savePasswordBtn");
+  button.disabled = true;
+  message("جارٍ تحديث كلمة المرور...");
 
-            }
+  try {
+    const { error } = await supabase.auth.updateUser({
+      password
+    });
 
-          });
+    if (error) throw error;
 
-        if (error) throw error;
-
-        if (!data.user) {
-          throw new Error("لم يتم إرجاع بيانات المستخدم.");
-        }
-
-        const metadata = data.user.user_metadata || {};
-
-        console.log("بيانات التسجيل:", metadata);
-
-        if (
-          metadata.full_name !== full_name ||
-          metadata.phone !== phone ||
-          metadata.university !== university ||
-          metadata.specialty !== specialty
-        ) {
-          return message(
-            "تم إنشاء الحساب، لكن بيانات الطالب لم تصل كما هو متوقع. يرجى التواصل مع الإدارة."
-          );
-        }
-
-        message(
-          data.session
-            ? "تم إنشاء حسابك بنجاح! ملفك الشخصي قيد المراجعة."
-            : "تم إنشاء الحساب! تحقق من بريدك الإلكتروني لتأكيده. ملفك الشخصي قيد المراجعة."
-        );
-
-      } catch (error) {
-
-        message("تعذر إنشاء الحساب: " + error.message);
-
-      } finally {
-
-        button.disabled = false;
-
-      }
-
-    };
-
-    // تسجيل الدخول
-    $("loginBtn").onclick = async () => {
-
-      const email = $("loginEmail").value.trim();
-      const password = $("loginPassword").value;
-
-      if (!email || !password) {
-        return message("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
-      }
-
-      const button = $("loginBtn");
-
-      button.disabled = true;
-      message("جارٍ تسجيل الدخول...");
-
-      try {
-
-        const { error } =
-          await supabase.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
-
-        if (error) throw error;
-
-        message("تم تسجيل الدخول بنجاح!");
-
-      } catch (error) {
-
-        message("تعذر تسجيل الدخول: " + error.message);
-
-      } finally {
-
-        button.disabled = false;
-
-      }
-
-    };
-
-  </script>
-
+    recoveryMode = false;
+    message("تم تغيير كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.");
+    $("newPassword").value = "";
+    $("confirmPassword").value = "";
+    await supabase.auth.signOut();
+    show("login");
+    message("تم تغيير كلمة المرور بنجاح. سجّل الدخول بكلمتك الجديدة.");
+  } catch (error) {
+    message("تعذر تغيير كلمة المرور: " + error.message);
+  } finally {
+    button.disabled = false;
+  }
+};
+</script>
 </body>
 </html>
