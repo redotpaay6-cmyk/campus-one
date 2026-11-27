@@ -8,7 +8,6 @@
 
 <style>
 *{box-sizing:border-box}
-
 :root{
   --navy:#102b50;
   --blue:#2563eb;
@@ -17,411 +16,101 @@
   --muted:#718096;
   --border:#e5eaf2;
 }
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea{font-family:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--navy);color:white;padding:25px 17px;flex-shrink:0}
+.brand{padding:10px 12px 30px;border-bottom:1px solid #ffffff20}
+.brand h2{margin:0;font-size:23px;letter-spacing:1px}
+.brand p{color:#b8c9df;font-size:12px}
+.admin-mini{display:flex;align-items:center;gap:12px;padding:23px 10px}
+.avatar,.profile-avatar{
+  border-radius:50%;background:#dbeafe;color:#1d4ed8;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:bold;overflow:hidden;flex-shrink:0;
 }
-
-button,input{
-  font-family:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.layout{
-  display:flex;
-  min-height:100vh;
-}
-
-.sidebar{
-  width:250px;
-  background:var(--navy);
-  color:white;
-  padding:25px 17px;
-  flex-shrink:0;
-}
-
-.brand{
-  padding:10px 12px 30px;
-  border-bottom:1px solid #ffffff20;
-}
-
-.brand h2{
-  margin:0;
-  font-size:23px;
-  letter-spacing:1px;
-}
-
-.brand p{
-  color:#b8c9df;
-  font-size:12px;
-}
-
-.admin-mini{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:23px 10px;
-}
-
-.avatar{
-  width:45px;
-  height:45px;
-  border-radius:50%;
-  background:#dbeafe;
-  color:#1d4ed8;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:19px;
-  font-weight:bold;
-  flex-shrink:0;
-}
-
-.admin-mini strong{
-  display:block;
-  font-size:14px;
-}
-
-.admin-mini small{
-  color:#b8c9df;
-}
-
-.nav-title{
-  color:#91a8c5;
-  font-size:11px;
-  margin:15px 12px;
-}
-
+.avatar{width:45px;height:45px;font-size:19px}
+.profile-avatar{width:90px;height:90px;font-size:32px}
+.avatar img,.profile-avatar img{width:100%;height:100%;object-fit:cover}
+.admin-mini strong{display:block;font-size:14px}
+.admin-mini small{color:#b8c9df}
+.nav-title{color:#91a8c5;font-size:11px;margin:15px 12px}
 .nav-btn{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#d9e5f4;
-  text-align:right;
-  padding:14px 13px;
-  border-radius:9px;
-  font-size:14px;
-  margin-bottom:6px;
+  width:100%;border:0;background:transparent;color:#d9e5f4;
+  text-align:right;padding:14px 13px;border-radius:9px;
+  font-size:14px;margin-bottom:6px
 }
-
-.nav-btn.active,
-.nav-btn:hover{
-  background:#ffffff18;
-  color:white;
+.nav-btn.active,.nav-btn:hover{background:#ffffff18;color:white}
+.sidebar-bottom{margin-top:35px}
+.logout{width:100%;padding:12px;background:#ffffff15;color:white;border:1px solid #ffffff25;border-radius:9px}
+.main{flex:1;min-width:0}
+.topbar{background:white;padding:19px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.topbar h3{margin:0;font-size:19px}
+.topbar small{color:var(--muted)}
+.content{max-width:1150px;padding:28px;margin:auto}
+.welcome{background:linear-gradient(120deg,#102b50,#2563eb);color:white;padding:27px;border-radius:16px;margin-bottom:25px}
+.welcome h2{margin:0 0 10px}
+.welcome p{color:#dbeafe;margin:0;line-height:1.7}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:25px}
+.stat{background:white;padding:21px;border-radius:13px;border:1px solid var(--border)}
+.stat-label{color:var(--muted);font-size:13px}
+.stat-number{font-size:30px;font-weight:bold;margin-top:12px;color:var(--navy)}
+.panel{background:white;border:1px solid var(--border);border-radius:14px;padding:23px;margin-bottom:20px}
+.panel h3{margin:0 0 8px}
+.description{color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.7}
+.student{border:1px solid var(--border);border-radius:12px;padding:17px;margin-top:13px}
+.student p{margin:9px 0;font-size:14px}
+.approve{background:#16834b;color:white;border:0;padding:11px 16px;border-radius:8px;margin-top:10px}
+.approve:disabled{opacity:.6;cursor:not-allowed}
+.status{display:inline-block;background:#fff7db;color:#946200;padding:5px 10px;border-radius:20px;font-size:12px}
+.profile-header{display:flex;align-items:center;gap:17px;margin-bottom:25px}
+.profile-header h2{margin:0 0 8px}
+.profile-header p{margin:0;color:var(--muted);font-size:13px}
+.verified{display:inline-flex;align-items:center;justify-content:center;background:#2563eb;color:white;width:19px;height:19px;border-radius:50%;font-size:13px;margin-right:5px}
+.form-group{margin:17px 0}
+.form-group label{display:block;font-size:13px;margin-bottom:8px;font-weight:bold}
+.form-group input,.form-group textarea{
+  width:100%;padding:13px;border:1px solid #dce3ed;
+  border-radius:9px;outline:none;font-size:14px;background:white
 }
-
-.sidebar-bottom{
-  margin-top:35px;
+.form-group textarea{min-height:100px;resize:vertical}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--blue)}
+.form-group input[readonly]{background:#f4f6f9;color:#718096}
+.save{background:var(--blue);color:white;border:0;padding:13px 22px;border-radius:9px;font-size:14px}
+.secondary{
+  background:#edf3ff;color:#1d4ed8;border:1px solid #d6e3ff;
+  padding:11px 16px;border-radius:9px;font-size:13px
 }
-
-.logout{
-  width:100%;
-  padding:12px;
-  background:#ffffff15;
-  color:white;
-  border:1px solid #ffffff25;
-  border-radius:9px;
-}
-
-.main{
-  flex:1;
-  min-width:0;
-}
-
-.topbar{
-  background:white;
-  padding:19px 28px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid var(--border);
-}
-
-.topbar h3{
-  margin:0;
-  font-size:19px;
-}
-
-.topbar small{
-  color:var(--muted);
-}
-
-.content{
-  max-width:1150px;
-  padding:28px;
-  margin:auto;
-}
-
-.welcome{
-  background:linear-gradient(120deg,#102b50,#2563eb);
-  color:white;
-  padding:27px;
-  border-radius:16px;
-  margin-bottom:25px;
-}
-
-.welcome h2{
-  margin:0 0 10px;
-}
-
-.welcome p{
-  color:#dbeafe;
-  margin:0;
-  line-height:1.7;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:16px;
-  margin-bottom:25px;
-}
-
-.stat{
-  background:white;
-  padding:21px;
-  border-radius:13px;
-  border:1px solid var(--border);
-}
-
-.stat-label{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.stat-number{
-  font-size:30px;
-  font-weight:bold;
-  margin-top:12px;
-  color:var(--navy);
-}
-
-.panel{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:23px;
-  margin-bottom:20px;
-}
-
-.panel h3{
-  margin:0 0 8px;
-}
-
-.description{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:20px;
-}
-
-.student{
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:17px;
-  margin-top:13px;
-}
-
-.student p{
-  margin:9px 0;
-  font-size:14px;
-}
-
-.approve{
-  background:#16834b;
-  color:white;
-  border:0;
-  padding:11px 16px;
-  border-radius:8px;
-  margin-top:10px;
-}
-
-.approve:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
-
-.status{
-  display:inline-block;
-  background:#fff7db;
-  color:#946200;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-}
-
-.profile-header{
-  display:flex;
-  align-items:center;
-  gap:17px;
-  margin-bottom:25px;
-}
-
-.profile-avatar{
-  width:75px;
-  height:75px;
-  border-radius:50%;
-  background:#dbeafe;
-  color:#1d4ed8;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  font-weight:bold;
-}
-
-.profile-header h2{
-  margin:0 0 8px;
-}
-
-.profile-header p{
-  margin:0;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.form-group{
-  margin:17px 0;
-}
-
-.form-group label{
-  display:block;
-  font-size:13px;
-  margin-bottom:8px;
-  font-weight:bold;
-}
-
-.form-group input{
-  width:100%;
-  padding:13px;
-  border:1px solid #dce3ed;
-  border-radius:9px;
-  outline:none;
-  font-size:14px;
-  background:white;
-}
-
-.form-group input:focus{
-  border-color:var(--blue);
-}
-
-.form-group input[readonly]{
-  background:#f4f6f9;
-  color:#718096;
-}
-
-.save{
-  background:var(--blue);
-  color:white;
-  border:0;
-  padding:13px 22px;
-  border-radius:9px;
-  font-size:14px;
-}
-
-.notice{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.7;
-  margin-top:14px;
-}
-
-.message{
-  color:var(--muted);
-  padding:14px 0;
-  font-size:14px;
-}
-
-.hidden{
-  display:none!important;
-}
-
+.danger{background:#fff0f0;color:#c62828;border:1px solid #ffd5d5;padding:11px 16px;border-radius:9px;font-size:13px}
+.avatar-actions{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
+.notice{color:var(--muted);font-size:13px;line-height:1.7;margin-top:14px}
+.message{color:var(--muted);padding:10px 0;font-size:14px;line-height:1.6}
+.hidden{display:none!important}
 @media(max-width:750px){
-  .layout{
-    display:block;
-  }
-
-  .sidebar{
-    width:100%;
-    padding:13px;
-  }
-
-  .brand{
-    padding:8px 10px;
-  }
-
-  .brand p{
-    margin-bottom:0;
-  }
-
-  .admin-mini{
-    padding:12px 8px;
-  }
-
-  .nav-title{
-    display:none;
-  }
-
-  .nav-menu{
-    display:flex;
-    gap:7px;
-  }
-
-  .nav-btn{
-    flex:1;
-    text-align:center;
-    padding:12px 5px;
-    font-size:12px;
-    margin:0;
-  }
-
-  .sidebar-bottom{
-    margin-top:10px;
-  }
-
-  .logout{
-    padding:9px;
-  }
-
-  .topbar{
-    padding:15px;
-  }
-
-  .content{
-    padding:15px;
-  }
-
-  .stats{
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
-  .stat{
-    padding:16px;
-  }
-
-  .stat-number{
-    font-size:25px;
-  }
-
-  .panel{
-    padding:17px;
-  }
+  .layout{display:block}
+  .sidebar{width:100%;padding:13px}
+  .brand{padding:8px 10px}
+  .brand p{margin-bottom:0}
+  .admin-mini{padding:12px 8px}
+  .nav-title{display:none}
+  .nav-menu{display:flex;gap:7px}
+  .nav-btn{flex:1;text-align:center;padding:12px 5px;font-size:12px;margin:0}
+  .sidebar-bottom{margin-top:10px}
+  .logout{padding:9px}
+  .topbar{padding:15px}
+  .content{padding:15px}
+  .stats{grid-template-columns:1fr;gap:10px}
+  .stat{padding:16px}
+  .stat-number{font-size:25px}
+  .panel{padding:17px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="layout">
-
   <aside class="sidebar">
-
     <div class="brand">
       <h2>CAMPUS ONE</h2>
       <p>منصة الطالب الجامعي</p>
@@ -436,31 +125,18 @@ button{
     </div>
 
     <p class="nav-title">القائمة الرئيسية</p>
-
     <div class="nav-menu">
-      <button class="nav-btn active" data-page="dashboard">
-        ◫ الرئيسية
-      </button>
-
-      <button class="nav-btn" data-page="students">
-        ♙ طلبات الطلاب
-      </button>
-
-      <button class="nav-btn" data-page="profile">
-        ⚙ ملفي الشخصي
-      </button>
+      <button class="nav-btn active" data-page="dashboard">◫ الرئيسية</button>
+      <button class="nav-btn" data-page="students">♙ طلبات الطلاب</button>
+      <button class="nav-btn" data-page="profile">⚙ ملفي الشخصي</button>
     </div>
 
     <div class="sidebar-bottom">
-      <button class="logout" id="logout">
-        تسجيل الخروج
-      </button>
+      <button class="logout" id="logout">تسجيل الخروج</button>
     </div>
-
   </aside>
 
   <main class="main">
-
     <header class="topbar">
       <h3 id="pageTitle">لوحة التحكم</h3>
       <small id="adminEmail">جاري التحميل...</small>
@@ -468,97 +144,74 @@ button{
 
     <div class="content">
 
-      <!-- DASHBOARD -->
-
       <section id="dashboardPage">
-
         <div class="welcome">
           <h2>مرحباً بك في CAMPUS ONE 👋</h2>
-          <p>
-            لوحة الإدارة المركزية لإدارة الطلاب ومتابعة طلبات التوثيق
-            وتنظيم المنصة الجامعية.
-          </p>
+          <p>لوحة الإدارة المركزية لإدارة الطلاب ومتابعة طلبات التوثيق وتنظيم المنصة الجامعية.</p>
         </div>
 
         <div class="stats">
-
           <div class="stat">
             <div class="stat-label">إجمالي الطلاب</div>
             <div class="stat-number" id="totalStudents">—</div>
           </div>
-
           <div class="stat">
             <div class="stat-label">حسابات موثقة</div>
             <div class="stat-number" id="approvedStudents">—</div>
           </div>
-
           <div class="stat">
             <div class="stat-label">طلبات معلقة</div>
             <div class="stat-number" id="pendingStudents">—</div>
           </div>
-
         </div>
 
         <div class="panel">
           <h3>آخر طلبات التوثيق</h3>
-          <p class="description">
-            متابعة أحدث طلبات تسجيل الطلاب في المنصة.
-          </p>
-
-          <p id="dashboardMessage" class="message">
-            جارٍ تحميل البيانات...
-          </p>
-
+          <p class="description">متابعة أحدث طلبات تسجيل الطلاب في المنصة.</p>
+          <p id="dashboardMessage" class="message">جارٍ تحميل البيانات...</p>
           <div id="recentStudents"></div>
         </div>
-
       </section>
-
-
-      <!-- STUDENTS -->
 
       <section id="studentsPage" class="hidden">
-
         <div class="panel">
           <h3>طلبات توثيق الطلاب</h3>
-
-          <p class="description">
-            راجع بيانات الحسابات التجريبية ووافق على الحسابات المستحقة.
-          </p>
-
-          <p id="studentsMessage" class="message">
-            جارٍ تحميل الطلبات...
-          </p>
-
+          <p class="description">راجع بيانات الحسابات التجريبية ووافق على الحسابات المستحقة.</p>
+          <p id="studentsMessage" class="message">جارٍ تحميل الطلبات...</p>
           <div id="studentsList"></div>
         </div>
-
       </section>
 
-
-      <!-- PROFILE -->
-
       <section id="profilePage" class="hidden">
-
         <div class="panel">
-
           <div class="profile-header">
             <div class="profile-avatar" id="profileAvatar">A</div>
-
             <div>
-              <h2 id="profileDisplayName">المدير</h2>
-              <p>مدير منصة CAMPUS ONE</p>
+              <h2>
+                <span id="profileDisplayName">المدير</span>
+                <span class="verified" title="حساب إداري موثّق">✓</span>
+              </h2>
+              <p>الحساب الرسمي لإدارة منصة CAMPUS ONE</p>
             </div>
           </div>
 
-          <h3>المعلومات الشخصية</h3>
+          <h3>الصورة الشخصية</h3>
+          <p class="description">يمكنك رفع صورتك الشخصية أو تغييرها أو حذفها.</p>
 
-          <p class="description">
-            يمكنك تحديث معلوماتك الشخصية المرتبطة بحساب الإدارة.
-          </p>
+          <input type="file" id="avatarFile" accept="image/jpeg,image/png,image/webp" class="hidden">
+
+          <div class="avatar-actions">
+            <button type="button" class="secondary" id="chooseAvatar">اختيار صورة</button>
+            <button type="button" class="danger" id="deleteAvatar">حذف الصورة</button>
+          </div>
+          <p id="avatarMessage" class="message"></p>
+
+          <hr style="border:0;border-top:1px solid #e5eaf2;margin:24px 0">
+
+          <h3>المعلومات الشخصية</h3>
+          <p class="description">يمكنك تحديث معلوماتك الشخصية والنبذة التعريفية.</p>
 
           <form id="profileForm">
-
             <div class="form-group">
               <label for="fullName">الاسم الكامل</label>
               <input id="fullName" type="text" required maxlength="100">
@@ -575,72 +228,57 @@ button{
             </div>
 
             <div class="form-group">
+              <label for="bio">النبذة التعريفية</label>
+              <textarea id="bio" maxlength="500" placeholder="اكتب نبذة قصيرة عن إدارة منصة CAMPUS ONE..."></textarea>
+            </div>
+
+            <div class="form-group">
               <label>الصفة</label>
               <input type="text" value="مدير النظام" readonly>
             </div>
 
-            <button class="save" id="saveProfile" type="submit">
-              حفظ التعديلات
-            </button>
-
+            <button class="save" id="saveProfile" type="submit">حفظ التعديلات</button>
             <p id="profileMessage" class="message"></p>
-
           </form>
 
           <p class="notice">
             ملاحظة: لا يمكن تغيير صلاحيات المدير من هذه الصفحة.
             تغيير كلمة المرور يتم عبر خاصية استعادة كلمة المرور.
           </p>
-
         </div>
-
       </section>
 
     </div>
   </main>
-
 </div>
 
-
 <script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-import { createClient } from
-"https://esm.sh/@supabase/supabase-js@2";
+const SUPABASE_URL = "https://rpvoajlzkoynimfowzgl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552";
+const BUCKET = "admin-avatars";
 
-const SUPABASE_URL =
-"https://rpvoajlzkoynimfowzgl.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552";
-
-const supabase = createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 
 let currentUser = null;
 let myProfile = null;
+let currentAvatarUrl = null;
 
-
-function showPage(page){
-
+function showPage(page) {
   const pages = {
     dashboard:"dashboardPage",
     students:"studentsPage",
     profile:"profilePage"
   };
 
-  Object.entries(pages).forEach(([key,id])=>{
-    $(id).classList.toggle("hidden",key !== page);
+  Object.entries(pages).forEach(([key,id]) => {
+    $(id).classList.toggle("hidden", key !== page);
   });
 
-  document.querySelectorAll(".nav-btn").forEach(button=>{
-    button.classList.toggle(
-      "active",
-      button.dataset.page === page
-    );
+  document.querySelectorAll(".nav-btn").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
   });
 
   const titles = {
@@ -652,28 +290,28 @@ function showPage(page){
   $("pageTitle").textContent = titles[page];
 }
 
-
-document.querySelectorAll(".nav-btn").forEach(button=>{
-  button.addEventListener("click",()=>{
-    showPage(button.dataset.page);
-  });
+document.querySelectorAll(".nav-btn").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
 });
 
-
-function initials(name){
+function initials(name) {
   return (name || "A").trim().charAt(0).toUpperCase();
 }
 
+function setAvatar(element, name, imageUrl) {
+  element.replaceChildren();
 
-function createTextElement(tag,text){
-  const element = document.createElement(tag);
-  element.textContent = text ?? "غير متوفر";
-  return element;
+  if (imageUrl) {
+    const img = document.createElement("img");
+    img.src = imageUrl;
+    img.alt = "الصورة الشخصية للمدير";
+    element.appendChild(img);
+  } else {
+    element.textContent = initials(name);
+  }
 }
 
-
-function createStudentCard(student){
-
+function createStudentCard(student) {
   const card = document.createElement("div");
   card.className = "student";
 
@@ -684,31 +322,25 @@ function createStudentCard(student){
     ["التخصص",student.specialty]
   ];
 
-  fields.forEach(([label,value])=>{
+  fields.forEach(([label,value]) => {
     const p = document.createElement("p");
     const strong = document.createElement("strong");
-
     strong.textContent = label + ": ";
     p.append(strong,document.createTextNode(value || "غير متوفر"));
-
     card.appendChild(p);
   });
 
   const status = document.createElement("span");
   status.className = "status";
   status.textContent = "قيد المراجعة";
-
   card.appendChild(status);
 
   const button = document.createElement("button");
   button.className = "approve";
   button.textContent = "الموافقة على الطالب";
 
-  button.addEventListener("click",async()=>{
-
-    if(!confirm("هل أنت متأكد من الموافقة على هذا الطالب؟")){
-      return;
-    }
+  button.addEventListener("click", async () => {
+    if (!confirm("هل أنت متأكد من الموافقة على هذا الطالب؟")) return;
 
     button.disabled = true;
     button.textContent = "جارٍ التحديث...";
@@ -721,14 +353,14 @@ function createStudentCard(student){
       .eq("verification_status","pending")
       .select("id");
 
-    if(error){
+    if (error) {
       alert("فشلت العملية: " + error.message);
       button.disabled = false;
       button.textContent = "الموافقة على الطالب";
       return;
     }
 
-    if(!data || data.length === 0){
+    if (!data || data.length === 0) {
       alert("لم يتم تحديث الحساب. تحقق من حالته وصلاحياتك.");
       button.disabled = false;
       button.textContent = "الموافقة على الطالب";
@@ -736,66 +368,36 @@ function createStudentCard(student){
     }
 
     alert("تمت الموافقة على الطالب بنجاح.");
-
     await loadStudents();
     await loadStats();
-
   });
 
   card.appendChild(button);
-
   return card;
 }
 
-
-async function loadStats(){
-
-  const [
-    totalResult,
-    approvedResult,
-    pendingResult
-  ] = await Promise.all([
-
-    supabase
-      .from("profiles")
-      .select("id",{count:"exact",head:true})
-      .eq("role","student"),
-
-    supabase
-      .from("profiles")
-      .select("id",{count:"exact",head:true})
-      .eq("role","student")
-      .eq("verification_status","approved"),
-
-    supabase
-      .from("profiles")
-      .select("id",{count:"exact",head:true})
-      .eq("role","student")
-      .eq("verification_status","pending")
-
+async function loadStats() {
+  const [totalResult,approvedResult,pendingResult] = await Promise.all([
+    supabase.from("profiles").select("id",{count:"exact",head:true}).eq("role","student"),
+    supabase.from("profiles").select("id",{count:"exact",head:true}).eq("role","student").eq("verification_status","approved"),
+    supabase.from("profiles").select("id",{count:"exact",head:true}).eq("role","student").eq("verification_status","pending")
   ]);
 
-  if(totalResult.error || approvedResult.error || pendingResult.error){
-
+  if (totalResult.error || approvedResult.error || pendingResult.error) {
     $("totalStudents").textContent = "!";
     $("approvedStudents").textContent = "!";
     $("pendingStudents").textContent = "!";
-
     return;
   }
 
   $("totalStudents").textContent = totalResult.count ?? 0;
   $("approvedStudents").textContent = approvedResult.count ?? 0;
   $("pendingStudents").textContent = pendingResult.count ?? 0;
-
 }
 
-
-async function loadStudents(){
-
+async function loadStudents() {
   $("studentsMessage").textContent = "جارٍ تحميل الطلبات...";
   $("studentsList").replaceChildren();
-
   $("dashboardMessage").textContent = "جارٍ تحميل البيانات...";
   $("recentStudents").replaceChildren();
 
@@ -806,76 +408,189 @@ async function loadStudents(){
     .eq("verification_status","pending")
     .order("created_at",{ascending:false});
 
-  if(error){
-
-    $("studentsMessage").textContent =
-      "تعذر تحميل الطلبات: " + error.message;
-
-    $("dashboardMessage").textContent =
-      "تعذر تحميل البيانات.";
-
+  if (error) {
+    $("studentsMessage").textContent = "تعذر تحميل الطلبات: " + error.message;
+    $("dashboardMessage").textContent = "تعذر تحميل البيانات.";
     return;
   }
 
-  if(!data || data.length === 0){
-
-    $("studentsMessage").textContent =
-      "لا توجد طلبات توثيق معلقة حالياً.";
-
-    $("dashboardMessage").textContent =
-      "لا توجد طلبات توثيق معلقة حالياً.";
-
+  if (!data || data.length === 0) {
+    $("studentsMessage").textContent = "لا توجد طلبات توثيق معلقة حالياً.";
+    $("dashboardMessage").textContent = "لا توجد طلبات توثيق معلقة حالياً.";
     return;
   }
 
-  $("studentsMessage").textContent =
-    "عدد الطلبات المعلقة: " + data.length;
+  $("studentsMessage").textContent = "عدد الطلبات المعلقة: " + data.length;
+  $("dashboardMessage").textContent = "عدد الطلبات المعلقة: " + data.length;
 
-  $("dashboardMessage").textContent =
-    "عدد الطلبات المعلقة: " + data.length;
-
-  data.forEach((student,index)=>{
-
-    $("studentsList").appendChild(
-      createStudentCard(student)
-    );
-
-    if(index < 3){
-      $("recentStudents").appendChild(
-        createStudentCard(student)
-      );
-    }
-
+  data.forEach((student,index) => {
+    $("studentsList").appendChild(createStudentCard(student));
+    if (index < 3) $("recentStudents").appendChild(createStudentCard(student));
   });
-
 }
 
+async function refreshAvatar() {
+  const name = myProfile.full_name || "المدير";
+  currentAvatarUrl = null;
 
-async function loadProfile(){
+  if (myProfile.avatar_url) {
+    const {data,error} = await supabase.storage
+      .from(BUCKET)
+      .createSignedUrl(myProfile.avatar_url,3600);
 
+    if (!error && data?.signedUrl) {
+      currentAvatarUrl = data.signedUrl;
+    } else {
+      console.error("Avatar URL error:",error);
+    }
+  }
+
+  setAvatar($("profileAvatar"),name,currentAvatarUrl);
+  setAvatar($("sideAvatar"),name,currentAvatarUrl);
+}
+
+async function loadProfile() {
   $("fullName").value = myProfile.full_name || "";
   $("email").value = currentUser.email || "";
   $("phone").value = myProfile.phone || "";
+  $("bio").value = myProfile.bio || "";
 
-  $("profileDisplayName").textContent =
-    myProfile.full_name || "المدير";
+  $("profileDisplayName").textContent = myProfile.full_name || "المدير";
+  $("sideName").textContent = myProfile.full_name || "المدير";
+  $("adminEmail").textContent = currentUser.email || "";
 
-  const letter = initials(myProfile.full_name);
-
-  $("profileAvatar").textContent = letter;
-  $("sideAvatar").textContent = letter;
-
-  $("sideName").textContent =
-    myProfile.full_name || "المدير";
-
-  $("adminEmail").textContent =
-    currentUser.email || "";
-
+  await refreshAvatar();
 }
 
+$("chooseAvatar").addEventListener("click",() => {
+  $("avatarFile").click();
+});
 
-$("profileForm").addEventListener("submit",async event=>{
+$("avatarFile").addEventListener("change",async () => {
+  const file = $("avatarFile").files?.[0];
+  if (!file) return;
 
+  const message = $("avatarMessage");
+  const button = $("chooseAvatar");
+
+  const allowedTypes = ["image/jpeg","image/png","image/webp"];
+
+  if (!allowedTypes.includes(file.type)) {
+    message.textContent = "نوع الصورة غير مدعوم. استخدم JPG أو PNG أو WEBP.";
+    $("avatarFile").value = "";
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    message.textContent = "حجم الصورة يجب ألا يتجاوز 2 ميغابايت.";
+    $("avatarFile").value = "";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "جارٍ رفع الصورة...";
+  message.textContent = "";
+
+  const extension = file.type === "image/png" ? "png" :
+                    file.type === "image/webp" ? "webp" : "jpg";
+
+  const oldPath = myProfile.avatar_url;
+  const path = `admin/${currentUser.id}/${Date.now()}.${extension}`;
+
+  const {error:uploadError} = await supabase.storage
+    .from(BUCKET)
+    .upload(path,file,{
+      cacheControl:"3600",
+      upsert:false,
+      contentType:file.type
+    });
+
+  if (uploadError) {
+    message.textContent = "تعذر رفع الصورة: " + uploadError.message;
+    button.disabled = false;
+    button.textContent = "اختيار صورة";
+    $("avatarFile").value = "";
+    return;
+  }
+
+  const {data:updateData,error:updateError} = await supabase
+    .from("profiles")
+    .update({avatar_url:path})
+    .eq("id",currentUser.id)
+    .eq("role","admin")
+    .select("id,full_name,phone,role,created_at,avatar_url,bio")
+    .single();
+
+  if (updateError) {
+    await supabase.storage.from(BUCKET).remove([path]);
+    message.textContent = "رُفعت الصورة لكن تعذر حفظها في الملف الشخصي: " + updateError.message;
+    button.disabled = false;
+    button.textContent = "اختيار صورة";
+    $("avatarFile").value = "";
+    return;
+  }
+
+  myProfile = updateData;
+  await loadProfile();
+
+  if (oldPath && oldPath !== path) {
+    const {error:removeError} = await supabase.storage.from(BUCKET).remove([oldPath]);
+    if (removeError) console.error("Old avatar cleanup error:",removeError);
+  }
+
+  message.textContent = "تم رفع الصورة الشخصية وحفظها بنجاح.";
+  button.disabled = false;
+  button.textContent = "تغيير الصورة";
+  $("avatarFile").value = "";
+});
+
+$("deleteAvatar").addEventListener("click",async () => {
+  if (!myProfile.avatar_url) {
+    $("avatarMessage").textContent = "لا توجد صورة لحذفها.";
+    return;
+  }
+
+  if (!confirm("هل تريد حذف صورتك الشخصية؟")) return;
+
+  const button = $("deleteAvatar");
+  button.disabled = true;
+  button.textContent = "جارٍ الحذف...";
+
+  const oldPath = myProfile.avatar_url;
+
+  const {data,error} = await supabase
+    .from("profiles")
+    .update({avatar_url:null})
+    .eq("id",currentUser.id)
+    .eq("role","admin")
+    .select("id,full_name,phone,role,created_at,avatar_url,bio")
+    .single();
+
+  if (error) {
+    $("avatarMessage").textContent = "تعذر حذف الصورة: " + error.message;
+    button.disabled = false;
+    button.textContent = "حذف الصورة";
+    return;
+  }
+
+  myProfile = data;
+  await refreshAvatar();
+
+  const {error:removeError} = await supabase.storage
+    .from(BUCKET)
+    .remove([oldPath]);
+
+  if (removeError) {
+    $("avatarMessage").textContent = "أزيلت الصورة من الملف الشخصي، لكن تعذر حذف الملف من التخزين: " + removeError.message;
+  } else {
+    $("avatarMessage").textContent = "تم حذف الصورة الشخصية بنجاح.";
+  }
+
+  button.disabled = false;
+  button.textContent = "حذف الصورة";
+});
+
+$("profileForm").addEventListener("submit",async event => {
   event.preventDefault();
 
   const button = $("saveProfile");
@@ -883,8 +598,9 @@ $("profileForm").addEventListener("submit",async event=>{
 
   const fullName = $("fullName").value.trim();
   const phone = $("phone").value.trim();
+  const bio = $("bio").value.trim();
 
-  if(!fullName){
+  if (!fullName) {
     message.textContent = "يرجى إدخال الاسم الكامل.";
     return;
   }
@@ -897,72 +613,55 @@ $("profileForm").addEventListener("submit",async event=>{
     .from("profiles")
     .update({
       full_name:fullName,
-      phone:phone || null
+      phone:phone || null,
+      bio:bio || null
     })
     .eq("id",currentUser.id)
     .eq("role","admin")
-    .select("id,full_name,phone,role,created_at")
+    .select("id,full_name,phone,role,created_at,avatar_url,bio")
     .single();
 
   button.disabled = false;
   button.textContent = "حفظ التعديلات";
 
-  if(error){
-
-    message.textContent =
-      "تعذر حفظ التعديلات: " + error.message;
-
+  if (error) {
+    message.textContent = "تعذر حفظ التعديلات: " + error.message;
     return;
   }
 
   myProfile = data;
-
   await loadProfile();
-
   message.textContent = "تم حفظ معلوماتك بنجاح.";
-
 });
 
-
-$("logout").addEventListener("click",async()=>{
-
-  if(!confirm("هل تريد تسجيل الخروج؟")) return;
-
+$("logout").addEventListener("click",async () => {
+  if (!confirm("هل تريد تسجيل الخروج؟")) return;
   await supabase.auth.signOut();
-
   window.location.replace("auth.html");
-
 });
 
+async function start() {
+  const {data:sessionData,error:sessionError} = await supabase.auth.getSession();
 
-async function start(){
-
-  const {data:sessionData,error:sessionError} =
-    await supabase.auth.getSession();
-
-  if(sessionError || !sessionData.session){
-
+  if (sessionError || !sessionData.session) {
     window.location.replace("auth.html");
     return;
   }
 
   currentUser = sessionData.session.user;
 
-  const {data:profile,error:profileError} =
-    await supabase
-      .from("profiles")
-      .select("id,full_name,phone,role,created_at")
-      .eq("id",currentUser.id)
-      .single();
+  const {data:profile,error:profileError} = await supabase
+    .from("profiles")
+    .select("id,full_name,phone,role,created_at,avatar_url,bio")
+    .eq("id",currentUser.id)
+    .single();
 
-  if(profileError || !profile || profile.role !== "admin"){
-
+  if (profileError || !profile || profile.role !== "admin") {
     document.body.innerHTML =
       "<div style='padding:40px;text-align:center;font-family:Arial'>" +
       "<h2>ليس لديك صلاحية الدخول إلى لوحة الإدارة.</h2>" +
       "<a href='auth.html'>العودة إلى تسجيل الدخول</a>" +
       "</div>";
-
     return;
   }
 
@@ -971,20 +670,13 @@ async function start(){
   await loadProfile();
   await loadStats();
   await loadStudents();
-
   showPage("dashboard");
-
 }
 
-
-start().catch(error=>{
-
-  $("dashboardMessage").textContent =
-    "حدث خطأ: " + error.message;
-
+start().catch(error => {
+  $("dashboardMessage").textContent = "حدث خطأ: " + error.message;
+  console.error(error);
 });
-
 </script>
-
 </body>
 </html>
