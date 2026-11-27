@@ -409,13 +409,12 @@ async function loadFeed(){
 
   if(commentsError) console.error(commentsError);
 
-  // تحميل إعادات النشر من قاعدة البيانات
   const {data:reposts,error:repostsError} = await supabase
     .from('post_reposts')
     .select('id,post_id,user_id')
     .in('post_id',postIds);
 
-  if(repostsError) console.error(repostsError);
+  if(repostsError) console.error('Load reposts error:',repostsError);
 
   const likesByPost = {};
   const commentsByPost = {};
@@ -583,36 +582,61 @@ function createPostCard(post,likes,commentCount,reposts){
     if(opening) await loadComments(post.id,commentsArea);
   });
 
-  // إعادة النشر: إضافة أو إزالة السجل من Supabase
+  // إعادة النشر: إضافة وإلغاء مع التحقق من النتيجة الفعلية
   repostBtn.addEventListener('click',async()=>{
     repostBtn.disabled = true;
 
     try{
-      if(myRepost){
-        const {error} = await supabase
+      // نتحقق من حالة إعادة النشر الحالية من قاعدة البيانات
+      const {data:existing,error:checkError} = await supabase
+        .from('post_reposts')
+        .select('id')
+        .eq('post_id',post.id)
+        .eq('user_id',currentUser.id)
+        .maybeSingle();
+
+      if(checkError) throw checkError;
+
+      if(existing){
+        // إلغاء إعادة النشر
+        const {data,error} = await supabase
           .from('post_reposts')
           .delete()
-          .eq('post_id',post.id)
-          .eq('user_id',currentUser.id);
+          .eq('id',existing.id)
+          .select('id');
 
         if(error) throw error;
-        toast('تم إلغاء إعادة النشر.');
+
+        if(!data || data.length === 0){
+          throw new Error('لم يتم حذف السجل. تحقق من سياسة الحذف.');
+        }
+
+        toast('تم إلغاء إعادة النشر بنجاح.');
       }else{
-        const {error} = await supabase
+        // إضافة إعادة النشر
+        const {data,error} = await supabase
           .from('post_reposts')
           .insert({
             post_id:post.id,
             user_id:currentUser.id
-          });
+          })
+          .select('id,post_id,user_id')
+          .single();
 
-        if(error && error.code !== '23505') throw error;
+        if(error) throw error;
+
+        if(!data || !data.id){
+          throw new Error('لم يتم تأكيد إضافة إعادة النشر.');
+        }
+
         toast('تمت إعادة نشر المنشور بنجاح 🔁');
       }
 
       await loadFeed();
+
     }catch(error){
-      console.error('Repost error:',error);
-      toast('تعذرت إعادة النشر. تحقق من الاتصال والصلاحيات.');
+      console.error('Repost error details:',error);
+      toast('فشلت العملية: '+(error.message || 'خطأ غير معروف'));
       repostBtn.disabled = false;
     }
   });
