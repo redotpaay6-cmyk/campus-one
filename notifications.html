@@ -178,27 +178,19 @@ const readAllBtn = document.getElementById('readAllBtn');
 let currentUser = null;
 let notificationRows = [];
 
-function escapeHTML(value){
-  return String(value ?? '').replace(/[&<>"']/g, char => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#039;'
-  })[char]);
-}
-
 function messageFor(type){
   const messages = {
     follow:'بدأ بمتابعتك',
     like:'أعجب بمنشورك ❤️',
     comment:'علّق على منشورك 💬'
   };
+
   return messages[type] || 'قام بتفاعل جديد معك';
 }
 
 function formatDate(value){
   const date = new Date(value);
+
   return date.toLocaleString('ar-DZ',{
     dateStyle:'medium',
     timeStyle:'short'
@@ -207,6 +199,7 @@ function formatDate(value){
 
 async function loadNotifications(){
 
+  statusBox.style.display = 'block';
   statusBox.textContent = 'جارٍ تحميل الإشعارات...';
   list.innerHTML = '';
 
@@ -237,6 +230,7 @@ async function loadNotifications(){
   if(notificationRows.length === 0){
     statusBox.innerHTML =
       '<div class="empty"><div class="empty-icon">🔔</div>لا توجد إشعارات حتى الآن.</div>';
+
     readAllBtn.disabled = true;
     return;
   }
@@ -245,14 +239,17 @@ async function loadNotifications(){
     !notificationRows.some(item => !item.is_read);
 
   const actorIds = [
-    ...new Set(notificationRows
-      .map(item => item.actor_id)
-      .filter(Boolean))
+    ...new Set(
+      notificationRows
+        .map(item => item.actor_id)
+        .filter(Boolean)
+    )
   ];
 
   let profiles = [];
 
   if(actorIds.length){
+
     const {data:profileData,error:profileError} =
       await supabase.rpc('get_public_profiles');
 
@@ -264,6 +261,7 @@ async function loadNotifications(){
   }
 
   const profileMap = {};
+
   profiles.forEach(profile => {
     profileMap[profile.id] = profile;
   });
@@ -271,7 +269,9 @@ async function loadNotifications(){
   const avatarCache = {};
 
   for(const profile of profiles){
+
     if(profile.profile_avatar_path){
+
       const {data} = await supabase
         .storage
         .from('community-media')
@@ -289,87 +289,147 @@ async function loadNotifications(){
   for(const item of notificationRows){
 
     const profile = profileMap[item.actor_id] || {};
+
     const name = profile.full_name || 'مستخدم CAMPUS ONE';
-    const initial = escapeHTML(name.charAt(0) || '؟');
     const avatar = avatarCache[item.actor_id];
 
     const card = document.createElement('div');
+
     card.className =
       'card ' + (!item.is_read ? 'unread' : '');
 
+    // صورة الشخص
     const avatarElement = document.createElement('div');
+
     avatarElement.className = 'avatar initial';
+    avatarElement.textContent = name.charAt(0) || '؟';
 
     if(avatar){
+
       const img = document.createElement('img');
+
       img.className = 'avatar';
       img.alt = 'الصورة الشخصية';
       img.src = avatar;
+
       avatarElement.replaceWith(img);
-      card.appendChild(img);
-    }else{
-      avatarElement.textContent = initial;
-      card.appendChild(avatarElement);
     }
 
+    card.appendChild(avatarElement);
+
+    // معلومات الإشعار
     const info = document.createElement('div');
     info.className = 'info';
 
     const nameElement = document.createElement('div');
+
     nameElement.className = 'name';
     nameElement.textContent = name;
 
     const messageElement = document.createElement('div');
+
     messageElement.className = 'message';
     messageElement.textContent = messageFor(item.type);
 
     const timeElement = document.createElement('div');
+
     timeElement.className = 'time';
     timeElement.textContent = formatDate(item.created_at);
 
-    info.append(nameElement,messageElement,timeElement);
+    info.append(
+      nameElement,
+      messageElement,
+      timeElement
+    );
+
     card.appendChild(info);
 
     if(!item.is_read){
+
       const dot = document.createElement('span');
+
       dot.className = 'dot';
       card.appendChild(dot);
     }
 
-    card.addEventListener('click',()=>openNotification(item));
+    // الضغط على البطاقة يفتح تفاصيل الإشعار
+    card.addEventListener('click',()=>{
+      openNotification(item);
+    });
+
+    // الضغط على الصورة يفتح الملف الشخصي
+    const actorAvatar = card.querySelector('.avatar');
+
+    if(actorAvatar && item.actor_id){
+
+      actorAvatar.style.cursor = 'pointer';
+
+      actorAvatar.addEventListener('click',(event)=>{
+
+        event.stopPropagation();
+
+        location.href =
+          'student.html?user=' +
+          encodeURIComponent(item.actor_id);
+      });
+    }
+
+    // الضغط على الاسم يفتح الملف الشخصي
+    nameElement.style.cursor = 'pointer';
+
+    nameElement.addEventListener('click',(event)=>{
+
+      event.stopPropagation();
+
+      if(item.actor_id){
+
+        location.href =
+          'student.html?user=' +
+          encodeURIComponent(item.actor_id);
+      }
+    });
+
     list.appendChild(card);
   }
 
-  statusBox.textContent = '';
+  statusBox.style.display = 'none';
 }
 
+// تحديث الإشعار كمقروء
 async function markNotificationRead(id){
+
   const {error} = await supabase
     .from('notifications')
     .update({is_read:true})
-    .eq('id',id);
+    .eq('id',id)
+    .eq('recipient_id',currentUser.id);
 
   if(error) throw error;
 }
 
+// فتح تفاصيل الإشعار
 async function openNotification(item){
+
   try{
+
     if(!item.is_read){
       await markNotificationRead(item.id);
     }
 
-    if(item.post_id){
-      location.href =
-        'community.html#post-' + encodeURIComponent(item.post_id);
-    }else if(item.actor_id){
-      location.href =
-        'community.html#profile-' + encodeURIComponent(item.actor_id);
-    }
+    location.href =
+      'community.html#notification-' +
+      encodeURIComponent(item.id);
+
   }catch(error){
-    alert('تعذر تحديث الإشعار: ' + error.message);
+
+    alert(
+      'تعذر تحديث الإشعار: ' +
+      error.message
+    );
   }
 }
 
+// تحديد الكل كمقروء
 window.markAllRead = async function(){
 
   if(!currentUser) return;
@@ -382,21 +442,29 @@ window.markAllRead = async function(){
     .map(item => item.id);
 
   if(unreadIds.length){
+
     const {error} = await supabase
       .from('notifications')
       .update({is_read:true})
-      .in('id',unreadIds);
+      .in('id',unreadIds)
+      .eq('recipient_id',currentUser.id);
 
     if(error){
-      alert('تعذر تحديث الإشعارات: ' + error.message);
+
+      alert(
+        'تعذر تحديث الإشعارات: ' +
+        error.message
+      );
     }
   }
 
   readAllBtn.textContent = 'تحديد الكل كمقروء';
+
   await loadNotifications();
 };
 
 loadNotifications();
+
 </script>
 
 </body>
