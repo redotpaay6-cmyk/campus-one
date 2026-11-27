@@ -39,11 +39,6 @@ main{max-width:1050px;margin:28px auto;padding:0 16px 100px}
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;display:none;
 }
-.cover-label{
-  position:absolute;bottom:20px;right:25px;
-  color:#ffffffc9;font-size:13px;letter-spacing:2px;
-  z-index:2;text-shadow:0 1px 5px #0008;
-}
 .media-button{
   border:0;border-radius:9px;padding:10px 13px;
   background:#ffffffed;color:#174b96;font-size:12px;
@@ -194,7 +189,6 @@ input[type=file]{display:none}
 
   <div class="profile-cover">
     <img id="coverImage" class="cover-image" alt="صورة الغلاف">
-    <div class="cover-label">CAMPUS ONE · STUDENT PROFILE</div>
     <button id="coverButton" class="media-button cover-edit hidden">
       📷 تغيير الغلاف
     </button>
@@ -555,7 +549,6 @@ async function uploadProfileImage(kind,file){
 
   showUploadMessage('تم تحديث الصورة بنجاح! ✓');
 
-  // حذف الصورة القديمة بعد نجاح الحفظ
   if(oldPath && oldPath !== newPath){
     const {error:deleteError} = await supabase.storage
       .from('community-media')
