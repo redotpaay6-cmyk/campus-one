@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -91,34 +92,23 @@
     <h1>CAMPUS ONE</h1>
     <p class="sub">كل ما يحتاجه الطالب، في مكان واحد</p>
 
-    <!-- إنشاء حساب -->
     <div id="register">
 
       <h3>إنشاء حساب طالب</h3>
 
       <input id="name" placeholder="الاسم الكامل">
 
-      <input id="phone"
-             type="tel"
-             placeholder="رقم الهاتف">
+      <input id="phone" type="tel" placeholder="رقم الهاتف">
 
-      <input id="email"
-             type="email"
-             placeholder="البريد الإلكتروني">
+      <input id="email" type="email" placeholder="البريد الإلكتروني">
 
-      <input id="password"
-             type="password"
-             placeholder="كلمة المرور">
+      <input id="password" type="password" placeholder="كلمة المرور">
 
-      <input id="university"
-             placeholder="الجامعة">
+      <input id="university" placeholder="الجامعة">
 
-      <input id="specialty"
-             placeholder="التخصص">
+      <input id="specialty" placeholder="التخصص">
 
-      <button id="registerBtn">
-        إنشاء الحساب
-      </button>
+      <button id="registerBtn">إنشاء الحساب</button>
 
       <button class="switch" id="showLogin">
         لديك حساب؟ تسجيل الدخول
@@ -126,22 +116,15 @@
 
     </div>
 
-    <!-- تسجيل الدخول -->
     <div id="login" class="hidden">
 
       <h3>تسجيل الدخول</h3>
 
-      <input id="loginEmail"
-             type="email"
-             placeholder="البريد الإلكتروني">
+      <input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
 
-      <input id="loginPassword"
-             type="password"
-             placeholder="كلمة المرور">
+      <input id="loginPassword" type="password" placeholder="كلمة المرور">
 
-      <button id="loginBtn">
-        دخول
-      </button>
+      <button id="loginBtn">دخول</button>
 
       <button class="switch" id="showRegister">
         إنشاء حساب جديد
@@ -169,24 +152,16 @@
       $("message").textContent = text;
     };
 
-    // الانتقال إلى تسجيل الدخول
     $("showLogin").onclick = () => {
-
       $("register").classList.add("hidden");
       $("login").classList.remove("hidden");
-
       message("");
-
     };
 
-    // العودة إلى إنشاء الحساب
     $("showRegister").onclick = () => {
-
       $("login").classList.add("hidden");
       $("register").classList.remove("hidden");
-
       message("");
-
     };
 
     // إنشاء حساب طالب
@@ -207,17 +182,11 @@
         !university ||
         !specialty
       ) {
-
         return message("يرجى ملء جميع الخانات.");
-
       }
 
       if (password.length < 8) {
-
-        return message(
-          "كلمة المرور يجب أن تكون 8 أحرف على الأقل."
-        );
-
+        return message("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
       }
 
       const button = $("registerBtn");
@@ -235,39 +204,29 @@
 
             options: {
 
-              data: {
+              emailRedirectTo:
+                "https://redotpaay6-cmyk.github.io/campus-one/auth.html",
 
+              data: {
                 full_name: full_name,
                 phone: phone,
                 university: university,
                 specialty: specialty
-
               }
 
             }
 
           });
 
-        if (error) {
-
-          throw error;
-
-        }
+        if (error) throw error;
 
         if (!data.user) {
-
-          throw new Error(
-            "لم يتم إرجاع بيانات المستخدم."
-          );
-
+          throw new Error("لم يتم إرجاع بيانات المستخدم.");
         }
 
         const metadata = data.user.user_metadata || {};
 
-        console.log(
-          "بيانات التسجيل:",
-          metadata
-        );
+        console.log("بيانات التسجيل:", metadata);
 
         if (
           metadata.full_name !== full_name ||
@@ -275,11 +234,9 @@
           metadata.university !== university ||
           metadata.specialty !== specialty
         ) {
-
           return message(
             "تم إنشاء الحساب، لكن بيانات الطالب لم تصل كما هو متوقع. يرجى التواصل مع الإدارة."
           );
-
         }
 
         message(
@@ -290,9 +247,7 @@
 
       } catch (error) {
 
-        message(
-          "تعذر إنشاء الحساب: " + error.message
-        );
+        message("تعذر إنشاء الحساب: " + error.message);
 
       } finally {
 
@@ -309,11 +264,7 @@
       const password = $("loginPassword").value;
 
       if (!email || !password) {
-
-        return message(
-          "يرجى إدخال البريد الإلكتروني وكلمة المرور."
-        );
-
+        return message("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
       }
 
       const button = $("loginBtn");
@@ -325,25 +276,17 @@
 
         const { error } =
           await supabase.auth.signInWithPassword({
-
             email: email,
             password: password
-
           });
 
-        if (error) {
-
-          throw error;
-
-        }
+        if (error) throw error;
 
         message("تم تسجيل الدخول بنجاح!");
 
       } catch (error) {
 
-        message(
-          "تعذر تسجيل الدخول: " + error.message
-        );
+        message("تعذر تسجيل الدخول: " + error.message);
 
       } finally {
 
