@@ -9,14 +9,26 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+ --navy:#102b46;
+ --blue:#2563eb;
+ --light-blue:#eff6ff;
+ --bg:#f3f6fb;
+ --text:#172b4d;
+ --muted:#718096;
+ --border:#e7edf5;
+}
+
 body{
  font-family:Arial,sans-serif;
- background:#f3f6fb;
- color:#172b4d;
- padding-bottom:85px;
+ background:var(--bg);
+ color:var(--text);
+ padding-bottom:100px;
 }
+
 header{
- background:#102b46;
+ background:var(--navy);
  color:white;
  padding:16px 5%;
  display:flex;
@@ -25,53 +37,102 @@ header{
  position:sticky;
  top:0;
  z-index:10;
- box-shadow:0 3px 12px #0002;
+ box-shadow:0 3px 15px #102b4620;
 }
-.logo{font-size:22px;font-weight:bold}
-.header-actions{display:flex;gap:15px;align-items:center}
+
+.logo{
+ font-size:21px;
+ font-weight:900;
+ letter-spacing:.3px;
+}
+
+.header-actions{
+ display:flex;
+ gap:13px;
+ align-items:center;
+}
+
 .icon-button{
- background:none;border:0;color:white;
- font-size:21px;cursor:pointer;
+ width:40px;
+ height:40px;
+ display:grid;
+ place-items:center;
+ background:#ffffff12;
+ border:1px solid #ffffff18;
+ color:white;
+ border-radius:13px;
+ cursor:pointer;
  position:relative;
+ transition:.2s;
 }
+
+.icon-button:active{transform:scale(.91)}
+.icon-button svg{width:21px;height:21px}
+
 .badge-count{
  position:absolute;
- top:-8px;
- right:-9px;
+ top:-5px;
+ right:-5px;
  background:#ef4444;
  color:white;
- border-radius:50%;
+ border-radius:20px;
  min-width:18px;
  height:18px;
  padding:0 4px;
- font-size:11px;
+ font-size:10px;
  display:flex;
  align-items:center;
  justify-content:center;
  font-weight:bold;
- border:2px solid #102b46;
+ border:2px solid var(--navy);
 }
+
 .badge-count.hidden{display:none}
-.container{max-width:1050px;margin:auto;padding:22px 16px}
+
+.container{
+ max-width:1050px;
+ margin:auto;
+ padding:22px 16px;
+}
+
 .welcome{
  background:linear-gradient(135deg,#102b46,#1768a5);
- color:white;padding:25px;border-radius:18px;
+ color:white;
+ padding:25px;
+ border-radius:20px;
  margin-bottom:22px;
+ box-shadow:0 8px 25px #102b4620;
 }
-.welcome h1{font-size:23px;margin-bottom:7px}
-.welcome p{color:#dbeafe;font-size:14px;margin-top:5px}
-.section-title{font-size:19px;margin:25px 0 14px}
+
+.welcome h1{
+ font-size:23px;
+ margin-bottom:9px;
+}
+
+.welcome p{
+ color:#dbeafe;
+ font-size:14px;
+ margin-top:6px;
+}
+
+.section-title{
+ font-size:19px;
+ margin:25px 0 14px;
+ font-weight:800;
+}
+
 .grid{
  display:grid;
  grid-template-columns:repeat(2,minmax(0,1fr));
  gap:13px;
 }
+
 .card{
  background:white;
  padding:19px 15px;
- border-radius:14px;
- border:1px solid #e5eaf1;
- box-shadow:0 3px 12px #102b4608;
+ border-radius:17px;
+ border:1px solid var(--border);
+ box-shadow:0 4px 15px #102b4608;
  cursor:pointer;
  transition:.2s;
  text-align:right;
@@ -79,53 +140,195 @@ header{
  text-decoration:none;
  display:block;
 }
-.card:hover{transform:translateY(-3px)}
+
+.card:active{transform:scale(.97)}
+
 .card-icon{
- width:43px;height:43px;
- border-radius:12px;
- background:#eaf2ff;
- display:flex;align-items:center;
+ width:46px;
+ height:46px;
+ border-radius:14px;
+ background:var(--light-blue);
+ color:var(--blue);
+ display:flex;
+ align-items:center;
  justify-content:center;
- font-size:22px;margin-bottom:12px;
+ font-size:22px;
+ margin-bottom:13px;
 }
-.card h3{font-size:15px;margin-bottom:5px}
-.card p{font-size:12px;color:#718096}
+
+.card h3{
+ font-size:15px;
+ margin-bottom:7px;
+}
+
+.card p{
+ font-size:12px;
+ color:var(--muted);
+ line-height:1.7;
+}
+
 .notice{
- background:white;border:1px solid #e5eaf1;
- padding:18px;border-radius:14px;
- margin-top:12px;
-}
-.notice h3{font-size:15px;margin-bottom:8px}
-.notice p{font-size:13px;color:#718096}
-.bottom-nav{
- position:fixed;bottom:0;left:0;right:0;
  background:white;
- border-top:1px solid #e5eaf1;
- display:flex;justify-content:space-around;
- padding:10px 4px calc(10px + env(safe-area-inset-bottom));
- z-index:20;
+ border:1px solid var(--border);
+ padding:18px;
+ border-radius:17px;
+ margin-top:12px;
+ box-shadow:0 4px 15px #102b4608;
 }
-.nav-item{
- border:0;background:none;
- color:#718096;
- display:flex;flex-direction:column;
- align-items:center;gap:4px;
- font-size:11px;cursor:pointer;
- text-decoration:none;min-width:55px;
+
+.notice h3{
+ font-size:15px;
+ margin-bottom:9px;
 }
-.nav-item span:first-child{font-size:21px}
-.nav-item.active{color:#2563eb;font-weight:bold}
+
+.notice p{
+ font-size:13px;
+ color:var(--muted);
+ line-height:1.8;
+}
+
+.admin-link{
+ display:inline-block;
+ margin-top:12px;
+ color:var(--blue);
+ text-decoration:none;
+ font-weight:bold;
+}
+
 .logout{
- background:#fff0f0;color:#c53030;
- border:0;padding:10px 15px;
- border-radius:8px;cursor:pointer;
- margin-top:20px;font-weight:bold;
+ background:#fff0f0;
+ color:#c53030;
+ border:0;
+ padding:11px 16px;
+ border-radius:10px;
+ cursor:pointer;
+ margin-top:22px;
+ font-weight:bold;
 }
-.loading{text-align:center;padding:50px;color:#718096}
+
+.loading{
+ text-align:center;
+ padding:50px;
+ color:var(--muted);
+}
+
+/* PREMIUM BOTTOM NAVIGATION */
+
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ background:#ffffffed;
+ backdrop-filter:blur(18px);
+ -webkit-backdrop-filter:blur(18px);
+ border-top:1px solid #e5eaf1;
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+ padding:9px 3px calc(9px + env(safe-area-inset-bottom));
+ z-index:100;
+ box-shadow:0 -5px 25px #102b4608;
+}
+
+.nav-item{
+ position:relative;
+ border:0;
+ background:transparent;
+ color:#8995a7;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:4px;
+ font-size:10px;
+ font-weight:600;
+ cursor:pointer;
+ text-decoration:none;
+ flex:1;
+ min-width:0;
+ padding:6px 1px;
+ border-radius:13px;
+ transition:color .2s,background .2s,transform .2s;
+ -webkit-tap-highlight-color:transparent;
+}
+
+.nav-icon{
+ width:25px;
+ height:25px;
+ display:grid;
+ place-items:center;
+ transition:transform .2s;
+}
+
+.nav-icon svg{
+ width:23px;
+ height:23px;
+ stroke:currentColor;
+ fill:none;
+ stroke-width:1.8;
+ stroke-linecap:round;
+ stroke-linejoin:round;
+}
+
+.nav-item.active{
+ color:var(--blue);
+ background:#eff6ff;
+}
+
+.nav-item.active .nav-icon{
+ transform:translateY(-2px);
+}
+
+.nav-item.active .nav-icon svg{
+ stroke-width:2.4;
+}
+
+.nav-item:active{
+ transform:scale(.91);
+}
+
+.nav-label{
+ white-space:nowrap;
+}
+
+.nav-badge{
+ position:absolute;
+ top:1px;
+ right:calc(50% - 19px);
+ min-width:16px;
+ height:16px;
+ padding:0 4px;
+ background:#ef4444;
+ color:white;
+ border:2px solid white;
+ border-radius:20px;
+ font-size:9px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:bold;
+}
+
+.nav-badge.hidden{display:none}
+
 @media(min-width:700px){
  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
  .welcome{padding:35px}
  .welcome h1{font-size:28px}
+ .bottom-nav{
+  max-width:650px;
+  left:50%;
+  right:auto;
+  transform:translateX(-50%);
+  bottom:12px;
+  width:calc(100% - 30px);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:9px;
+  box-shadow:0 8px 35px #102b4620;
+ }
+ body{padding-bottom:110px}
 }
 </style>
 </head>
@@ -134,14 +337,35 @@ header{
 
 <header>
  <div class="logo">🎓 CAMPUS ONE</div>
+
  <div class="header-actions">
-  <button class="icon-button" aria-label="الإشعارات"
+
+  <button class="icon-button"
+   aria-label="الإشعارات"
    onclick="location.href='notifications.html'">
-   🔔
+
+   <svg viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+    <path d="M10 21h4"/>
+   </svg>
+
    <span id="notificationCount" class="badge-count hidden">0</span>
   </button>
-  <button class="icon-button" aria-label="حسابي"
-   onclick="location.href='student.html'">👤</button>
+
+  <button class="icon-button"
+   aria-label="حسابي"
+   onclick="location.href='student.html'">
+
+   <svg viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M5 21a7 7 0 0 1 14 0"/>
+   </svg>
+  </button>
+
  </div>
 </header>
 
@@ -149,19 +373,74 @@ header{
  <div class="loading">جارٍ تحميل حسابك...</div>
 </main>
 
-<nav class="bottom-nav">
- <a class="nav-item active" href="dashboard.html">
-  <span>🏠</span><span>الرئيسية</span>
+<!-- PREMIUM NAVIGATION -->
+
+<nav class="bottom-nav" aria-label="التنقل الرئيسي">
+
+ <a class="nav-item active" href="dashboard.html" data-page="dashboard">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24">
+    <path d="m3 10 9-7 9 7"/>
+    <path d="M5 9v12h14V9"/>
+    <path d="M9 21v-7h6v7"/>
+   </svg>
+  </span>
+  <span class="nav-label">الرئيسية</span>
  </a>
- <a class="nav-item" href="community.html">
-  <span>👥</span><span>المجتمع</span>
+
+ <a class="nav-item" href="community.html" data-page="community">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+    <circle cx="9" cy="7" r="4"/>
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+   </svg>
+  </span>
+  <span class="nav-label">المجتمع</span>
  </a>
- <a class="nav-item" href="notifications.html">
-  <span>🔔</span><span>الإشعارات</span>
+
+ <a class="nav-item" href="search.html" data-page="search">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24">
+    <circle cx="11" cy="11" r="7"/>
+    <path d="m20 20-4-4"/>
+   </svg>
+  </span>
+  <span class="nav-label">البحث</span>
  </a>
- <a class="nav-item" href="student.html">
-  <span>👤</span><span>حسابي</span>
+
+ <a class="nav-item" href="messages.html" data-page="messages">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24">
+    <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5Z"/>
+    <path d="M8 12h.01M12 12h.01M16 12h.01"/>
+   </svg>
+  </span>
+  <span class="nav-label">الرسائل</span>
  </a>
+
+ <a class="nav-item" href="notifications.html" data-page="notifications">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24">
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+    <path d="M10 21h4"/>
+   </svg>
+  </span>
+  <span class="nav-label">الإشعارات</span>
+  <span id="navNotificationCount" class="nav-badge hidden">0</span>
+ </a>
+
+ <a class="nav-item" href="student.html" data-page="student">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M5 21a7 7 0 0 1 14 0"/>
+   </svg>
+  </span>
+  <span class="nav-label">حسابي</span>
+ </a>
+
 </nav>
 
 <script type="module">
@@ -174,13 +453,18 @@ const supabase = createClient(
 );
 
 const main = document.getElementById('mainContent');
+
 const notificationCount =
  document.getElementById('notificationCount');
+
+const navNotificationCount =
+ document.getElementById('navNotificationCount');
 
 let currentUserId = null;
 let notificationChannel = null;
 
 async function updateNotificationCount(){
+
  if(!currentUserId)return;
 
  const {count,error} = await supabase
@@ -194,17 +478,22 @@ async function updateNotificationCount(){
  }
 
  const total = count || 0;
+ const label = total > 99 ? '99+' : total;
 
  if(total > 0){
-  notificationCount.textContent =
-   total > 99 ? '99+' : total;
+  notificationCount.textContent = label;
   notificationCount.classList.remove('hidden');
+
+  navNotificationCount.textContent = label;
+  navNotificationCount.classList.remove('hidden');
  }else{
   notificationCount.classList.add('hidden');
+  navNotificationCount.classList.add('hidden');
  }
 }
 
 function subscribeToNotifications(){
+
  if(notificationChannel){
   supabase.removeChannel(notificationChannel);
  }
@@ -227,7 +516,9 @@ function subscribeToNotifications(){
 }
 
 async function loadDashboard(){
+
  try{
+
   const {data:{user},error:userError} =
    await supabase.auth.getUser();
 
@@ -245,15 +536,19 @@ async function loadDashboard(){
    .single();
 
   if(profileError || !profile){
-   main.innerHTML='<div class="loading">تعذر تحميل بيانات الحساب. حاول تحديث الصفحة.</div>';
+   main.innerHTML =
+    '<div class="loading">تعذر تحميل بيانات الحساب. حاول تحديث الصفحة.</div>';
    return;
   }
 
   const name = profile.full_name || 'طالب CAMPUS ONE';
   const verified = profile.verification_status === 'approved';
-  const role = profile.role === 'admin' ? 'إدارة CAMPUS ONE' : 'طالب جامعي';
+  const role = profile.role === 'admin'
+   ? 'إدارة CAMPUS ONE'
+   : 'طالب جامعي';
 
   main.innerHTML = `
+
    <section class="welcome">
     <h1>مرحباً، ${escapeHTML(name)} ${verified ? '🔵' : ''}</h1>
     <p>${escapeHTML(role)} · ${escapeHTML(profile.university || 'الجامعة')}</p>
@@ -263,6 +558,7 @@ async function loadDashboard(){
    <h2 class="section-title">مساحتك الجامعية</h2>
 
    <section class="grid">
+
     <a class="card" href="student.html">
      <div class="card-icon">👤</div>
      <h3>الملف الشخصي</h3>
@@ -286,9 +582,17 @@ async function loadDashboard(){
      <h3>المجتمع الجامعي</h3>
      <p>تواصل مع مجتمع الطلبة</p>
     </a>
+
+    <a class="card" href="messages.html">
+     <div class="card-icon">💬</div>
+     <h3>الرسائل الخاصة</h3>
+     <p>تواصل مباشرة مع زملائك</p>
+    </a>
+
    </section>
 
    <h2 class="section-title">آخر المستجدات</h2>
+
    <section class="notice">
     <h3>📢 إعلانات CAMPUS ONE</h3>
     <p>ستظهر هنا الإعلانات والأخبار الجامعية المهمة.</p>
@@ -298,7 +602,7 @@ async function loadDashboard(){
     <section class="notice">
      <h3>⚙️ لوحة الإدارة</h3>
      <p>إدارة حسابات الطلبة ومحتوى المنصة.</p>
-     <a href="admin.html">الانتقال إلى لوحة الإدارة ←</a>
+     <a class="admin-link" href="admin.html">الانتقال إلى لوحة الإدارة ←</a>
     </section>
    ` : ''}
 
@@ -306,11 +610,14 @@ async function loadDashboard(){
   `;
 
   document.getElementById('logoutBtn').addEventListener('click',async()=>{
+
    const {error} = await supabase.auth.signOut();
+
    if(error){
     alert('تعذر تسجيل الخروج. حاول مجدداً.');
     return;
    }
+
    location.replace('auth.html');
   });
 
@@ -318,17 +625,38 @@ async function loadDashboard(){
   subscribeToNotifications();
 
  }catch(error){
+
   console.error(error);
-  main.innerHTML='<div class="loading">حدث خطأ أثناء تحميل الصفحة.</div>';
+
+  main.innerHTML =
+   '<div class="loading">حدث خطأ أثناء تحميل الصفحة.</div>';
  }
 }
 
 function escapeHTML(value){
+
  return String(value ?? '').replace(/[&<>"']/g,char=>({
-  '&':'&amp;','<':'&lt;','>':'&gt;',
-  '"':'&quot;',"'":'&#39;'
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
  }[char]));
 }
+
+/* Clicking home while already on dashboard returns to top */
+document.querySelectorAll('.nav-item').forEach(item=>{
+
+ item.addEventListener('click',event=>{
+
+  if(item.dataset.page === 'dashboard'){
+   event.preventDefault();
+   window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+ });
+
+});
 
 loadDashboard();
 </script>
