@@ -9,119 +9,183 @@
 
 <style>
 *{box-sizing:border-box}
+:root{
+ --navy:#102b46;
+ --blue:#2563eb;
+ --light:#eff6ff;
+ --bg:#f3f6fb;
+ --text:#172b46;
+ --muted:#64748b;
+ --border:#e7edf5;
+}
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f3f6fb;
-  color:#172b46;
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:var(--bg);
+ color:var(--text);
+ padding-bottom:100px;
 }
 header{
-  background:#102b50;
-  color:white;
-  padding:18px 16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 3px 12px #0002;
+ background:var(--navy);
+ color:white;
+ padding:18px 16px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ box-shadow:0 3px 12px #0002;
 }
 .logo{font-size:20px;font-weight:bold}
 .header-label{font-size:13px;color:#dbeafe}
 .container{
-  max-width:760px;
-  margin:25px auto;
-  padding:0 14px;
+ max-width:760px;
+ margin:25px auto;
+ padding:0 14px;
 }
 .top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:18px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ margin-bottom:18px;
 }
 h2{margin:0;font-size:22px}
 button{
-  border:0;
-  border-radius:9px;
-  padding:10px 13px;
-  background:#2563eb;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
+ border:0;
+ border-radius:9px;
+ padding:10px 13px;
+ background:#2563eb;
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
 }
 button:disabled{opacity:.5;cursor:not-allowed}
 .card{
-  background:white;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:11px;
-  display:flex;
-  gap:12px;
-  align-items:center;
-  border:1px solid #e6ebf2;
-  cursor:pointer;
-  transition:.2s;
+ background:white;
+ border-radius:14px;
+ padding:15px;
+ margin-bottom:11px;
+ display:flex;
+ gap:12px;
+ align-items:center;
+ border:1px solid #e6ebf2;
+ cursor:pointer;
+ transition:.2s;
 }
 .card:hover{border-color:#93b4ed}
 .card.unread{
-  background:#eff6ff;
-  border-color:#bfdbfe;
+ background:#eff6ff;
+ border-color:#bfdbfe;
 }
 .avatar{
-  width:48px;
-  height:48px;
-  min-width:48px;
-  border-radius:50%;
-  object-fit:cover;
-  background:#dbeafe;
+ width:48px;
+ height:48px;
+ min-width:48px;
+ border-radius:50%;
+ object-fit:cover;
+ background:#dbeafe;
 }
 .initial{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#1d4ed8;
-  font-size:20px;
-  font-weight:bold;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:#1d4ed8;
+ font-size:20px;
+ font-weight:bold;
 }
 .info{flex:1;min-width:0}
 .name{font-weight:bold;font-size:15px}
 .message{font-size:14px;color:#475569;margin-top:5px}
 .time{font-size:12px;color:#94a3b8;margin-top:7px}
 .dot{
-  width:9px;height:9px;
-  min-width:9px;
-  border-radius:50%;
-  background:#2563eb;
+ width:9px;height:9px;
+ min-width:9px;
+ border-radius:50%;
+ background:#2563eb;
 }
 .empty,.status{
-  background:white;
-  padding:35px 15px;
-  text-align:center;
-  border-radius:14px;
-  color:#64748b;
+ background:white;
+ padding:35px 15px;
+ text-align:center;
+ border-radius:14px;
+ color:#64748b;
 }
 .empty-icon{font-size:35px;margin-bottom:12px}
-.nav{
-  display:flex;
-  justify-content:space-around;
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:white;
-  border-top:1px solid #e2e8f0;
-  padding:12px 4px;
-  z-index:5;
+main{padding-bottom:20px}
+
+/* شريط التنقل الموحد */
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ background:#ffffffed;
+ backdrop-filter:blur(18px);
+ border-top:1px solid #e5eaf1;
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+ padding:9px 3px calc(9px + env(safe-area-inset-bottom));
+ z-index:100;
+ box-shadow:0 -5px 25px #102b4608;
 }
-.nav a{
-  color:#64748b;
-  text-decoration:none;
-  font-size:12px;
-  text-align:center;
+.nav-item{
+ position:relative;
+ color:#8995a7;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:4px;
+ font-size:10px;
+ font-weight:600;
+ text-decoration:none;
+ flex:1;
+ min-width:0;
+ padding:6px 1px;
+ border-radius:13px;
 }
-.nav a.active{color:#2563eb;font-weight:bold}
-main{padding-bottom:80px}
+.nav-icon{
+ width:25px;
+ height:25px;
+ display:grid;
+ place-items:center;
+}
+.nav-icon svg{
+ width:23px;
+ height:23px;
+ stroke:currentColor;
+ fill:none;
+ stroke-width:1.8;
+ stroke-linecap:round;
+ stroke-linejoin:round;
+}
+.nav-item.active{
+ color:var(--blue);
+ background:#eff6ff;
+}
+.nav-item.active .nav-icon svg{
+ stroke-width:2.4;
+}
+.nav-label{white-space:nowrap}
+
 @media(max-width:480px){
-  .container{margin-top:18px}
-  h2{font-size:20px}
-  .card{padding:12px}
+ .container{margin-top:18px}
+ h2{font-size:20px}
+ .card{padding:12px}
+}
+@media(min-width:701px){
+ .bottom-nav{
+  max-width:650px;
+  left:50%;
+  right:auto;
+  transform:translateX(-50%);
+  bottom:12px;
+  width:calc(100% - 30px);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:9px;
+  box-shadow:0 8px 35px #102b4620;
+ }
 }
 </style>
 </head>
@@ -129,31 +193,70 @@ main{padding-bottom:80px}
 <body>
 
 <header>
-  <div class="logo">🎓 CAMPUS ONE</div>
-  <div class="header-label">مساحتك الجامعية</div>
+ <div class="logo">🎓 CAMPUS ONE</div>
+ <div class="header-label">مساحتك الجامعية</div>
 </header>
 
 <main>
 <div class="container">
 
-  <div class="top">
-    <h2>🔔 الإشعارات</h2>
-    <button id="readAllBtn" onclick="markAllRead()">
-      تحديد الكل كمقروء
-    </button>
-  </div>
+ <div class="top">
+  <h2>🔔 الإشعارات</h2>
+  <button id="readAllBtn" onclick="markAllRead()">
+   تحديد الكل كمقروء
+  </button>
+ </div>
 
-  <div id="status" class="status">جارٍ تحميل الإشعارات...</div>
-  <div id="notifications"></div>
+ <div id="status" class="status">جارٍ تحميل الإشعارات...</div>
+ <div id="notifications"></div>
 
 </div>
 </main>
 
-<nav class="nav">
-  <a href="dashboard.html">🏠<br>الرئيسية</a>
-  <a href="community.html">👥<br>المجتمع</a>
-  <a href="notifications.html" class="active">🔔<br>الإشعارات</a>
-  <a href="student.html">👤<br>حسابي</a>
+<nav class="bottom-nav" aria-label="التنقل الرئيسي">
+
+ <a class="nav-item" href="dashboard.html">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/></svg>
+  </span>
+  <span class="nav-label">الرئيسية</span>
+ </a>
+
+ <a class="nav-item" href="community.html">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+  </span>
+  <span class="nav-label">المجتمع</span>
+ </a>
+
+ <a class="nav-item" href="search.html">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+  </span>
+  <span class="nav-label">البحث</span>
+ </a>
+
+ <a class="nav-item" href="messages.html">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg>
+  </span>
+  <span class="nav-label">الرسائل</span>
+ </a>
+
+ <a class="nav-item active" href="notifications.html">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+  </span>
+  <span class="nav-label">الإشعارات</span>
+ </a>
+
+ <a class="nav-item" href="student.html">
+  <span class="nav-icon">
+   <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>
+  </span>
+  <span class="nav-label">حسابي</span>
+ </a>
+
 </nav>
 
 <script type="module">
@@ -167,8 +270,8 @@ const SUPABASE_KEY =
 'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552';
 
 const supabase = createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
+ SUPABASE_URL,
+ SUPABASE_KEY
 );
 
 const statusBox = document.getElementById('status');
@@ -179,292 +282,283 @@ let currentUser = null;
 let notificationRows = [];
 
 function messageFor(type){
-  const messages = {
-    follow:'بدأ بمتابعتك',
-    like:'أعجب بمنشورك ❤️',
-    comment:'علّق على منشورك 💬'
-  };
+ const messages = {
+  follow:'بدأ بمتابعتك',
+  like:'أعجب بمنشورك ❤️',
+  comment:'علّق على منشورك 💬'
+ };
 
-  return messages[type] || 'قام بتفاعل جديد معك';
+ return messages[type] || 'قام بتفاعل جديد معك';
 }
 
 function formatDate(value){
-  const date = new Date(value);
+ const date = new Date(value);
 
-  return date.toLocaleString('ar-DZ',{
-    dateStyle:'medium',
-    timeStyle:'short'
-  });
+ return date.toLocaleString('ar-DZ',{
+  dateStyle:'medium',
+  timeStyle:'short'
+ });
 }
 
 async function loadNotifications(){
 
-  statusBox.style.display = 'block';
-  statusBox.textContent = 'جارٍ تحميل الإشعارات...';
-  list.innerHTML = '';
-
-  const {data:authData,error:authError} =
-    await supabase.auth.getUser();
-
-  if(authError || !authData.user){
-    statusBox.textContent = 'يجب تسجيل الدخول أولاً.';
-    return;
-  }
-
-  currentUser = authData.user;
-
-  const {data:notifications,error} = await supabase
-    .from('notifications')
-    .select('id,actor_id,type,post_id,comment_id,is_read,created_at')
-    .order('created_at',{ascending:false})
-    .limit(100);
-
-  if(error){
-    statusBox.textContent =
-      'تعذر تحميل الإشعارات: ' + error.message;
-    return;
-  }
-
-  notificationRows = notifications || [];
-
-  if(notificationRows.length === 0){
-    statusBox.innerHTML =
-      '<div class="empty"><div class="empty-icon">🔔</div>لا توجد إشعارات حتى الآن.</div>';
-
-    readAllBtn.disabled = true;
-    return;
-  }
-
-  readAllBtn.disabled =
-    !notificationRows.some(item => !item.is_read);
-
-  const actorIds = [
-    ...new Set(
-      notificationRows
-        .map(item => item.actor_id)
-        .filter(Boolean)
-    )
-  ];
-
-  let profiles = [];
-
-  if(actorIds.length){
-
-    const {data:profileData,error:profileError} =
-      await supabase.rpc('get_public_profiles');
-
-    if(!profileError){
-      profiles = (profileData || []).filter(
-        profile => actorIds.includes(profile.id)
-      );
-    }
-  }
-
-  const profileMap = {};
-
-  profiles.forEach(profile => {
-    profileMap[profile.id] = profile;
-  });
-
-  const avatarCache = {};
-
-  for(const profile of profiles){
-
-    if(profile.profile_avatar_path){
-
-      const {data} = await supabase
-        .storage
-        .from('community-media')
-        .createSignedUrl(
-          profile.profile_avatar_path,
-          3600
-        );
-
-      if(data?.signedUrl){
-        avatarCache[profile.id] = data.signedUrl;
-      }
-    }
-  }
-
-  for(const item of notificationRows){
-
-    const profile = profileMap[item.actor_id] || {};
-
-    const name = profile.full_name || 'مستخدم CAMPUS ONE';
-    const avatar = avatarCache[item.actor_id];
-
-    const card = document.createElement('div');
-
-    card.className =
-      'card ' + (!item.is_read ? 'unread' : '');
-
-    // صورة الشخص
-    const avatarElement = document.createElement('div');
-
-    avatarElement.className = 'avatar initial';
-    avatarElement.textContent = name.charAt(0) || '؟';
-
-    if(avatar){
-
-      const img = document.createElement('img');
-
-      img.className = 'avatar';
-      img.alt = 'الصورة الشخصية';
-      img.src = avatar;
-
-      avatarElement.replaceWith(img);
-    }
-
-    card.appendChild(avatarElement);
-
-    // معلومات الإشعار
-    const info = document.createElement('div');
-    info.className = 'info';
-
-    const nameElement = document.createElement('div');
-
-    nameElement.className = 'name';
-    nameElement.textContent = name;
-
-    const messageElement = document.createElement('div');
-
-    messageElement.className = 'message';
-    messageElement.textContent = messageFor(item.type);
-
-    const timeElement = document.createElement('div');
-
-    timeElement.className = 'time';
-    timeElement.textContent = formatDate(item.created_at);
-
-    info.append(
-      nameElement,
-      messageElement,
-      timeElement
-    );
-
-    card.appendChild(info);
-
-    if(!item.is_read){
-
-      const dot = document.createElement('span');
-
-      dot.className = 'dot';
-      card.appendChild(dot);
-    }
-
-    // الضغط على البطاقة يفتح تفاصيل الإشعار
-    card.addEventListener('click',()=>{
-      openNotification(item);
-    });
-
-    // الضغط على الصورة يفتح الملف الشخصي
-    const actorAvatar = card.querySelector('.avatar');
-
-    if(actorAvatar && item.actor_id){
-
-      actorAvatar.style.cursor = 'pointer';
-
-      actorAvatar.addEventListener('click',(event)=>{
-
-        event.stopPropagation();
-
-        location.href =
-          'student.html?user=' +
-          encodeURIComponent(item.actor_id);
-      });
-    }
-
-    // الضغط على الاسم يفتح الملف الشخصي
-    nameElement.style.cursor = 'pointer';
-
-    nameElement.addEventListener('click',(event)=>{
-
-      event.stopPropagation();
-
-      if(item.actor_id){
-
-        location.href =
-          'student.html?user=' +
-          encodeURIComponent(item.actor_id);
-      }
-    });
-
-    list.appendChild(card);
-  }
-
-  statusBox.style.display = 'none';
-}
-
-// تحديث الإشعار كمقروء
-async function markNotificationRead(id){
-
-  const {error} = await supabase
-    .from('notifications')
-    .update({is_read:true})
-    .eq('id',id)
-    .eq('recipient_id',currentUser.id);
-
-  if(error) throw error;
-}
-
-// فتح تفاصيل الإشعار
-async function openNotification(item){
-
-  try{
-
-    if(!item.is_read){
-      await markNotificationRead(item.id);
-    }
-
-    location.href =
-      'community.html#notification-' +
-      encodeURIComponent(item.id);
-
-  }catch(error){
-
-    alert(
-      'تعذر تحديث الإشعار: ' +
-      error.message
-    );
-  }
-}
-
-// تحديد الكل كمقروء
-window.markAllRead = async function(){
-
-  if(!currentUser) return;
+ statusBox.style.display = 'block';
+ statusBox.textContent = 'جارٍ تحميل الإشعارات...';
+ list.innerHTML = '';
+
+ const {data:authData,error:authError} =
+  await supabase.auth.getUser();
+
+ if(authError || !authData.user){
+  statusBox.textContent = 'يجب تسجيل الدخول أولاً.';
+  return;
+ }
+
+ currentUser = authData.user;
+
+ const {data:notifications,error} = await supabase
+  .from('notifications')
+  .select('id,actor_id,type,post_id,comment_id,is_read,created_at')
+  .order('created_at',{ascending:false})
+  .limit(100);
+
+ if(error){
+  statusBox.textContent =
+   'تعذر تحميل الإشعارات: ' + error.message;
+  return;
+ }
+
+ notificationRows = notifications || [];
+
+ if(notificationRows.length === 0){
+  statusBox.innerHTML =
+   '<div class="empty"><div class="empty-icon">🔔</div>لا توجد إشعارات حتى الآن.</div>';
 
   readAllBtn.disabled = true;
-  readAllBtn.textContent = 'جارٍ التحديث...';
+  return;
+ }
 
-  const unreadIds = notificationRows
-    .filter(item => !item.is_read)
-    .map(item => item.id);
+ readAllBtn.disabled =
+  !notificationRows.some(item => !item.is_read);
 
-  if(unreadIds.length){
+ const actorIds = [
+  ...new Set(
+   notificationRows
+    .map(item => item.actor_id)
+    .filter(Boolean)
+  )
+ ];
 
-    const {error} = await supabase
-      .from('notifications')
-      .update({is_read:true})
-      .in('id',unreadIds)
-      .eq('recipient_id',currentUser.id);
+ let profiles = [];
 
-    if(error){
+ if(actorIds.length){
 
-      alert(
-        'تعذر تحديث الإشعارات: ' +
-        error.message
-      );
-    }
+  const {data:profileData,error:profileError} =
+   await supabase.rpc('get_public_profiles');
+
+  if(!profileError){
+   profiles = (profileData || []).filter(
+    profile => actorIds.includes(profile.id)
+   );
+  }
+ }
+
+ const profileMap = {};
+
+ profiles.forEach(profile => {
+  profileMap[profile.id] = profile;
+ });
+
+ const avatarCache = {};
+
+ for(const profile of profiles){
+
+  if(profile.profile_avatar_path){
+
+   const {data} = await supabase
+    .storage
+    .from('community-media')
+    .createSignedUrl(
+     profile.profile_avatar_path,
+     3600
+    );
+
+   if(data?.signedUrl){
+    avatarCache[profile.id] = data.signedUrl;
+   }
+  }
+ }
+
+ for(const item of notificationRows){
+
+  const profile = profileMap[item.actor_id] || {};
+
+  const name = profile.full_name || 'مستخدم CAMPUS ONE';
+  const avatar = avatarCache[item.actor_id];
+
+  const card = document.createElement('div');
+
+  card.className =
+   'card ' + (!item.is_read ? 'unread' : '');
+
+  const avatarElement = document.createElement('div');
+
+  avatarElement.className = 'avatar initial';
+  avatarElement.textContent = name.charAt(0) || '؟';
+
+  if(avatar){
+
+   const img = document.createElement('img');
+
+   img.className = 'avatar';
+   img.alt = 'الصورة الشخصية';
+   img.src = avatar;
+
+   avatarElement.replaceWith(img);
   }
 
-  readAllBtn.textContent = 'تحديد الكل كمقروء';
+  card.appendChild(avatarElement);
 
-  await loadNotifications();
+  const info = document.createElement('div');
+  info.className = 'info';
+
+  const nameElement = document.createElement('div');
+
+  nameElement.className = 'name';
+  nameElement.textContent = name;
+
+  const messageElement = document.createElement('div');
+
+  messageElement.className = 'message';
+  messageElement.textContent = messageFor(item.type);
+
+  const timeElement = document.createElement('div');
+
+  timeElement.className = 'time';
+  timeElement.textContent = formatDate(item.created_at);
+
+  info.append(
+   nameElement,
+   messageElement,
+   timeElement
+  );
+
+  card.appendChild(info);
+
+  if(!item.is_read){
+
+   const dot = document.createElement('span');
+
+   dot.className = 'dot';
+   card.appendChild(dot);
+  }
+
+  card.addEventListener('click',()=>{
+   openNotification(item);
+  });
+
+  const actorAvatar = card.querySelector('.avatar');
+
+  if(actorAvatar && item.actor_id){
+
+   actorAvatar.style.cursor = 'pointer';
+
+   actorAvatar.addEventListener('click',(event)=>{
+
+    event.stopPropagation();
+
+    location.href =
+     'student.html?user=' +
+     encodeURIComponent(item.actor_id);
+   });
+  }
+
+  nameElement.style.cursor = 'pointer';
+
+  nameElement.addEventListener('click',(event)=>{
+
+   event.stopPropagation();
+
+   if(item.actor_id){
+
+    location.href =
+     'student.html?user=' +
+     encodeURIComponent(item.actor_id);
+   }
+  });
+
+  list.appendChild(card);
+ }
+
+ statusBox.style.display = 'none';
+}
+
+async function markNotificationRead(id){
+
+ const {error} = await supabase
+  .from('notifications')
+  .update({is_read:true})
+  .eq('id',id)
+  .eq('recipient_id',currentUser.id);
+
+ if(error) throw error;
+}
+
+async function openNotification(item){
+
+ try{
+
+  if(!item.is_read){
+   await markNotificationRead(item.id);
+  }
+
+  location.href =
+   'community.html#notification-' +
+   encodeURIComponent(item.id);
+
+ }catch(error){
+
+  alert(
+   'تعذر تحديث الإشعار: ' +
+   error.message
+  );
+ }
+}
+
+window.markAllRead = async function(){
+
+ if(!currentUser) return;
+
+ readAllBtn.disabled = true;
+ readAllBtn.textContent = 'جارٍ التحديث...';
+
+ const unreadIds = notificationRows
+  .filter(item => !item.is_read)
+  .map(item => item.id);
+
+ if(unreadIds.length){
+
+  const {error} = await supabase
+   .from('notifications')
+   .update({is_read:true})
+   .in('id',unreadIds)
+   .eq('recipient_id',currentUser.id);
+
+  if(error){
+
+   alert(
+    'تعذر تحديث الإشعارات: ' +
+    error.message
+   );
+  }
+ }
+
+ readAllBtn.textContent = 'تحديد الكل كمقروء';
+
+ await loadNotifications();
 };
 
 loadNotifications();
-
 </script>
 
 </body>
