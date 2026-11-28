@@ -14,6 +14,7 @@
  --bg:#f3f6fb;--text:#172b4d;--muted:#718096;
  --border:#e7edf5;--chat-bg:#101114;--chat-panel:#18191d;
  --incoming:#292a2f;--outgoing:linear-gradient(135deg,#2563eb,#7048ef);
+ --glow-blue:#3b82f6;--glow-cyan:#38bdf8;
 }
 body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);padding-bottom:100px}
 button,input,textarea{font-family:inherit}
@@ -61,16 +62,73 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
 .message-row{width:100%;display:flex;align-items:flex-end;gap:7px}
 .message-row.mine{justify-content:flex-start}
 .message-row.theirs{justify-content:flex-end}
-.message-avatar{width:25px;height:25px;min-width:25px;border-radius:50%;background:#343944;color:white;display:grid;place-items:center;font-size:11px;font-weight:bold}
+.message-avatar{width:29px;height:29px;min-width:29px;border-radius:50%;background:linear-gradient(135deg,#102b46,#2563eb);color:white;border:1px solid #60a5fa;box-shadow:0 0 9px #2563eb70;display:grid;place-items:center;font-size:11px;font-weight:bold}
 .message{max-width:min(78%,390px);min-width:55px;padding:10px 13px;border-radius:19px;font-size:14px;line-height:1.65;overflow-wrap:anywhere;white-space:pre-wrap;position:relative}
 .message.mine{background:var(--outgoing);color:white;border-bottom-left-radius:6px}
 .message.theirs{background:var(--incoming);color:#f7f7fa;border-bottom-right-radius:6px}
-.message-time{display:block;font-size:10px;margin-top:4px;opacity:.65;text-align:left;line-height:1.2}
-.message-image{display:block;width:100%;max-width:260px;max-height:310px;object-fit:cover;border-radius:13px;cursor:pointer}
+.message-time{display:block;font-size:10px;margin-top:5px;opacity:.65;text-align:left;line-height:1.2}
+.message.media-message{padding:6px 7px 5px;min-width:0;background:#171c27;border:1px solid #344c70;box-shadow:0 0 13px #2563eb20}
+.message-image{
+ display:block;width:100%;max-width:280px;max-height:360px;
+ object-fit:cover;border-radius:17px;cursor:pointer;
+ border:1px solid #527cb4;
+ box-shadow:0 0 0 2px #2563eb22,0 5px 18px #0006;
+}
 .message-audio{display:block;width:230px;max-width:100%;height:42px}
-.audio-message{min-width:220px}
+.audio-message{
+ width:260px;max-width:100%;min-width:220px;
+ display:flex;align-items:center;gap:11px;
+ direction:ltr;padding:11px 12px;border-radius:19px;
+ background:linear-gradient(135deg,#172033,#111827);
+ border:1px solid #4b70a7;
+ box-shadow:0 0 12px #2563eb30,inset 0 0 15px #2563eb0b;
+}
+.audio-message audio{display:none}
+.audio-play{
+ width:39px;height:39px;min-width:39px;border:0;border-radius:50%;
+ display:grid;place-items:center;color:white;
+ background:linear-gradient(135deg,#2563eb,#38bdf8);
+ box-shadow:0 0 13px #2563eb75;
+}
+.audio-play svg{width:19px;height:19px;fill:white;stroke:none}
+.audio-content{flex:1;min-width:0}
+.audio-top{display:flex;align-items:center;gap:8px}
+.audio-wave{
+ height:37px;flex:1;display:flex;align-items:center;
+ justify-content:center;gap:3px;overflow:hidden;
+}
+.audio-wave span{
+ display:block;width:3px;min-width:2px;border-radius:5px;
+ background:linear-gradient(180deg,#38bdf8 0%,#2563eb 55%,#8b5cf6 100%);
+ opacity:.9;transition:opacity .15s;
+}
+.audio-wave span.played{background:linear-gradient(180deg,#fff,#60a5fa)}
+.audio-duration{
+ color:#dbeafe;font-size:11px;white-space:nowrap;
+ font-variant-numeric:tabular-nums;
+}
+.audio-bottom{display:flex;align-items:center;gap:8px;margin-top:8px}
+.audio-progress{
+ appearance:none;-webkit-appearance:none;
+ flex:1;width:100%;height:4px;border-radius:10px;
+ background:linear-gradient(to right,#3b82f6 0%,#30394b 0%);
+ outline:none;cursor:pointer;
+}
+.audio-progress::-webkit-slider-thumb{
+ appearance:none;-webkit-appearance:none;width:9px;height:9px;
+ border-radius:50%;background:#60a5fa;box-shadow:0 0 7px #60a5fa;
+}
+.audio-progress::-moz-range-thumb{
+ width:9px;height:9px;border:0;border-radius:50%;background:#60a5fa;
+}
+.audio-speed{
+ border:0;background:#26334b;color:#bfdbfe;
+ border-radius:8px;padding:4px 7px;font-size:10px;
+ min-width:31px;
+}
+.audio-speed:hover{background:#344b70}
 .message-file-error{font-size:12px;color:#ffb4b4}
-.load-older{align-self:center;border:1px solid #343640;background:#202127;color:#a9bfff;padding:9px 15px;border-radius:20px;font-size:12px;font-weight:bold;min-height:36px}
+.load-older{align-self:center;border:1px solid #344b70;background:#202b40;color:#bfdbfe;padding:9px 15px;border-radius:20px;font-size:12px;font-weight:bold;min-height:36px}
 .load-older:disabled{opacity:.5}
 .chat-note{margin:9px 12px 0;padding:10px 12px;border-radius:12px;background:#202b40;border:1px solid #34496d;font-size:12px;color:#d9e6ff;line-height:1.7}
 .chat-note strong{margin-left:5px}
@@ -149,7 +207,9 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
  .messages-area{flex:1;min-height:0;max-height:none;padding:15px 10px}
  .chat-form{padding:9px 8px calc(9px + env(safe-area-inset-bottom))}
  .message{max-width:82%;font-size:14px}
- .message-image{max-width:235px}
+ .message-image{max-width:235px;max-height:320px}
+ .audio-message{width:245px;min-width:205px;padding:9px}
+ .audio-wave{gap:2px}
  .conversation-list{max-height:none}
  .conversation-item{padding:13px}
 }
@@ -293,10 +353,7 @@ const supabase=createClient(
 );
 
 const $=id=>document.getElementById(id);
-
-/* كل دفعة تحتوي على 10 رسائل */
 const PAGE_SIZE=10;
-
 const MEDIA_BUCKET='message-media';
 const MAX_MEDIA_SIZE=20*1024*1024;
 
@@ -342,6 +399,13 @@ function initials(name){
 function formatTime(value){
  const date=new Date(value);
  return Number.isNaN(date.getTime())?'':date.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'});
+}
+
+function formatAudioTime(seconds){
+ if(!Number.isFinite(seconds))return '0:00';
+ const minutes=Math.floor(seconds/60);
+ const remaining=Math.floor(seconds%60);
+ return minutes+':'+String(remaining).padStart(2,'0');
 }
 
 function getPartner(conversation){
@@ -675,7 +739,6 @@ async function loadMessages(){
  const area=$('messagesArea');
  area.innerHTML='<div class="empty" style="color:#aaa">جارٍ تحميل الرسائل...</div>';
 
- /* نطلب 11 رسالة لمعرفة هل توجد رسائل أقدم من العشر */
  const {data,error}=await supabase.from('messages')
   .select('id,sender_id,content,message_type,image_path,created_at')
   .eq('conversation_id',conversationId)
@@ -694,8 +757,6 @@ async function loadMessages(){
 
  const rows=data||[];
  hasMoreMessages=rows.length>PAGE_SIZE;
-
- /* نعرض أحدث 10 فقط */
  loadedMessages=rows.slice(0,PAGE_SIZE).reverse();
  oldestMessageTime=loadedMessages.length?loadedMessages[0].created_at:null;
 
@@ -716,7 +777,6 @@ async function loadOlderMessages(){
   button.textContent='جارٍ التحميل...';
  }
 
- /* حفظ مكان القراءة قبل إضافة الرسائل */
  const oldHeight=area.scrollHeight;
  const oldTop=area.scrollTop;
  const previousOldest=oldestMessageTime;
@@ -748,8 +808,6 @@ async function loadOlderMessages(){
 
  const rows=data||[];
  hasMoreMessages=rows.length>PAGE_SIZE;
-
- /* نأخذ 10 رسائل فقط من النتائج */
  const older=rows.slice(0,PAGE_SIZE).reverse();
 
  if(older.length){
@@ -761,11 +819,137 @@ async function loadOlderMessages(){
  }
 
  await renderMessages(false);
-
- /* إعادة موضع القراءة كما كان قبل التحميل */
  area.scrollTop=area.scrollHeight-oldHeight+oldTop;
-
  loadingOlder=false;
+}
+
+/* موجات الصوت */
+const waveformHeights=[
+ 13,22,30,18,34,25,15,29,36,21,14,27,
+ 33,19,29,37,23,15,31,25,36,20,13,28,
+ 34,22,16,30,37,24,14,27,32,19,12,23
+];
+
+function waveformHTML(){
+ return waveformHeights.map(height=>`<span style="height:${height}px"></span>`).join('');
+}
+
+function audioPlayerHTML(url){
+ return `<div class="audio-message">
+  <audio class="audio-source" preload="metadata" src="${escapeHTML(url)}"></audio>
+  <button type="button" class="audio-play" aria-label="تشغيل الصوت">
+   <svg viewBox="0 0 24 24"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11 6.4a2.3 2.3 0 0 1 0 4L9.2 20.4C8.2 21 7 20.3 7 19.2V4.8Z"/></svg>
+  </button>
+  <div class="audio-content">
+   <div class="audio-top">
+    <div class="audio-wave">${waveformHTML()}</div>
+    <span class="audio-duration">0:00</span>
+   </div>
+   <div class="audio-bottom">
+    <input class="audio-progress" type="range" min="0" max="100" value="0" aria-label="تقدم الصوت">
+    <button type="button" class="audio-speed">1x</button>
+   </div>
+  </div>
+ </div>`;
+}
+
+function setAudioPlayIcon(button,playing){
+ if(playing){
+  button.innerHTML='<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+  button.setAttribute('aria-label','إيقاف مؤقت');
+ }else{
+  button.innerHTML='<svg viewBox="0 0 24 24"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11 6.4a2.3 2.3 0 0 1 0 4L9.2 20.4C8.2 21 7 20.3 7 19.2V4.8Z"/></svg>';
+  button.setAttribute('aria-label','تشغيل الصوت');
+ }
+}
+
+function updateAudioPlayer(player){
+ const audio=player.querySelector('.audio-source');
+ const progress=player.querySelector('.audio-progress');
+ const duration=player.querySelector('.audio-duration');
+ const bars=[...player.querySelectorAll('.audio-wave span')];
+
+ if(!audio||!progress||!duration)return;
+
+ const total=audio.duration||0;
+ const current=audio.currentTime||0;
+ const percent=total?current/total*100:0;
+
+ progress.value=percent;
+ progress.style.background=`linear-gradient(to right,#3b82f6 ${percent}%,#30394b ${percent}%)`;
+ duration.textContent=total
+  ?formatAudioTime(current)+' / '+formatAudioTime(total)
+  :formatAudioTime(current);
+
+ const played=total?Math.floor(percent/100*bars.length):0;
+ bars.forEach((bar,index)=>bar.classList.toggle('played',index<played));
+}
+
+function setupAudioPlayers(){
+ $('messagesArea').querySelectorAll('.audio-message').forEach(player=>{
+  const audio=player.querySelector('.audio-source');
+  const playButton=player.querySelector('.audio-play');
+  const progress=player.querySelector('.audio-progress');
+  const speedButton=player.querySelector('.audio-speed');
+
+  if(!audio||player.dataset.ready==='yes')return;
+  player.dataset.ready='yes';
+
+  audio.addEventListener('loadedmetadata',()=>updateAudioPlayer(player));
+  audio.addEventListener('timeupdate',()=>updateAudioPlayer(player));
+  audio.addEventListener('durationchange',()=>updateAudioPlayer(player));
+
+  audio.addEventListener('ended',()=>{
+   setAudioPlayIcon(playButton,false);
+   audio.currentTime=0;
+   updateAudioPlayer(player);
+  });
+
+  audio.addEventListener('pause',()=>{
+   if(audio.ended||audio.currentTime===0)setAudioPlayIcon(playButton,false);
+  });
+
+  playButton.addEventListener('click',async()=>{
+   if(audio.paused){
+    document.querySelectorAll('.audio-source').forEach(other=>{
+     if(other!==audio){
+      other.pause();
+      const otherPlayer=other.closest('.audio-message');
+      if(otherPlayer)setAudioPlayIcon(otherPlayer.querySelector('.audio-play'),false);
+     }
+    });
+
+    try{
+     await audio.play();
+     setAudioPlayIcon(playButton,true);
+    }catch(error){
+     console.error('Audio playback error:',error);
+     alert('تعذر تشغيل التسجيل الصوتي.');
+    }
+   }else{
+    audio.pause();
+    setAudioPlayIcon(playButton,false);
+   }
+  });
+
+  progress.addEventListener('input',()=>{
+   if(audio.duration){
+    audio.currentTime=(Number(progress.value)/100)*audio.duration;
+    updateAudioPlayer(player);
+   }
+  });
+
+  speedButton.addEventListener('click',()=>{
+   const speeds=[1,1.5,2];
+   const current=Number(speedButton.dataset.speed||1);
+   const next=speeds[(speeds.indexOf(current)+1)%speeds.length];
+   audio.playbackRate=next;
+   speedButton.dataset.speed=next;
+   speedButton.textContent=next+'x';
+  });
+
+  updateAudioPlayer(player);
+ });
 }
 
 /* بناء الرسائل */
@@ -788,6 +972,7 @@ async function renderMessages(scrollToBottom=true){
    const side=mine?'mine':'theirs';
    const time=formatTime(m.created_at);
    let body='';
+   const isMedia=m.message_type==='image'||m.message_type==='audio';
 
    if(m.message_type==='image'){
     const url=await getMediaUrl(mediaPathFromMessage(m));
@@ -797,7 +982,7 @@ async function renderMessages(scrollToBottom=true){
    }else if(m.message_type==='audio'){
     const url=await getMediaUrl(mediaPathFromMessage(m));
     body=url
-     ?`<div class="audio-message"><audio class="message-audio" controls preload="none" src="${escapeHTML(url)}"></audio></div>`
+     ?audioPlayerHTML(url)
      :'<span class="message-file-error">تعذر تحميل التسجيل الصوتي</span>';
    }else{
     body=escapeHTML(m.content);
@@ -806,7 +991,7 @@ async function renderMessages(scrollToBottom=true){
    const avatar=mine?'':`<div class="message-avatar">${escapeHTML(initials(currentPartner?.full_name))}</div>`;
    return `<div class="message-row ${side}">
     ${avatar}
-    <div class="message ${side}">${body}<span class="message-time">${time}</span></div>
+    <div class="message ${side} ${isMedia?'media-message':''}">${body}<span class="message-time">${time}</span></div>
    </div>`;
   }));
 
@@ -826,6 +1011,8 @@ async function renderMessages(scrollToBottom=true){
    $('imageViewer').classList.remove('hidden');
   });
  });
+
+ setupAudioPlayers();
 
  if(scrollToBottom){
   area.scrollTop=area.scrollHeight;
@@ -1215,10 +1402,8 @@ $('imageViewer').addEventListener('click',()=>{
  $('viewerImage').removeAttribute('src');
 });
 
-/*
- * ألغينا التحميل التلقائي عند الصعود.
- * تحميل الرسائل القديمة أصبح بالضغط على الزر فقط.
- */
+/* لا يوجد تحميل تلقائي عند الصعود.
+   الرسائل الأقدم تحمل بالضغط على الزر فقط. */
 
 /* تحديث الملاحظات مباشرة */
 function subscribeToNotes(){
