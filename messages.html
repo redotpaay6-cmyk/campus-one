@@ -552,7 +552,7 @@ async function loadConversations(){
 
  const ids=conversationsData.map(c=>c.id);
  const {data:messages,error:msgError}=await supabase.from('messages')
-  .select('conversation_id,content,message_type,created_at')
+  .select('conversation_id,content,message_type,image_path,created_at')
   .in('conversation_id',ids)
   .order('created_at',{ascending:false});
 
@@ -672,8 +672,9 @@ async function getMediaUrl(path){
  return data.signedUrl;
 }
 
-function mediaPathFromContent(content){
- return String(content||'').trim();
+/* قراءة مسار الملف من بيانات الرسالة */
+function mediaPathFromMessage(message){
+ return String(message?.image_path||message?.content||'').trim();
 }
 
 /* تحميل آخر 30 رسالة */
@@ -686,7 +687,7 @@ async function loadMessages(){
  area.innerHTML='<div class="empty" style="color:#aaa">جارٍ تحميل الرسائل...</div>';
 
  const {data,error}=await supabase.from('messages')
-  .select('id,sender_id,content,message_type,created_at')
+  .select('id,sender_id,content,message_type,image_path,created_at')
   .eq('conversation_id',conversationId)
   .order('created_at',{ascending:false})
   .limit(PAGE_SIZE);
@@ -723,7 +724,7 @@ async function loadOlderMessages(){
  const previousOldest=oldestMessageTime;
 
  const {data,error}=await supabase.from('messages')
-  .select('id,sender_id,content,message_type,created_at')
+  .select('id,sender_id,content,message_type,image_path,created_at')
   .eq('conversation_id',conversationId)
   .lt('created_at',previousOldest)
   .order('created_at',{ascending:false})
@@ -774,12 +775,12 @@ async function renderMessages(scrollToBottom=true){
    let body='';
 
    if(m.message_type==='image'){
-    const url=await getMediaUrl(mediaPathFromContent(m.content));
+    const url=await getMediaUrl(mediaPathFromMessage(m));
     body=url
      ?`<img class="message-image" src="${escapeHTML(url)}" alt="صورة مرسلة" data-view-image="${escapeHTML(url)}">`
      :'<span class="message-file-error">تعذر تحميل الصورة</span>';
    }else if(m.message_type==='audio'){
-    const url=await getMediaUrl(mediaPathFromContent(m.content));
+    const url=await getMediaUrl(mediaPathFromMessage(m));
     body=url
      ?`<div class="audio-message"><audio class="message-audio" controls preload="none" src="${escapeHTML(url)}"></audio></div>`
      :'<span class="message-file-error">تعذر تحميل التسجيل الصوتي</span>';
@@ -966,7 +967,8 @@ async function uploadMessageMedia(file,type){
    conversation_id:conversationId,
    sender_id:currentUser.id,
    content:path,
-   message_type:type
+   message_type:type,
+   image_path:type==='image'?path:null
   });
 
   if(messageError)throw messageError;
