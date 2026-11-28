@@ -10,17 +10,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
- --navy:#102b46;
- --blue:#2563eb;
- --purple:#7652f5;
- --bg:#f3f6fb;
- --text:#172b4d;
- --muted:#718096;
- --border:#e7edf5;
- --chat-bg:#101114;
- --chat-panel:#18191d;
- --incoming:#292a2f;
- --outgoing:linear-gradient(135deg,#2563eb,#7048ef);
+ --navy:#102b46;--blue:#2563eb;--purple:#7652f5;
+ --bg:#f3f6fb;--text:#172b4d;--muted:#718096;
+ --border:#e7edf5;--chat-bg:#101114;--chat-panel:#18191d;
+ --incoming:#292a2f;--outgoing:linear-gradient(135deg,#2563eb,#7048ef);
 }
 body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);padding-bottom:100px}
 button,input,textarea{font-family:inherit}
@@ -63,7 +56,7 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
 .messages-area{
  flex:1;padding:18px 14px 12px;overflow-y:auto;display:flex;
  flex-direction:column;gap:9px;min-height:390px;max-height:520px;
- background:var(--chat-bg);scroll-behavior:smooth;
+ background:var(--chat-bg);scroll-behavior:auto;
 }
 .message-row{width:100%;display:flex;align-items:flex-end;gap:7px}
 .message-row.mine{justify-content:flex-start}
@@ -81,10 +74,7 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
 .load-older:disabled{opacity:.5}
 .chat-note{margin:9px 12px 0;padding:10px 12px;border-radius:12px;background:#202b40;border:1px solid #34496d;font-size:12px;color:#d9e6ff;line-height:1.7}
 .chat-note strong{margin-left:5px}
-.chat-form{
- display:flex;align-items:center;gap:8px;padding:11px 12px;
- border-top:1px solid #303137;background:#111216;
-}
+.chat-form{display:flex;align-items:center;gap:8px;padding:11px 12px;border-top:1px solid #303137;background:#111216}
 .message-input-wrap{flex:1;min-width:0;display:flex;align-items:center;background:#25262c;border:1px solid #373941;border-radius:25px;padding:0 14px;min-height:47px}
 .chat-form input[type=text]{flex:1;min-width:0;border:0;background:transparent;color:white;outline:none;font-size:14px;padding:12px 3px}
 .chat-form input::placeholder{color:#a3a5ae}
@@ -245,7 +235,6 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
  </div>
 </main>
 
-<!-- نافذة الملاحظات -->
 <div id="noteModal" class="note-modal hidden">
  <div class="note-dialog">
   <h3>ملاحظتك الجديدة ✨</h3>
@@ -271,7 +260,6 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
  </div>
 </div>
 
-<!-- معاينة الصورة قبل الإرسال -->
 <div id="mediaModal" class="media-modal hidden">
  <div class="media-dialog">
   <h3>معاينة الصورة</h3>
@@ -283,7 +271,6 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
  </div>
 </div>
 
-<!-- عرض الصورة -->
 <div id="imageViewer" class="media-modal hidden">
  <img id="viewerImage" alt="الصورة" style="max-width:100%;max-height:90vh;object-fit:contain;border-radius:12px">
 </div>
@@ -306,7 +293,10 @@ const supabase=createClient(
 );
 
 const $=id=>document.getElementById(id);
-const PAGE_SIZE=30;
+
+/* كل دفعة تحتوي على 10 رسائل */
+const PAGE_SIZE=10;
+
 const MEDIA_BUCKET='message-media';
 const MAX_MEDIA_SIZE=20*1024*1024;
 
@@ -672,12 +662,11 @@ async function getMediaUrl(path){
  return data.signedUrl;
 }
 
-/* قراءة مسار الملف من بيانات الرسالة */
 function mediaPathFromMessage(message){
  return String(message?.image_path||message?.content||'').trim();
 }
 
-/* تحميل آخر 30 رسالة */
+/* تحميل آخر 10 رسائل */
 async function loadMessages(){
  if(!currentConversation||loadingInitialMessages)return;
  loadingInitialMessages=true;
@@ -686,11 +675,12 @@ async function loadMessages(){
  const area=$('messagesArea');
  area.innerHTML='<div class="empty" style="color:#aaa">جارٍ تحميل الرسائل...</div>';
 
+ /* نطلب 11 رسالة لمعرفة هل توجد رسائل أقدم من العشر */
  const {data,error}=await supabase.from('messages')
   .select('id,sender_id,content,message_type,image_path,created_at')
   .eq('conversation_id',conversationId)
   .order('created_at',{ascending:false})
-  .limit(PAGE_SIZE);
+  .limit(PAGE_SIZE+1);
 
  loadingInitialMessages=false;
 
@@ -702,13 +692,17 @@ async function loadMessages(){
 
  if(currentConversation?.id!==conversationId)return;
 
- loadedMessages=(data||[]).reverse();
+ const rows=data||[];
+ hasMoreMessages=rows.length>PAGE_SIZE;
+
+ /* نعرض أحدث 10 فقط */
+ loadedMessages=rows.slice(0,PAGE_SIZE).reverse();
  oldestMessageTime=loadedMessages.length?loadedMessages[0].created_at:null;
- hasMoreMessages=(data||[]).length===PAGE_SIZE;
+
  await renderMessages(true);
 }
 
-/* تحميل الرسائل الأقدم */
+/* تحميل 10 رسائل أقدم عند الضغط على الزر */
 async function loadOlderMessages(){
  if(loadingOlder||!hasMoreMessages||!oldestMessageTime||!currentConversation)return;
 
@@ -717,8 +711,12 @@ async function loadOlderMessages(){
  const area=$('messagesArea');
  const button=$('loadOlderTop');
 
- if(button){button.disabled=true;button.textContent='جارٍ التحميل...'}
+ if(button){
+  button.disabled=true;
+  button.textContent='جارٍ التحميل...';
+ }
 
+ /* حفظ مكان القراءة قبل إضافة الرسائل */
  const oldHeight=area.scrollHeight;
  const oldTop=area.scrollTop;
  const previousOldest=oldestMessageTime;
@@ -728,29 +726,45 @@ async function loadOlderMessages(){
   .eq('conversation_id',conversationId)
   .lt('created_at',previousOldest)
   .order('created_at',{ascending:false})
-  .limit(PAGE_SIZE);
+  .limit(PAGE_SIZE+1);
 
  if(error){
   console.error(error);
   loadingOlder=false;
+
+  if(button){
+   button.disabled=false;
+   button.textContent='تحميل الرسائل الأقدم';
+  }
+
   alert('تعذر تحميل الرسائل القديمة. حاول مجدداً.');
   return;
  }
 
- if(currentConversation?.id!==conversationId){loadingOlder=false;return}
+ if(currentConversation?.id!==conversationId){
+  loadingOlder=false;
+  return;
+ }
 
- const older=(data||[]).reverse();
+ const rows=data||[];
+ hasMoreMessages=rows.length>PAGE_SIZE;
+
+ /* نأخذ 10 رسائل فقط من النتائج */
+ const older=rows.slice(0,PAGE_SIZE).reverse();
+
  if(older.length){
   const existingIds=new Set(loadedMessages.map(m=>m.id));
   const uniqueOlder=older.filter(m=>!existingIds.has(m.id));
+
   loadedMessages=[...uniqueOlder,...loadedMessages];
-  oldestMessageTime=older[0].created_at;
+  oldestMessageTime=loadedMessages.length?loadedMessages[0].created_at:null;
  }
 
- if(older.length<PAGE_SIZE)hasMoreMessages=false;
-
  await renderMessages(false);
+
+ /* إعادة موضع القراءة كما كان قبل التحميل */
  area.scrollTop=area.scrollHeight-oldHeight+oldTop;
+
  loadingOlder=false;
 }
 
@@ -761,6 +775,7 @@ async function renderMessages(scrollToBottom=true){
  const token=++renderingToken;
 
  let html='';
+
  if(hasMoreMessages){
   html+='<button type="button" id="loadOlderTop" class="load-older">تحميل الرسائل الأقدم</button>';
  }
@@ -812,7 +827,9 @@ async function renderMessages(scrollToBottom=true){
   });
  });
 
- if(scrollToBottom)area.scrollTop=area.scrollHeight;
+ if(scrollToBottom){
+  area.scrollTop=area.scrollHeight;
+ }
 }
 
 /* Realtime */
@@ -1198,10 +1215,10 @@ $('imageViewer').addEventListener('click',()=>{
  $('viewerImage').removeAttribute('src');
 });
 
-/* تحميل الرسائل الأقدم عند الصعود */
-$('messagesArea').addEventListener('scroll',()=>{
- if($('messagesArea').scrollTop<50)loadOlderMessages();
-});
+/*
+ * ألغينا التحميل التلقائي عند الصعود.
+ * تحميل الرسائل القديمة أصبح بالضغط على الزر فقط.
+ */
 
 /* تحديث الملاحظات مباشرة */
 function subscribeToNotes(){
