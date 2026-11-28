@@ -4,73 +4,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#102b46">
+<meta name="theme-color" content="#102b50">
 <title>CAMPUS ONE | الرئيسية</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 
 :root{
- --navy:#102b46;
+ --navy:#102b50;
  --blue:#2563eb;
  --light-blue:#eff6ff;
- --bg:#f3f6fb;
- --text:#172b4d;
- --muted:#718096;
- --border:#e7edf5;
+ --bg:#f4f7fb;
+ --text:#172b46;
+ --muted:#8490a2;
+ --border:#e9eef5;
+ --red:#ef4444;
 }
 
 body{
  font-family:Arial,sans-serif;
  background:var(--bg);
  color:var(--text);
- padding-bottom:100px;
+ padding-bottom:85px;
 }
 
+button,input{font:inherit}
+button{cursor:pointer}
+
 header{
- background:var(--navy);
- color:white;
- padding:16px 5%;
+ background:#fff;
+ color:var(--navy);
+ padding:14px 20px;
  display:flex;
  align-items:center;
  justify-content:space-between;
  position:sticky;
  top:0;
- z-index:10;
- box-shadow:0 3px 15px #102b4620;
+ z-index:20;
+ border-bottom:1px solid var(--border);
 }
 
-.logo{font-size:21px;font-weight:900;letter-spacing:.3px}
-.header-actions{display:flex;gap:13px;align-items:center}
+.logo{font-size:20px;font-weight:900}
+.header-actions{display:flex;gap:10px;align-items:center}
 
 .icon-button{
- width:40px;height:40px;display:grid;place-items:center;
- background:#ffffff12;border:1px solid #ffffff18;
- color:white;border-radius:13px;cursor:pointer;position:relative;
- transition:.2s;
+ width:40px;height:40px;
+ display:grid;place-items:center;
+ background:#f1f5f9;
+ border:0;color:var(--navy);
+ border-radius:12px;
+ position:relative;
 }
-.icon-button:active{transform:scale(.91)}
-.icon-button svg{width:21px;height:21px}
+
+.icon-button svg{
+ width:24px;height:24px;
+ fill:none;stroke:currentColor;
+ stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
 
 .badge-count{
- position:absolute;top:-5px;right:-5px;background:#ef4444;
- color:white;border-radius:20px;min-width:18px;height:18px;
- padding:0 4px;font-size:10px;display:flex;align-items:center;
- justify-content:center;font-weight:bold;border:2px solid var(--navy);
+ position:absolute;top:-5px;right:-5px;
+ background:var(--red);color:white;
+ border-radius:20px;min-width:18px;height:18px;
+ padding:0 4px;font-size:10px;
+ display:flex;align-items:center;justify-content:center;
+ font-weight:bold;border:2px solid white;
 }
 .badge-count.hidden{display:none}
 
 .container{max-width:1050px;margin:auto;padding:22px 16px}
 
 .welcome{
- background:linear-gradient(135deg,#102b46,#1768a5);
- color:white;padding:25px;border-radius:20px;margin-bottom:22px;
+ background:linear-gradient(135deg,#102b50,#1768a5);
+ color:white;padding:25px;border-radius:20px;
+ margin-bottom:22px;
  box-shadow:0 8px 25px #102b4620;
 }
 .welcome h1{font-size:23px;margin-bottom:9px}
 .welcome p{color:#dbeafe;font-size:14px;margin-top:6px}
 
-.section-title{font-size:19px;margin:25px 0 14px;font-weight:800}
+.section-title{
+ font-size:19px;margin:25px 0 14px;font-weight:800;
+}
 
 .grid{
  display:grid;
@@ -79,36 +94,56 @@ header{
 }
 
 .card{
- background:white;padding:19px 15px;border-radius:17px;
- border:1px solid var(--border);box-shadow:0 4px 15px #102b4608;
- cursor:pointer;transition:.2s;text-align:right;color:inherit;
+ background:white;padding:19px 15px;
+ border-radius:17px;border:1px solid var(--border);
+ box-shadow:0 4px 15px #102b4608;
+ cursor:pointer;transition:.2s;
+ text-align:right;color:inherit;
  text-decoration:none;display:block;
 }
 .card:active{transform:scale(.97)}
+
 .card-icon{
- width:46px;height:46px;border-radius:14px;
- background:var(--light-blue);color:var(--blue);
+ width:46px;height:46px;
+ border-radius:14px;background:var(--light-blue);
+ color:var(--blue);
  display:flex;align-items:center;justify-content:center;
- font-size:22px;margin-bottom:13px;
+ margin-bottom:13px;
 }
+.card-icon svg{
+ width:24px;height:24px;
+ fill:none;stroke:currentColor;
+ stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+
 .card h3{font-size:15px;margin-bottom:7px}
 .card p{font-size:12px;color:var(--muted);line-height:1.7}
 
 .notice{
- background:white;border:1px solid var(--border);padding:18px;
- border-radius:17px;margin-top:12px;box-shadow:0 4px 15px #102b4608;
+ background:white;border:1px solid var(--border);
+ padding:18px;border-radius:17px;margin-top:12px;
+ box-shadow:0 4px 15px #102b4608;
 }
-.notice h3{font-size:15px;margin-bottom:9px}
+.notice h3{
+ font-size:15px;margin-bottom:9px;
+ display:flex;align-items:center;gap:8px;
+}
+.notice h3 svg{
+ width:21px;height:21px;flex-shrink:0;
+ fill:none;stroke:currentColor;stroke-width:2;
+ stroke-linecap:round;stroke-linejoin:round;
+}
 .notice p{font-size:13px;color:var(--muted);line-height:1.8}
 
 .admin-link{
- display:inline-block;margin-top:12px;color:var(--blue);
- text-decoration:none;font-weight:bold;
+ display:inline-block;margin-top:12px;
+ color:var(--blue);text-decoration:none;font-weight:bold;
 }
 
 .logout{
- background:#fff0f0;color:#c53030;border:0;padding:11px 16px;
- border-radius:10px;cursor:pointer;margin-top:22px;font-weight:bold;
+ background:#fff0f0;color:#c53030;border:0;
+ padding:11px 16px;border-radius:10px;
+ margin-top:22px;font-weight:bold;
 }
 
 .loading{text-align:center;padding:35px 15px;color:var(--muted)}
@@ -124,8 +159,9 @@ header{
 .feed-header .section-title{margin:0}
 
 .refresh-feed{
- border:1px solid var(--border);background:white;color:var(--blue);
- padding:8px 12px;border-radius:10px;font-weight:bold;cursor:pointer;
+ border:1px solid var(--border);background:white;
+ color:var(--blue);padding:8px 12px;
+ border-radius:10px;font-weight:bold;
 }
 
 .post-card{
@@ -157,19 +193,24 @@ header{
 .post-space{
  display:inline-flex;align-items:center;gap:5px;
  margin-top:7px;padding:6px 10px;border-radius:8px;
- background:#eff6ff;color:#2563eb;font-size:11px;font-weight:bold;
- text-decoration:none;
+ background:#eff6ff;color:#2563eb;
+ font-size:11px;font-weight:bold;text-decoration:none;
 }
 .post-space:hover{background:#dbeafe}
+.post-space svg{
+ width:15px;height:15px;fill:none;stroke:currentColor;
+ stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
 
 .post-content{
- font-size:14px;line-height:1.9;white-space:pre-wrap;
- overflow-wrap:anywhere;margin:10px 0;
+ font-size:14px;line-height:1.9;
+ white-space:pre-wrap;overflow-wrap:anywhere;
+ margin:10px 0;
 }
 
 .post-image{
- width:100%;max-height:420px;object-fit:cover;
- border-radius:13px;margin-top:8px;
+ width:100%;max-height:420px;
+ object-fit:cover;border-radius:13px;margin-top:8px;
 }
 
 .post-footer{
@@ -179,16 +220,28 @@ header{
 }
 
 .post-action{
- display:flex;align-items:center;justify-content:center;
+ display:flex;flex-direction:column;
+ align-items:center;justify-content:center;
  gap:5px;border:0;background:transparent;
- color:#64748b;padding:7px 8px;border-radius:9px;
- font-size:12px;cursor:pointer;transition:.2s;
- flex:1;min-width:48px;
+ color:#64748b;padding:7px 4px;border-radius:9px;
+ font-size:11px;cursor:pointer;transition:.2s;
+ flex:1;min-width:0;
 }
+
 .post-action:active{transform:scale(.92)}
-.post-action .action-icon{font-size:17px;line-height:1}
-.post-action .action-count{font-size:11px}
+
+.post-action .action-icon{
+ width:22px;height:22px;
+ display:grid;place-items:center;
+}
+.post-action .action-icon svg{
+ width:22px;height:22px;
+ fill:none;stroke:currentColor;
+ stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+.post-action .action-count{font-size:10px}
 .post-action.active{color:var(--blue);background:#eff6ff}
+.post-action.liked{color:var(--red);background:#fff1f2}
 .post-action:disabled{opacity:.5;cursor:wait}
 
 .comments-area{
@@ -198,8 +251,8 @@ header{
 .comments-area.open{display:block}
 
 .comments-list{
- display:flex;flex-direction:column;gap:10px;
- margin-bottom:12px;
+ display:flex;flex-direction:column;
+ gap:10px;margin-bottom:12px;
 }
 .comment-item{
  display:flex;gap:9px;align-items:flex-start;
@@ -215,22 +268,23 @@ header{
 .comment-body{min-width:0;flex:1}
 .comment-name{font-size:12px;font-weight:bold;margin-bottom:4px}
 .comment-text{
- font-size:13px;line-height:1.7;overflow-wrap:anywhere;
- white-space:pre-wrap;
+ font-size:13px;line-height:1.7;
+ overflow-wrap:anywhere;white-space:pre-wrap;
 }
 .comment-date{font-size:10px;color:var(--muted);margin-top:5px}
 
 .comment-form{display:flex;gap:8px;align-items:center}
 .comment-input{
  flex:1;min-width:0;border:1px solid var(--border);
- background:#f8fafc;border-radius:12px;padding:11px 12px;
- font-family:inherit;font-size:13px;outline:none;
+ background:#f8fafc;border-radius:12px;
+ padding:11px 12px;font-family:inherit;
+ font-size:13px;outline:none;
 }
 .comment-input:focus{border-color:var(--blue);background:white}
 .comment-submit{
  border:0;background:var(--blue);color:white;
  padding:11px 14px;border-radius:11px;
- font-weight:bold;font-size:12px;cursor:pointer;
+ font-weight:bold;font-size:12px;
 }
 .comment-submit:disabled{opacity:.5}
 
@@ -241,58 +295,63 @@ header{
 
 .empty-feed{
  background:white;border:1px dashed #cbd5e1;
- border-radius:16px;padding:28px 16px;text-align:center;
- color:var(--muted);font-size:13px;line-height:1.9;
+ border-radius:16px;padding:28px 16px;
+ text-align:center;color:var(--muted);
+ font-size:13px;line-height:1.9;
 }
 
 .feed-error{
  background:#fff7ed;border:1px solid #fed7aa;
- border-radius:13px;padding:15px;color:#9a3412;
- font-size:13px;line-height:1.8;
+ border-radius:13px;padding:15px;
+ color:#9a3412;font-size:13px;line-height:1.8;
 }
 
-/* PREMIUM BOTTOM NAVIGATION */
+/* UNIFIED BOTTOM NAVIGATION */
 
 .bottom-nav{
+ display:flex;justify-content:space-around;
  position:fixed;bottom:0;left:0;right:0;
- background:#ffffffed;backdrop-filter:blur(18px);
- -webkit-backdrop-filter:blur(18px);
- border-top:1px solid #e5eaf1;
- display:flex;justify-content:space-around;align-items:center;
- padding:9px 3px calc(9px + env(safe-area-inset-bottom));
- z-index:100;box-shadow:0 -5px 25px #102b4608;
+ background:#fff;border-top:1px solid var(--border);
+ padding:8px 3px calc(8px + env(safe-area-inset-bottom));
+ z-index:100;
 }
 
 .nav-item{
- position:relative;border:0;background:transparent;color:#8995a7;
- display:flex;flex-direction:column;align-items:center;
- justify-content:center;gap:4px;font-size:10px;font-weight:600;
- cursor:pointer;text-decoration:none;flex:1;min-width:0;
- padding:6px 1px;border-radius:13px;
- transition:color .2s,background .2s,transform .2s;
+ text-decoration:none;color:#7b8797;
+ font-size:10px;text-align:center;line-height:1.5;
+ flex:1;min-width:0;
+ display:flex;flex-direction:column;
+ align-items:center;gap:3px;
+ padding:3px 1px;
+ border-radius:10px;
+ transition:color .2s,background .2s;
  -webkit-tap-highlight-color:transparent;
 }
 
 .nav-icon{
- width:25px;height:25px;display:grid;place-items:center;
- transition:transform .2s;
-}
-.nav-icon svg{
- width:23px;height:23px;stroke:currentColor;fill:none;
- stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+ width:24px;height:24px;
+ display:grid;place-items:center;
 }
 
-.nav-item.active{color:var(--blue);background:#eff6ff}
-.nav-item.active .nav-icon{transform:translateY(-2px)}
-.nav-item.active .nav-icon svg{stroke-width:2.4}
-.nav-item:active{transform:scale(.91)}
+.nav-icon svg{
+ width:24px;height:24px;
+ fill:none;stroke:currentColor;
+ stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+
+.nav-item.active{
+ color:var(--blue);font-weight:bold;
+}
+.nav-item:active{background:#eff6ff}
 .nav-label{white-space:nowrap}
 
 .nav-badge{
- position:absolute;top:1px;right:calc(50% - 19px);
+ position:absolute;
+ top:0;right:calc(50% - 19px);
  min-width:16px;height:16px;padding:0 4px;
- background:#ef4444;color:white;border:2px solid white;
- border-radius:20px;font-size:9px;display:flex;
+ background:#ef4444;color:white;
+ border:2px solid white;border-radius:20px;
+ font-size:9px;display:flex;
  align-items:center;justify-content:center;font-weight:bold;
 }
 .nav-badge.hidden{display:none}
@@ -302,12 +361,14 @@ header{
  .welcome{padding:35px}
  .welcome h1{font-size:28px}
  .bottom-nav{
-  max-width:650px;left:50%;right:auto;transform:translateX(-50%);
+  max-width:650px;left:50%;right:auto;
+  transform:translateX(-50%);
   bottom:12px;width:calc(100% - 30px);
-  border:1px solid var(--border);border-radius:20px;
-  padding:9px;box-shadow:0 8px 35px #102b4620;
+  border:1px solid var(--border);
+  border-radius:16px;padding:8px;
+  box-shadow:0 8px 30px #102b4615;
  }
- body{padding-bottom:110px}
+ body{padding-bottom:100px}
 }
 </style>
 </head>
@@ -315,14 +376,14 @@ header{
 <body>
 
 <header>
- <div class="logo">🎓 CAMPUS ONE</div>
+ <div class="logo">CAMPUS ONE</div>
+
  <div class="header-actions">
 
   <button class="icon-button" aria-label="الإشعارات"
    onclick="location.href='notifications.html'">
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+   <svg viewBox="0 0 24 24">
+    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
     <path d="M10 21h4"/>
    </svg>
    <span id="notificationCount" class="badge-count hidden">0</span>
@@ -330,10 +391,9 @@ header{
 
   <button class="icon-button" aria-label="حسابي"
    onclick="location.href='student.html'">
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+   <svg viewBox="0 0 24 24">
     <circle cx="12" cy="8" r="4"/>
-    <path d="M5 21a7 7 0 0 1 14 0"/>
+    <path d="M4 21a8 8 0 0 1 16 0"/>
    </svg>
   </button>
 
@@ -360,10 +420,10 @@ header{
  <a class="nav-item" href="community.html" data-page="community">
   <span class="nav-icon">
    <svg viewBox="0 0 24 24">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-    <circle cx="9" cy="7" r="4"/>
-    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    <circle cx="9" cy="8" r="3.5"/>
+    <path d="M2.5 20v-1.5a6.5 6.5 0 0 1 13 0V20z"/>
+    <path d="M16 5a3.5 3.5 0 0 1 0 7"/>
+    <path d="M18 14a5.5 5.5 0 0 1 3.5 5.1V20"/>
    </svg>
   </span>
   <span class="nav-label">المجتمع</span>
@@ -372,8 +432,8 @@ header{
  <a class="nav-item" href="search.html" data-page="search">
   <span class="nav-icon">
    <svg viewBox="0 0 24 24">
-    <circle cx="11" cy="11" r="7"/>
-    <path d="m20 20-4-4"/>
+    <circle cx="10.8" cy="10.8" r="7"/>
+    <path d="m16 16 5 5"/>
    </svg>
   </span>
   <span class="nav-label">البحث</span>
@@ -382,8 +442,7 @@ header{
  <a class="nav-item" href="messages.html" data-page="messages">
   <span class="nav-icon">
    <svg viewBox="0 0 24 24">
-    <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5Z"/>
-    <path d="M8 12h.01M12 12h.01M16 12h.01"/>
+    <path d="M4 5h16v12H9l-5 4z"/>
    </svg>
   </span>
   <span class="nav-label">الرسائل</span>
@@ -392,7 +451,7 @@ header{
  <a class="nav-item" href="notifications.html" data-page="notifications">
   <span class="nav-icon">
    <svg viewBox="0 0 24 24">
-    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
     <path d="M10 21h4"/>
    </svg>
   </span>
@@ -404,7 +463,7 @@ header{
   <span class="nav-icon">
    <svg viewBox="0 0 24 24">
     <circle cx="12" cy="8" r="4"/>
-    <path d="M5 21a7 7 0 0 1 14 0"/>
+    <path d="M4 21a8 8 0 0 1 16 0"/>
    </svg>
   </span>
   <span class="nav-label">حسابي</span>
@@ -430,6 +489,27 @@ let notificationChannel = null;
 let publicProfiles = new Map();
 let postsCache = new Map();
 
+const iconPaths = {
+ profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+ posts:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+ bell:'<path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
+ community:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-1.5a6.5 6.5 0 0 1 13 0V20z"/><path d="M16 5a3.5 3.5 0 0 1 0 7"/>',
+ message:'<path d="M4 5h16v12H9l-5 4z"/>',
+ heart:'<path d="M20.8 8.8c0 5.5-8.8 11-8.8 11s-8.8-5.5-8.8-11A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.8 2.6z"/>',
+ comment:'<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5z"/>',
+ repost:'<path d="m17 1 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="m7 23-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+ share:'<path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4z"/>',
+ bookmark:'<path d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18l-6-4-6 4z"/>'
+};
+
+function svgIcon(name,size=22){
+ return `<svg xmlns="http://www.w3.org/2000/svg"
+  width="${size}" height="${size}" viewBox="0 0 24 24"
+  fill="none" stroke="currentColor" stroke-width="2"
+  stroke-linecap="round" stroke-linejoin="round"
+  aria-hidden="true">${iconPaths[name]||''}</svg>`;
+}
+
 function escapeHTML(value){
  return String(value ?? '').replace(/[&<>"']/g,char=>({
   '&':'&amp;',
@@ -442,8 +522,8 @@ function escapeHTML(value){
 
 function getSavedPosts(){
  try{
-  const saved = JSON.parse(localStorage.getItem('campus_saved_posts') || '[]');
-  return Array.isArray(saved) ? saved.map(String) : [];
+  const saved=JSON.parse(localStorage.getItem('campus_saved_posts')||'[]');
+  return Array.isArray(saved)?saved.map(String):[];
  }catch(error){
   return [];
  }
@@ -456,7 +536,7 @@ function setSavedPosts(posts){
 async function updateNotificationCount(){
  if(!currentUserId)return;
 
- const {count,error} = await supabase
+ const {count,error}=await supabase
   .from('notifications')
   .select('id',{count:'exact',head:true})
   .eq('recipient_id',currentUserId)
@@ -467,13 +547,13 @@ async function updateNotificationCount(){
   return;
  }
 
- const total = count || 0;
- const label = total > 99 ? '99+' : total;
+ const total=count||0;
+ const label=total>99?'99+':total;
 
- if(total > 0){
-  notificationCount.textContent = label;
+ if(total>0){
+  notificationCount.textContent=label;
   notificationCount.classList.remove('hidden');
-  navNotificationCount.textContent = label;
+  navNotificationCount.textContent=label;
   navNotificationCount.classList.remove('hidden');
  }else{
   notificationCount.classList.add('hidden');
@@ -486,13 +566,13 @@ function subscribeToNotifications(){
   supabase.removeChannel(notificationChannel);
  }
 
- notificationChannel = supabase
-  .channel('dashboard-notifications-' + currentUserId)
+ notificationChannel=supabase
+  .channel('dashboard-notifications-'+currentUserId)
   .on('postgres_changes',{
    event:'INSERT',
    schema:'public',
    table:'notifications',
-   filter:'recipient_id=eq.' + currentUserId
+   filter:'recipient_id=eq.'+currentUserId
   },()=>{
    updateNotificationCount();
   })
@@ -500,13 +580,13 @@ function subscribeToNotifications(){
 }
 
 async function loadPosts(){
- const feed = document.getElementById('postsFeed');
+ const feed=document.getElementById('postsFeed');
  if(!feed)return;
 
- feed.innerHTML = '<div class="loading">جارٍ تحميل المنشورات...</div>';
+ feed.innerHTML='<div class="loading">جارٍ تحميل المنشورات...</div>';
 
  try{
-  const {data:posts,error} = await supabase
+  const {data:posts,error}=await supabase
    .from('posts')
    .select('id,author_id,content,image_path,created_at,space_id')
    .order('created_at',{ascending:false})
@@ -514,8 +594,8 @@ async function loadPosts(){
 
   if(error)throw error;
 
-  if(!posts || posts.length===0){
-   feed.innerHTML = `
+  if(!posts||posts.length===0){
+   feed.innerHTML=`
     <div class="empty-feed">
      لا توجد منشورات حتى الآن.<br>
      ستظهر هنا منشورات الطلبة من جميع المساحات.
@@ -523,67 +603,51 @@ async function loadPosts(){
    return;
   }
 
-  const postIds = posts.map(p=>p.id);
+  const postIds=posts.map(p=>p.id);
 
-  const {data:profiles,error:profilesError} =
+  const {data:profiles,error:profilesError}=
    await supabase.rpc('get_public_profiles');
 
   if(profilesError)console.error('Profiles:',profilesError);
 
-  publicProfiles = new Map(
-   (profiles || []).map(p=>[p.id,p])
-  );
+  publicProfiles=new Map((profiles||[]).map(p=>[p.id,p]));
 
-  const spaceIds = [...new Set(
-   posts.map(p=>p.space_id).filter(Boolean)
-  )];
-
-  let spaceMap = new Map();
+  const spaceIds=[...new Set(posts.map(p=>p.space_id).filter(Boolean))];
+  let spaceMap=new Map();
 
   if(spaceIds.length){
-   const {data:spaces,error:spacesError} = await supabase
+   const {data:spaces,error:spacesError}=await supabase
     .from('community_spaces')
     .select('id,name')
     .in('id',spaceIds);
 
    if(spacesError)console.error('Spaces:',spacesError);
-
-   spaceMap = new Map(
-    (spaces || []).map(s=>[s.id,s.name])
-   );
+   spaceMap=new Map((spaces||[]).map(s=>[s.id,s.name]));
   }
 
-  const [likesResult,commentsResult,repostsResult] = await Promise.all([
-   supabase.from('post_likes')
-    .select('post_id,user_id')
-    .in('post_id',postIds),
-
-   supabase.from('comments')
-    .select('post_id')
-    .in('post_id',postIds),
-
-   supabase.from('reposts')
-    .select('post_id,author_id')
-    .in('post_id',postIds)
+  const [likesResult,commentsResult,repostsResult]=await Promise.all([
+   supabase.from('post_likes').select('post_id,user_id').in('post_id',postIds),
+   supabase.from('comments').select('post_id').in('post_id',postIds),
+   supabase.from('reposts').select('post_id,author_id').in('post_id',postIds)
   ]);
 
   if(likesResult.error)console.error('Likes:',likesResult.error);
   if(commentsResult.error)console.error('Comments:',commentsResult.error);
   if(repostsResult.error)console.error('Reposts:',repostsResult.error);
 
-  const likes = likesResult.data || [];
-  const comments = commentsResult.data || [];
-  const reposts = repostsResult.data || [];
+  const likes=likesResult.data||[];
+  const comments=commentsResult.data||[];
+  const reposts=repostsResult.data||[];
 
-  const likeCounts = new Map();
-  const commentCounts = new Map();
-  const repostCounts = new Map();
-  const myLikes = new Set();
-  const myReposts = new Set();
+  const likeCounts=new Map();
+  const commentCounts=new Map();
+  const repostCounts=new Map();
+  const myLikes=new Set();
+  const myReposts=new Set();
 
   likes.forEach(item=>{
    likeCounts.set(item.post_id,(likeCounts.get(item.post_id)||0)+1);
-   if(item.user_id === currentUserId)myLikes.add(item.post_id);
+   if(item.user_id===currentUserId)myLikes.add(item.post_id);
   });
 
   comments.forEach(item=>{
@@ -592,609 +656,89 @@ async function loadPosts(){
 
   reposts.forEach(item=>{
    repostCounts.set(item.post_id,(repostCounts.get(item.post_id)||0)+1);
-   if(item.author_id === currentUserId)myReposts.add(item.post_id);
+   if(item.author_id===currentUserId)myReposts.add(item.post_id);
   });
 
-  postsCache = new Map(posts.map(post=>[post.id,post]));
+  postsCache=new Map(posts.map(post=>[post.id,post]));
 
-  const savedPosts = getSavedPosts();
+  const savedPosts=getSavedPosts();
 
-  const cards = await Promise.all(posts.map(async post=>{
-   const profile = publicProfiles.get(post.author_id);
-   const authorName = profile?.full_name || 'طالب CAMPUS ONE';
-   const avatarPath = profile?.profile_avatar_path || '';
+  const cards=await Promise.all(posts.map(async post=>{
+   const profile=publicProfiles.get(post.author_id);
+   const authorName=profile?.full_name||'طالب CAMPUS ONE';
+   const avatarPath=profile?.profile_avatar_path||'';
 
-   // إذا تعذر جلب الاسم من قاعدة البيانات، نظهر اسمًا عامًا للمساحة
-   const spaceName = post.space_id
-    ? (spaceMap.get(post.space_id) || 'مساحة جامعية')
-    : null;
+   const spaceName=post.space_id
+    ?(spaceMap.get(post.space_id)||'مساحة جامعية')
+    :null;
 
-   let avatarHTML = escapeHTML(authorName.trim().charAt(0) || 'ط');
+   let avatarHTML=escapeHTML(authorName.trim().charAt(0)||'ط');
 
    if(avatarPath){
-    const {data:avatarData,error:avatarError} = await supabase
+    const {data:avatarData,error:avatarError}=await supabase
      .storage.from('community-media')
      .createSignedUrl(avatarPath,3600);
 
-    if(!avatarError && avatarData?.signedUrl){
-     avatarHTML = `<img src="${escapeHTML(avatarData.signedUrl)}" alt="">`;
+    if(!avatarError&&avatarData?.signedUrl){
+     avatarHTML=`<img src="${escapeHTML(avatarData.signedUrl)}" alt="">`;
     }
    }
 
-   let imageHTML = '';
+   let imageHTML='';
 
    if(post.image_path){
-    const {data:imageData,error:imageError} = await supabase
+    const {data:imageData,error:imageError}=await supabase
      .storage.from('community-media')
      .createSignedUrl(post.image_path,3600);
 
-    if(!imageError && imageData?.signedUrl){
-     imageHTML = `
+    if(!imageError&&imageData?.signedUrl){
+     imageHTML=`
       <img class="post-image"
        src="${escapeHTML(imageData.signedUrl)}"
        alt="صورة المنشور" loading="lazy">`;
     }
    }
 
-   const date = post.created_at
-    ? new Date(post.created_at).toLocaleString('ar-DZ',{
-       dateStyle:'medium',
-       timeStyle:'short'
-      })
-    : '';
+   const date=post.created_at
+    ?new Date(post.created_at).toLocaleString('ar-DZ',{
+      dateStyle:'medium',timeStyle:'short'
+     })
+    :'';
 
-   const liked = myLikes.has(post.id);
-   const reposted = myReposts.has(post.id);
-   const saved = savedPosts.includes(String(post.id));
+   const liked=myLikes.has(post.id);
+   const reposted=myReposts.has(post.id);
+   const saved=savedPosts.includes(String(post.id));
 
    return `
     <article class="post-card" data-post-id="${escapeHTML(post.id)}">
 
      <div class="post-top">
       <div class="post-avatar">${avatarHTML}</div>
-
       <div>
        <a class="post-author"
         href="student.html?user=${encodeURIComponent(post.author_id)}">
         ${escapeHTML(authorName)}
        </a>
-
        <div class="post-date">${escapeHTML(date)}</div>
 
-       ${spaceName ? `
+       ${spaceName?`
         <a class="post-space"
          href="community.html?space=${encodeURIComponent(post.space_id)}">
-         <span>📍</span>
+         ${svgIcon('community',15)}
          <span>${escapeHTML(spaceName)}</span>
         </a>
-       ` : ''}
+       `:''}
       </div>
      </div>
 
-     ${post.content ? `
+     ${post.content?`
       <div class="post-content">${escapeHTML(post.content)}</div>
-     ` : ''}
+     `:''}
 
      ${imageHTML}
 
      <div class="post-footer">
 
-      <button class="post-action ${liked?'active':''}"
+      <button class="post-action ${liked?'active liked':''}"
        data-action="like" type="button">
-       <span class="action-icon">${liked?'❤️':'♡'}</span>
-       <span>إعجاب</span>
-       <span class="action-count" data-count="likes">${likeCounts.get(post.id)||0}</span>
-      </button>
-
-      <button class="post-action"
-       data-action="comment" type="button">
-       <span class="action-icon">💬</span>
-       <span>تعليق</span>
-       <span class="action-count" data-count="comments">${commentCounts.get(post.id)||0}</span>
-      </button>
-
-      <button class="post-action ${reposted?'active':''}"
-       data-action="repost" type="button">
-       <span class="action-icon">🔁</span>
-       <span>إعادة نشر</span>
-       <span class="action-count" data-count="reposts">${repostCounts.get(post.id)||0}</span>
-      </button>
-
-      <button class="post-action"
-       data-action="share" type="button">
-       <span class="action-icon">↗</span>
-       <span>مشاركة</span>
-      </button>
-
-      <button class="post-action ${saved?'active':''}"
-       data-action="save" type="button">
-       <span class="action-icon">${saved?'🔖':'♧'}</span>
-       <span>حفظ</span>
-      </button>
-
-     </div>
-
-     <div class="comments-area" data-comments-area>
-      <div class="comments-list" data-comments-list></div>
-
-      <form class="comment-form" data-comment-form>
-       <input class="comment-input" name="content"
-        type="text" maxlength="1000"
-        placeholder="اكتب تعليقك..." autocomplete="off" required>
-       <button class="comment-submit" type="submit">إرسال</button>
-      </form>
-     </div>
-
-    </article>
-   `;
-  }));
-
-  feed.innerHTML = cards.join('');
-
- }catch(error){
-  console.error('Posts loading error:',error);
-  feed.innerHTML = `
-   <div class="feed-error">
-    تعذر تحميل المنشورات حاليًا. تحقق من الاتصال ثم حاول تحديث القائمة.
-   </div>`;
- }
-}
-
-async function toggleLike(postId,button){
- button.disabled = true;
-
- try{
-  const {data:existing,error:findError} = await supabase
-   .from('post_likes')
-   .select('id')
-   .eq('post_id',postId)
-   .eq('user_id',currentUserId)
-   .maybeSingle();
-
-  if(findError)throw findError;
-
-  if(existing){
-   const {error} = await supabase
-    .from('post_likes')
-    .delete()
-    .eq('post_id',postId)
-    .eq('user_id',currentUserId);
-
-   if(error)throw error;
-
-   button.classList.remove('active');
-   button.querySelector('.action-icon').textContent = '♡';
-   changeCount(button,-1);
-  }else{
-   const {error} = await supabase
-    .from('post_likes')
-    .insert({
-     post_id:postId,
-     user_id:currentUserId
-    });
-
-   if(error)throw error;
-
-   button.classList.add('active');
-   button.querySelector('.action-icon').textContent = '❤️';
-   changeCount(button,1);
-  }
-
- }catch(error){
-  console.error('Like error:',error);
-  alert('تعذر تنفيذ الإعجاب. تحقق من صلاحيات الحساب ثم حاول مجددًا.');
- }finally{
-  button.disabled = false;
- }
-}
-
-async function toggleRepost(postId,button){
- button.disabled = true;
-
- try{
-  const {data:existing,error:findError} = await supabase
-   .from('reposts')
-   .select('post_id')
-   .eq('post_id',postId)
-   .eq('author_id',currentUserId)
-   .maybeSingle();
-
-  if(findError)throw findError;
-
-  if(existing){
-   const {error} = await supabase
-    .from('reposts')
-    .delete()
-    .eq('post_id',postId)
-    .eq('author_id',currentUserId);
-
-   if(error)throw error;
-
-   button.classList.remove('active');
-   changeCount(button,-1);
-  }else{
-   const {error} = await supabase
-    .from('reposts')
-    .insert({
-     post_id:postId,
-     author_id:currentUserId
-    });
-
-   if(error)throw error;
-
-   button.classList.add('active');
-   changeCount(button,1);
-  }
-
- }catch(error){
-  console.error('Repost error:',error);
-  alert('تعذرت إعادة نشر هذا المنشور. حاول مجددًا.');
- }finally{
-  button.disabled = false;
- }
-}
-
-function changeCount(button,amount){
- const countElement = button.querySelector('.action-count');
- if(!countElement)return;
-
- const current = Number(countElement.textContent || 0);
- countElement.textContent = Math.max(0,current + amount);
-}
-
-async function loadComments(postId,card){
- const list = card.querySelector('[data-comments-list]');
- if(!list)return;
-
- list.innerHTML = '<div class="comments-empty">جارٍ تحميل التعليقات...</div>';
-
- try{
-  const {data:comments,error} = await supabase
-   .from('comments')
-   .select('id,post_id,author_id,content,created_at')
-   .eq('post_id',postId)
-   .order('created_at',{ascending:true})
-   .limit(50);
-
-  if(error)throw error;
-
-  if(!comments || comments.length===0){
-   list.innerHTML = '<div class="comments-empty">لا توجد تعليقات بعد. كن أول من يعلّق.</div>';
-   return;
-  }
-
-  const commentHTML = await Promise.all(comments.map(async comment=>{
-   const profile = publicProfiles.get(comment.author_id);
-   const name = profile?.full_name || 'طالب CAMPUS ONE';
-   const avatarPath = profile?.profile_avatar_path || '';
-
-   let avatar = escapeHTML(name.trim().charAt(0) || 'ط');
-
-   if(avatarPath){
-    const {data} = await supabase
-     .storage.from('community-media')
-     .createSignedUrl(avatarPath,3600);
-
-    if(data?.signedUrl){
-     avatar = `<img src="${escapeHTML(data.signedUrl)}" alt="">`;
-    }
-   }
-
-   const date = comment.created_at
-    ? new Date(comment.created_at).toLocaleString('ar-DZ',{
-       dateStyle:'short',
-       timeStyle:'short'
-      })
-    : '';
-
-   return `
-    <div class="comment-item">
-     <div class="comment-avatar">${avatar}</div>
-     <div class="comment-body">
-      <div class="comment-name">${escapeHTML(name)}</div>
-      <div class="comment-text">${escapeHTML(comment.content)}</div>
-      <div class="comment-date">${escapeHTML(date)}</div>
-     </div>
-    </div>
-   `;
-  }));
-
-  list.innerHTML = commentHTML.join('');
-
- }catch(error){
-  console.error('Load comments error:',error);
-  list.innerHTML = '<div class="comments-empty">تعذر تحميل التعليقات.</div>';
- }
-}
-
-async function addComment(postId,form){
- const input = form.querySelector('input[name="content"]');
- const button = form.querySelector('button[type="submit"]');
- const content = input.value.trim();
-
- if(!content)return;
-
- button.disabled = true;
- button.textContent = '...';
-
- try{
-  const {error} = await supabase
-   .from('comments')
-   .insert({
-    post_id:postId,
-    author_id:currentUserId,
-    content:content
-   });
-
-  if(error)throw error;
-
-  input.value = '';
-
-  const card = form.closest('.post-card');
-  await loadComments(postId,card);
-
-  const commentButton = card.querySelector('[data-action="comment"]');
-  changeCount(commentButton,1);
-
- }catch(error){
-  console.error('Add comment error:',error);
-  alert('تعذر إرسال التعليق. حاول مجددًا.');
- }finally{
-  button.disabled = false;
-  button.textContent = 'إرسال';
- }
-}
-
-async function sharePost(postId){
- const post = postsCache.get(postId);
- if(!post)return;
-
- const url = new URL('community.html',window.location.href);
- if(post.space_id){
-  url.searchParams.set('space',post.space_id);
- }
-
- const shareData = {
-  title:'CAMPUS ONE',
-  text:post.content || 'منشور من CAMPUS ONE',
-  url:url.href
- };
-
- try{
-  if(navigator.share){
-   await navigator.share(shareData);
-  }else if(navigator.clipboard){
-   await navigator.clipboard.writeText(url.href);
-   alert('تم نسخ رابط المنشور.');
-  }else{
-   prompt('انسخ رابط المنشور:',url.href);
-  }
- }catch(error){
-  if(error.name !== 'AbortError'){
-   console.error('Share error:',error);
-   alert('تعذرت مشاركة المنشور.');
-  }
- }
-}
-
-function toggleSave(postId,button){
- const savedPosts = getSavedPosts();
- const id = String(postId);
- const index = savedPosts.indexOf(id);
-
- if(index >= 0){
-  savedPosts.splice(index,1);
-  button.classList.remove('active');
-  button.querySelector('.action-icon').textContent = '♧';
-  button.querySelector('span:nth-child(2)').textContent = 'حفظ';
-  alert('تمت إزالة المنشور من المحفوظات على هذا الجهاز.');
- }else{
-  savedPosts.push(id);
-  button.classList.add('active');
-  button.querySelector('.action-icon').textContent = '🔖';
-  button.querySelector('span:nth-child(2)').textContent = 'محفوظ';
-  alert('تم حفظ المنشور على هذا الجهاز.');
- }
-
- setSavedPosts(savedPosts);
-}
-
-function setupFeedInteractions(){
- const feed = document.getElementById('postsFeed');
- if(!feed || feed.dataset.eventsReady === 'true')return;
-
- feed.dataset.eventsReady = 'true';
-
- feed.addEventListener('click',async event=>{
-  const button = event.target.closest('[data-action]');
-  if(!button)return;
-
-  const card = button.closest('.post-card');
-  if(!card)return;
-
-  const postId = card.dataset.postId;
-  const action = button.dataset.action;
-
-  if(action === 'like'){
-   await toggleLike(postId,button);
-  }
-
-  if(action === 'repost'){
-   await toggleRepost(postId,button);
-  }
-
-  if(action === 'comment'){
-   const area = card.querySelector('[data-comments-area]');
-   const isOpen = area.classList.toggle('open');
-
-   if(isOpen && area.dataset.loaded !== 'true'){
-    await loadComments(postId,card);
-    area.dataset.loaded = 'true';
-   }
-  }
-
-  if(action === 'share'){
-   await sharePost(postId);
-  }
-
-  if(action === 'save'){
-   toggleSave(postId,button);
-  }
- });
-
- feed.addEventListener('submit',async event=>{
-  const form = event.target.closest('[data-comment-form]');
-  if(!form)return;
-
-  event.preventDefault();
-
-  const card = form.closest('.post-card');
-  if(!card)return;
-
-  await addComment(card.dataset.postId,form);
- });
-}
-
-async function loadDashboard(){
- try{
-  const {data:{user},error:userError} =
-   await supabase.auth.getUser();
-
-  if(userError || !user){
-   location.replace('auth.html');
-   return;
-  }
-
-  currentUserId = user.id;
-
-  const {data:profile,error:profileError} = await supabase
-   .from('profiles')
-   .select('full_name,university,specialty,role,verification_status')
-   .eq('id',user.id)
-   .single();
-
-  if(profileError || !profile){
-   main.innerHTML =
-    '<div class="loading">تعذر تحميل بيانات الحساب. حاول تحديث الصفحة.</div>';
-   return;
-  }
-
-  const name = profile.full_name || 'طالب CAMPUS ONE';
-  const verified = profile.verification_status === 'approved';
-  const role = profile.role === 'admin'
-   ? 'إدارة CAMPUS ONE'
-   : 'طالب جامعي';
-
-  main.innerHTML = `
-
-   <section class="welcome">
-    <h1>مرحباً، ${escapeHTML(name)} ${verified ? '🔵' : ''}</h1>
-    <p>${escapeHTML(role)} · ${escapeHTML(profile.university || 'الجامعة')}</p>
-    <p>${escapeHTML(profile.specialty || 'التخصص غير محدد')}</p>
-   </section>
-
-   <h2 class="section-title">مساحتك الجامعية</h2>
-
-   <section class="grid">
-
-    <a class="card" href="student.html">
-     <div class="card-icon">👤</div>
-     <h3>الملف الشخصي</h3>
-     <p>معلوماتك وصورتك وحالة التوثيق</p>
-    </a>
-
-    <a class="card" href="my-posts.html">
-     <div class="card-icon">📝</div>
-     <h3>منشوراتي</h3>
-     <p>جميع منشوراتك الجامعية</p>
-    </a>
-
-    <a class="card" href="notifications.html">
-     <div class="card-icon">🔔</div>
-     <h3>الإشعارات</h3>
-     <p>تابع آخر التنبيهات والتحديثات</p>
-    </a>
-
-    <a class="card" href="community.html">
-     <div class="card-icon">👥</div>
-     <h3>المجتمع الجامعي</h3>
-     <p>تواصل مع مجتمع الطلبة</p>
-    </a>
-
-    <a class="card" href="messages.html">
-     <div class="card-icon">💬</div>
-     <h3>الرسائل الخاصة</h3>
-     <p>تواصل مباشرة مع زملائك</p>
-    </a>
-
-   </section>
-
-   <section class="feed-section">
-    <div class="feed-header">
-     <h2 class="section-title">آخر منشورات الطلبة</h2>
-     <button class="refresh-feed" id="refreshFeed">تحديث ↻</button>
-    </div>
-
-    <div id="postsFeed">
-     <div class="loading">جارٍ تحميل المنشورات...</div>
-    </div>
-   </section>
-
-   <h2 class="section-title">آخر المستجدات</h2>
-
-   <section class="notice">
-    <h3>📢 إعلانات CAMPUS ONE</h3>
-    <p>ستظهر هنا الإعلانات والأخبار الجامعية المهمة.</p>
-   </section>
-
-   ${profile.role === 'admin' ? `
-    <section class="notice">
-     <h3>⚙️ لوحة الإدارة</h3>
-     <p>إدارة حسابات الطلبة ومحتوى المنصة.</p>
-     <a class="admin-link" href="admin.html">الانتقال إلى لوحة الإدارة ←</a>
-    </section>
-   ` : ''}
-
-   <button class="logout" id="logoutBtn">تسجيل الخروج</button>
-  `;
-
-  document.getElementById('logoutBtn').addEventListener('click',async()=>{
-   const {error} = await supabase.auth.signOut();
-
-   if(error){
-    alert('تعذر تسجيل الخروج. حاول مجددًا.');
-    return;
-   }
-
-   location.replace('auth.html');
-  });
-
-  document.getElementById('refreshFeed').addEventListener('click',loadPosts);
-
-  setupFeedInteractions();
-
-  await loadPosts();
-  await updateNotificationCount();
-  subscribeToNotifications();
-
- }catch(error){
-  console.error(error);
-  main.innerHTML =
-   '<div class="loading">حدث خطأ أثناء تحميل الصفحة.</div>';
- }
-}
-
-document.querySelectorAll('.nav-item').forEach(item=>{
- item.addEventListener('click',event=>{
-  if(item.dataset.page === 'dashboard'){
-   event.preventDefault();
-   window.scrollTo({top:0,behavior:'smooth'});
-  }
- });
-});
-
-loadDashboard();
-</script>
-
-</body>
-</html>
+       <span class="action-ic
