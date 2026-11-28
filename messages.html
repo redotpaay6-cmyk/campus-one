@@ -305,7 +305,7 @@ async function openConversation(conversation){
 
  $('chatName').textContent=currentPartner.full_name||'طالب';
  $('chatAvatar').textContent=initials(currentPartner.full_name);
- $('chatStatus').textContent='محادثة خاصة';
+ $('chatStatus').textContent='جارٍ الاتصال...';
 
  document.querySelectorAll('.conversation-item').forEach(item=>{
   item.classList.toggle('selected',item.dataset.conversation===conversation.id);
@@ -387,9 +387,28 @@ function subscribeToMessages(){
     $('chatStatus').textContent='محادثة خاصة';
    }
   })
-  .subscribe((status)=>{
+  .subscribe((status,error)=>{
+   console.log('REALTIME STATUS:',status);
+
+   if(error){
+    console.error('REALTIME ERROR:',error);
+   }
+
    if(status==='SUBSCRIBED'){
+    $('chatStatus').textContent='محادثة خاصة';
     console.log('Typing indicator connected');
+   }
+
+   if(status==='CHANNEL_ERROR'){
+    $('chatStatus').textContent='تعذر الاتصال المباشر';
+   }
+
+   if(status==='TIMED_OUT'){
+    $('chatStatus').textContent='انتهت مهلة الاتصال';
+   }
+
+   if(status==='CLOSED'){
+    $('chatStatus').textContent='انقطع الاتصال المباشر';
    }
   });
 }
