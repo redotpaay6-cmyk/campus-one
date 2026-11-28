@@ -3,9 +3,9 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#102b46">
-<title>CAMPUS ONE | الرسائل</title>
+<title>CAMPUS ONE | الرئيسية</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -30,7 +30,7 @@ body{
 header{
  background:var(--navy);
  color:white;
- padding:15px 5%;
+ padding:16px 5%;
  display:flex;
  align-items:center;
  justify-content:space-between;
@@ -40,349 +40,185 @@ header{
  box-shadow:0 3px 15px #102b4620;
 }
 
-.logo{font-size:20px;font-weight:900}
+.logo{
+ font-size:21px;
+ font-weight:900;
+ letter-spacing:.3px;
+}
 
-.header-actions{display:flex;gap:10px}
+.header-actions{
+ display:flex;
+ gap:13px;
+ align-items:center;
+}
 
 .icon-button{
- width:40px;height:40px;
- display:grid;place-items:center;
+ width:40px;
+ height:40px;
+ display:grid;
+ place-items:center;
  background:#ffffff12;
  border:1px solid #ffffff18;
- color:white;border-radius:13px;
+ color:white;
+ border-radius:13px;
  cursor:pointer;
-}
-
-.icon-button svg{width:21px;height:21px}
-
-.container{
- max-width:1000px;
- margin:auto;
- padding:20px 14px;
-}
-
-.page-title{
- font-size:23px;
- font-weight:900;
- margin-bottom:6px;
-}
-
-.page-subtitle{
- color:var(--muted);
- font-size:13px;
- margin-bottom:18px;
-}
-
-.layout{
- display:grid;
- grid-template-columns:330px minmax(0,1fr);
- gap:15px;
- align-items:start;
-}
-
-.panel{
- background:white;
- border:1px solid var(--border);
- border-radius:18px;
- overflow:hidden;
- box-shadow:0 4px 18px #102b4608;
-}
-
-.panel-header{
- padding:16px;
- border-bottom:1px solid var(--border);
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px;
-}
-
-.panel-header h2{font-size:16px}
-
-.search-area{padding:13px}
-
-.search-input{
- width:100%;
- border:1px solid var(--border);
- background:#f8fafc;
- padding:13px;
- border-radius:12px;
- outline:none;
- font-size:14px;
- font-family:inherit;
-}
-
-.search-input:focus{
- border-color:var(--blue);
- background:white;
-}
-
-.conversation-list{
- max-height:570px;
- overflow-y:auto;
-}
-
-.conversation-item{
- display:flex;
- align-items:center;
- gap:11px;
- padding:14px;
- border-bottom:1px solid #f0f3f8;
- cursor:pointer;
+ position:relative;
  transition:.2s;
 }
 
-.conversation-item:hover,
-.conversation-item.selected{
- background:var(--light-blue);
-}
+.icon-button:active{transform:scale(.91)}
+.icon-button svg{width:21px;height:21px}
 
-.avatar{
- width:45px;height:45px;
- min-width:45px;
- border-radius:50%;
- background:linear-gradient(135deg,#2563eb,#60a5fa);
+.badge-count{
+ position:absolute;
+ top:-5px;
+ right:-5px;
+ background:#ef4444;
  color:white;
- display:grid;
- place-items:center;
- font-size:18px;
- font-weight:bold;
-}
-
-.conversation-info{
- min-width:0;
- flex:1;
-}
-
-.conversation-name{
- font-size:14px;
- font-weight:800;
- margin-bottom:6px;
-}
-
-.conversation-preview{
- color:var(--muted);
- font-size:12px;
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis;
-}
-
-.empty{
- text-align:center;
- padding:35px 15px;
- color:var(--muted);
- font-size:13px;
- line-height:1.9;
-}
-
-.chat-panel{
- min-height:590px;
+ border-radius:20px;
+ min-width:18px;
+ height:18px;
+ padding:0 4px;
+ font-size:10px;
  display:flex;
- flex-direction:column;
-}
-
-.chat-header{
- padding:14px;
- border-bottom:1px solid var(--border);
- display:flex;
- align-items:center;
- gap:10px;
- min-height:72px;
-}
-
-.chat-header-info{flex:1;min-width:0}
-
-.chat-header-name{
- font-size:15px;
- font-weight:900;
-}
-
-.chat-header-status{
- color:#16a34a;
- font-size:11px;
- margin-top:5px;
-}
-
-.back-button{
- display:none;
- border:0;
- background:var(--light-blue);
- color:var(--blue);
- border-radius:10px;
- width:35px;height:35px;
- font-size:20px;
- cursor:pointer;
-}
-
-.chat-placeholder{
- flex:1;
- display:flex;
- flex-direction:column;
  align-items:center;
  justify-content:center;
- text-align:center;
- padding:35px 20px;
- color:var(--muted);
+ font-weight:bold;
+ border:2px solid var(--navy);
 }
 
-.placeholder-icon{
- width:75px;height:75px;
- border-radius:25px;
+.badge-count.hidden{display:none}
+
+.container{
+ max-width:1050px;
+ margin:auto;
+ padding:22px 16px;
+}
+
+.welcome{
+ background:linear-gradient(135deg,#102b46,#1768a5);
+ color:white;
+ padding:25px;
+ border-radius:20px;
+ margin-bottom:22px;
+ box-shadow:0 8px 25px #102b4620;
+}
+
+.welcome h1{
+ font-size:23px;
+ margin-bottom:9px;
+}
+
+.welcome p{
+ color:#dbeafe;
+ font-size:14px;
+ margin-top:6px;
+}
+
+.section-title{
+ font-size:19px;
+ margin:25px 0 14px;
+ font-weight:800;
+}
+
+.grid{
  display:grid;
- place-items:center;
- background:var(--light-blue);
- color:var(--blue);
- margin-bottom:15px;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;
 }
 
-.placeholder-icon svg{width:35px;height:35px}
-
-.chat-placeholder h3{
- color:var(--text);
- font-size:17px;
- margin-bottom:8px;
-}
-
-.chat-placeholder p{
- font-size:13px;
- line-height:1.8;
- max-width:260px;
-}
-
-.messages-area{
- flex:1;
- padding:16px;
- overflow-y:auto;
- display:flex;
- flex-direction:column;
- gap:11px;
- min-height:350px;
- max-height:470px;
- background:#fbfcfe;
-}
-
-.message{
- max-width:82%;
- padding:11px 13px;
- border-radius:15px;
- font-size:14px;
- line-height:1.7;
- overflow-wrap:anywhere;
-}
-
-.message.mine{
- align-self:flex-start;
- background:var(--blue);
- color:white;
- border-bottom-left-radius:4px;
-}
-
-.message.theirs{
- align-self:flex-end;
+.card{
  background:white;
+ padding:19px 15px;
+ border-radius:17px;
  border:1px solid var(--border);
- border-bottom-right-radius:4px;
-}
-
-.message-time{
+ box-shadow:0 4px 15px #102b4608;
+ cursor:pointer;
+ transition:.2s;
+ text-align:right;
+ color:inherit;
+ text-decoration:none;
  display:block;
- font-size:10px;
- margin-top:5px;
- opacity:.7;
- text-align:left;
 }
 
-.chat-form{
- display:flex;
- align-items:center;
- gap:9px;
- padding:13px;
- border-top:1px solid var(--border);
- background:white;
-}
+.card:active{transform:scale(.97)}
 
-.chat-form input{
- flex:1;
- min-width:0;
- border:1px solid var(--border);
- border-radius:13px;
- padding:13px;
- outline:none;
- font-family:inherit;
- font-size:14px;
-}
-
-.chat-form input:focus{border-color:var(--blue)}
-
-.send-button{
- width:45px;height:45px;
- border:0;
- border-radius:13px;
- background:var(--blue);
- color:white;
- font-size:20px;
- cursor:pointer;
-}
-
-.send-button:disabled{
- opacity:.5;
- cursor:not-allowed;
-}
-
-.search-results{
- padding:0 13px 13px;
-}
-
-.result-item{
- display:flex;
- align-items:center;
- gap:10px;
- padding:11px 5px;
- border-bottom:1px solid var(--border);
- cursor:pointer;
-}
-
-.result-item:hover{background:#f8fafc}
-
-.result-info{flex:1;min-width:0}
-
-.result-name{
- font-size:13px;
- font-weight:bold;
-}
-
-.result-username{
- color:var(--muted);
- font-size:11px;
- margin-top:4px;
-}
-
-.start-button{
- border:0;
+.card-icon{
+ width:46px;
+ height:46px;
+ border-radius:14px;
  background:var(--light-blue);
  color:var(--blue);
- padding:9px 12px;
- border-radius:10px;
- font-size:12px;
- font-weight:bold;
- cursor:pointer;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:22px;
+ margin-bottom:13px;
 }
 
-.notice-message{
- padding:10px 13px;
+.card h3{
+ font-size:15px;
+ margin-bottom:7px;
+}
+
+.card p{
  font-size:12px;
  color:var(--muted);
- text-align:center;
+ line-height:1.7;
 }
 
-.hidden{display:none!important}
+.notice{
+ background:white;
+ border:1px solid var(--border);
+ padding:18px;
+ border-radius:17px;
+ margin-top:12px;
+ box-shadow:0 4px 15px #102b4608;
+}
 
-/* BOTTOM NAVIGATION */
+.notice h3{
+ font-size:15px;
+ margin-bottom:9px;
+}
+
+.notice p{
+ font-size:13px;
+ color:var(--muted);
+ line-height:1.8;
+}
+
+.admin-link{
+ display:inline-block;
+ margin-top:12px;
+ color:var(--blue);
+ text-decoration:none;
+ font-weight:bold;
+}
+
+.logout{
+ background:#fff0f0;
+ color:#c53030;
+ border:0;
+ padding:11px 16px;
+ border-radius:10px;
+ cursor:pointer;
+ margin-top:22px;
+ font-weight:bold;
+}
+
+.loading{
+ text-align:center;
+ padding:50px;
+ color:var(--muted);
+}
+
+/* PREMIUM BOTTOM NAVIGATION */
 
 .bottom-nav{
  position:fixed;
- bottom:0;left:0;right:0;
+ bottom:0;
+ left:0;
+ right:0;
  background:#ffffffed;
  backdrop-filter:blur(18px);
  -webkit-backdrop-filter:blur(18px);
@@ -413,17 +249,21 @@ header{
  min-width:0;
  padding:6px 1px;
  border-radius:13px;
- transition:.2s;
+ transition:color .2s,background .2s,transform .2s;
  -webkit-tap-highlight-color:transparent;
 }
 
 .nav-icon{
- width:25px;height:25px;
- display:grid;place-items:center;
+ width:25px;
+ height:25px;
+ display:grid;
+ place-items:center;
+ transition:transform .2s;
 }
 
 .nav-icon svg{
- width:23px;height:23px;
+ width:23px;
+ height:23px;
  stroke:currentColor;
  fill:none;
  stroke-width:1.8;
@@ -436,15 +276,28 @@ header{
  background:#eff6ff;
 }
 
-.nav-item.active .nav-icon svg{stroke-width:2.4}
+.nav-item.active .nav-icon{
+ transform:translateY(-2px);
+}
 
-.nav-label{white-space:nowrap}
+.nav-item.active .nav-icon svg{
+ stroke-width:2.4;
+}
+
+.nav-item:active{
+ transform:scale(.91);
+}
+
+.nav-label{
+ white-space:nowrap;
+}
 
 .nav-badge{
  position:absolute;
  top:1px;
  right:calc(50% - 19px);
- min-width:16px;height:16px;
+ min-width:16px;
+ height:16px;
  padding:0 4px;
  background:#ef4444;
  color:white;
@@ -459,20 +312,14 @@ header{
 
 .nav-badge.hidden{display:none}
 
-@media(max-width:700px){
- .layout{display:block}
- .chat-panel{display:none;min-height:calc(100vh - 190px)}
- .layout.chat-open .list-panel{display:none}
- .layout.chat-open .chat-panel{display:flex}
- .back-button{display:block}
- .messages-area{max-height:none;min-height:300px}
- .conversation-list{max-height:none}
-}
-
-@media(min-width:701px){
+@media(min-width:700px){
+ .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .welcome{padding:35px}
+ .welcome h1{font-size:28px}
  .bottom-nav{
   max-width:650px;
-  left:50%;right:auto;
+  left:50%;
+  right:auto;
   transform:translateX(-50%);
   bottom:12px;
   width:calc(100% - 30px);
@@ -481,6 +328,7 @@ header{
   padding:9px;
   box-shadow:0 8px 35px #102b4620;
  }
+ body{padding-bottom:110px}
 }
 </style>
 </head>
@@ -491,20 +339,25 @@ header{
  <div class="logo">🎓 CAMPUS ONE</div>
 
  <div class="header-actions">
+
   <button class="icon-button"
    aria-label="الإشعارات"
    onclick="location.href='notifications.html'">
+
    <svg viewBox="0 0 24 24" fill="none"
     stroke="currentColor" stroke-width="1.8"
     stroke-linecap="round" stroke-linejoin="round">
     <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
     <path d="M10 21h4"/>
    </svg>
+
+   <span id="notificationCount" class="badge-count hidden">0</span>
   </button>
 
   <button class="icon-button"
    aria-label="حسابي"
    onclick="location.href='student.html'">
+
    <svg viewBox="0 0 24 24" fill="none"
     stroke="currentColor" stroke-width="1.8"
     stroke-linecap="round" stroke-linejoin="round">
@@ -512,88 +365,19 @@ header{
     <path d="M5 21a7 7 0 0 1 14 0"/>
    </svg>
   </button>
+
  </div>
 </header>
 
-<main class="container">
-
- <h1 class="page-title">الرسائل الخاصة</h1>
- <p class="page-subtitle">تواصل مع زملائك في CAMPUS ONE</p>
-
- <div class="layout" id="layout">
-
-  <section class="panel list-panel">
-
-   <div class="panel-header">
-    <h2>المحادثات</h2>
-    <span style="color:#2563eb;font-size:12px">رسائلك</span>
-   </div>
-
-   <div class="search-area">
-    <input
-     id="studentSearch"
-     class="search-input"
-     type="search"
-     placeholder="ابحث عن طالب لبدء محادثة..."
-     autocomplete="off">
-   </div>
-
-   <div id="searchResults" class="search-results hidden"></div>
-
-   <div id="conversationList" class="conversation-list">
-    <div class="empty">جارٍ تحميل المحادثات...</div>
-   </div>
-
-  </section>
-
-  <section class="panel chat-panel">
-
-   <div class="chat-header">
-    <button id="backButton" class="back-button" aria-label="رجوع">›</button>
-
-    <div id="chatAvatar" class="avatar">C</div>
-
-    <div class="chat-header-info">
-     <div id="chatName" class="chat-header-name">الرسائل</div>
-     <div id="chatStatus" class="chat-header-status">اختر محادثة للبدء</div>
-    </div>
-   </div>
-
-   <div id="chatPlaceholder" class="chat-placeholder">
-    <div class="placeholder-icon">
-     <svg viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="1.7"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5Z"/>
-     </svg>
-    </div>
-    <h3>محادثاتك الجامعية</h3>
-    <p>اختر محادثة من القائمة أو ابحث عن طالب لبدء محادثة جديدة.</p>
-   </div>
-
-   <div id="messagesArea" class="messages-area hidden"></div>
-
-   <div id="chatNotice" class="notice-message hidden"></div>
-
-   <form id="messageForm" class="chat-form hidden">
-    <input
-     id="messageInput"
-     type="text"
-     maxlength="5000"
-     placeholder="اكتب رسالتك..."
-     autocomplete="off">
-    <button id="sendButton" class="send-button" type="submit">➤</button>
-   </form>
-
-  </section>
-
- </div>
-
+<main class="container" id="mainContent">
+ <div class="loading">جارٍ تحميل حسابك...</div>
 </main>
+
+<!-- PREMIUM NAVIGATION -->
 
 <nav class="bottom-nav" aria-label="التنقل الرئيسي">
 
- <a class="nav-item" href="dashboard.html" data-page="dashboard">
+ <a class="nav-item active" href="dashboard.html" data-page="dashboard">
   <span class="nav-icon">
    <svg viewBox="0 0 24 24">
     <path d="m3 10 9-7 9 7"/>
@@ -626,7 +410,7 @@ header{
   <span class="nav-label">البحث</span>
  </a>
 
- <a class="nav-item active" href="messages.html" data-page="messages">
+ <a class="nav-item" href="messages.html" data-page="messages">
   <span class="nav-icon">
    <svg viewBox="0 0 24 24">
     <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8v.5Z"/>
@@ -644,6 +428,7 @@ header{
    </svg>
   </span>
   <span class="nav-label">الإشعارات</span>
+  <span id="navNotificationCount" class="nav-badge hidden">0</span>
  </a>
 
  <a class="nav-item" href="student.html" data-page="student">
@@ -667,17 +452,189 @@ const supabase = createClient(
  'sb_publishable_4KCDnpiH2lCjKhKj4s8dmA_Wv71o552'
 );
 
-const $ = id => document.getElementById(id);
+const main = document.getElementById('mainContent');
 
-let currentUser = null;
-let currentConversation = null;
-let currentPartner = null;
-let messageChannel = null;
-let searchTimer = null;
-let profilesMap = new Map();
-let conversationsData = [];
+const notificationCount =
+ document.getElementById('notificationCount');
+
+const navNotificationCount =
+ document.getElementById('navNotificationCount');
+
+let currentUserId = null;
+let notificationChannel = null;
+
+async function updateNotificationCount(){
+
+ if(!currentUserId)return;
+
+ const {count,error} = await supabase
+  .from('notifications')
+  .select('id',{count:'exact',head:true})
+  .eq('is_read',false);
+
+ if(error){
+  console.error('Notification count error:',error);
+  return;
+ }
+
+ const total = count || 0;
+ const label = total > 99 ? '99+' : total;
+
+ if(total > 0){
+  notificationCount.textContent = label;
+  notificationCount.classList.remove('hidden');
+
+  navNotificationCount.textContent = label;
+  navNotificationCount.classList.remove('hidden');
+ }else{
+  notificationCount.classList.add('hidden');
+  navNotificationCount.classList.add('hidden');
+ }
+}
+
+function subscribeToNotifications(){
+
+ if(notificationChannel){
+  supabase.removeChannel(notificationChannel);
+ }
+
+ notificationChannel = supabase
+  .channel('dashboard-notifications-' + currentUserId)
+  .on(
+   'postgres_changes',
+   {
+    event:'INSERT',
+    schema:'public',
+    table:'notifications',
+    filter:'recipient_id=eq.' + currentUserId
+   },
+   ()=>{
+    updateNotificationCount();
+   }
+  )
+  .subscribe();
+}
+
+async function loadDashboard(){
+
+ try{
+
+  const {data:{user},error:userError} =
+   await supabase.auth.getUser();
+
+  if(userError || !user){
+   location.replace('auth.html');
+   return;
+  }
+
+  currentUserId = user.id;
+
+  const {data:profile,error:profileError} = await supabase
+   .from('profiles')
+   .select('full_name,university,specialty,role,verification_status')
+   .eq('id',user.id)
+   .single();
+
+  if(profileError || !profile){
+   main.innerHTML =
+    '<div class="loading">تعذر تحميل بيانات الحساب. حاول تحديث الصفحة.</div>';
+   return;
+  }
+
+  const name = profile.full_name || 'طالب CAMPUS ONE';
+  const verified = profile.verification_status === 'approved';
+  const role = profile.role === 'admin'
+   ? 'إدارة CAMPUS ONE'
+   : 'طالب جامعي';
+
+  main.innerHTML = `
+
+   <section class="welcome">
+    <h1>مرحباً، ${escapeHTML(name)} ${verified ? '🔵' : ''}</h1>
+    <p>${escapeHTML(role)} · ${escapeHTML(profile.university || 'الجامعة')}</p>
+    <p>${escapeHTML(profile.specialty || 'التخصص غير محدد')}</p>
+   </section>
+
+   <h2 class="section-title">مساحتك الجامعية</h2>
+
+   <section class="grid">
+
+    <a class="card" href="student.html">
+     <div class="card-icon">👤</div>
+     <h3>الملف الشخصي</h3>
+     <p>معلوماتك وصورتك وحالة التوثيق</p>
+    </a>
+
+    <a class="card" href="my-posts.html">
+     <div class="card-icon">📝</div>
+     <h3>منشوراتي</h3>
+     <p>جميع منشوراتك الجامعية</p>
+    </a>
+
+    <a class="card" href="notifications.html">
+     <div class="card-icon">🔔</div>
+     <h3>الإشعارات</h3>
+     <p>تابع آخر التنبيهات والتحديثات</p>
+    </a>
+
+    <a class="card" href="community.html">
+     <div class="card-icon">👥</div>
+     <h3>المجتمع الجامعي</h3>
+     <p>تواصل مع مجتمع الطلبة</p>
+    </a>
+
+    <a class="card" href="messages.html">
+     <div class="card-icon">💬</div>
+     <h3>الرسائل الخاصة</h3>
+     <p>تواصل مباشرة مع زملائك</p>
+    </a>
+
+   </section>
+
+   <h2 class="section-title">آخر المستجدات</h2>
+
+   <section class="notice">
+    <h3>📢 إعلانات CAMPUS ONE</h3>
+    <p>ستظهر هنا الإعلانات والأخبار الجامعية المهمة.</p>
+   </section>
+
+   ${profile.role === 'admin' ? `
+    <section class="notice">
+     <h3>⚙️ لوحة الإدارة</h3>
+     <p>إدارة حسابات الطلبة ومحتوى المنصة.</p>
+     <a class="admin-link" href="admin.html">الانتقال إلى لوحة الإدارة ←</a>
+    </section>
+   ` : ''}
+
+   <button class="logout" id="logoutBtn">تسجيل الخروج</button>
+  `;
+
+  document.getElementById('logoutBtn').addEventListener('click',async()=>{
+
+   const {error} = await supabase.auth.signOut();
+
+   if(error){
+    alert('تعذر تسجيل الخروج. حاول مجدداً.');
+    return;
+   }
+
+   location.replace('auth.html');
+  });
+
+  await updateNotificationCount();
+  subscribeToNotifications();
+
+ }catch(error){
+
+  console.error(error);
+
+  main.innerHTML =
+   '<div class="loading">حدث خطأ أثناء تحميل الصفحة.</div>';
+ }
+}
 
 function escapeHTML(value){
+
  return String(value ?? '').replace(/[&<>"']/g,char=>({
   '&':'&amp;',
   '<':'&lt;',
@@ -687,465 +644,21 @@ function escapeHTML(value){
  }[char]));
 }
 
-function initials(name){
- return String(name || 'ط').trim().charAt(0).toUpperCase() || 'ط';
-}
+/* Clicking home while already on dashboard returns to top */
+document.querySelectorAll('.nav-item').forEach(item=>{
 
-function formatTime(value){
- const date = new Date(value);
- if(Number.isNaN(date.getTime())) return '';
- return date.toLocaleTimeString('ar-DZ',{
-  hour:'2-digit',
-  minute:'2-digit'
- });
-}
+ item.addEventListener('click',event=>{
 
-function showNotice(message){
- $('chatNotice').textContent = message;
- $('chatNotice').classList.remove('hidden');
-}
-
-function hideNotice(){
- $('chatNotice').classList.add('hidden');
-}
-
-async function loadPublicProfiles(){
- const {data,error} = await supabase.rpc('get_public_profiles');
-
- if(error){
-  console.error('Profiles error:',error);
-  return;
- }
-
- profilesMap = new Map((data || []).map(profile=>[
-  profile.id,
-  profile
- ]));
-}
-
-function getPartner(conversation){
- const partnerId =
-  conversation.user_one === currentUser.id
-   ? conversation.user_two
-   : conversation.user_one;
-
- return profilesMap.get(partnerId) || {
-  id:partnerId,
-  full_name:'طالب CAMPUS ONE',
-  username:''
- };
-}
-
-async function loadConversations(){
-
- $('conversationList').innerHTML =
-  '<div class="empty">جارٍ تحميل المحادثات...</div>';
-
- const {data:conversations,error} = await supabase
-  .from('conversations')
-  .select('id,user_one,user_two,created_at,last_message_at')
-  .or(
-   `user_one.eq.${currentUser.id},user_two.eq.${currentUser.id}`
-  )
-  .order('last_message_at',{ascending:false});
-
- if(error){
-  console.error(error);
-  $('conversationList').innerHTML =
-   '<div class="empty">تعذر تحميل المحادثات. تحقق من صلاحيات قاعدة البيانات.</div>';
-  return;
- }
-
- conversationsData = conversations || [];
-
- if(!conversationsData.length){
-  $('conversationList').innerHTML =
-   '<div class="empty">لا توجد محادثات بعد.<br>ابحث عن طالب وابدأ أول محادثة.</div>';
-  return;
- }
-
- const ids = conversationsData.map(item=>item.id);
-
- const {data:messages,error:messagesError} = await supabase
-  .from('messages')
-  .select('conversation_id,content,message_type,created_at')
-  .in('conversation_id',ids)
-  .order('created_at',{ascending:false});
-
- if(messagesError){
-  console.error(messagesError);
- }
-
- const latest = new Map();
-
- (messages || []).forEach(message=>{
-  if(!latest.has(message.conversation_id)){
-   latest.set(message.conversation_id,message);
+  if(item.dataset.page === 'dashboard'){
+   event.preventDefault();
+   window.scrollTo({top:0,behavior:'smooth'});
   }
+
  });
-
- $('conversationList').innerHTML = conversationsData.map(conversation=>{
-
-  const partner = getPartner(conversation);
-  const last = latest.get(conversation.id);
-
-  const preview = last
-   ? (last.message_type === 'image' ? '📷 صورة' : last.content)
-   : 'ابدأ المحادثة الآن';
-
-  return `
-   <div class="conversation-item"
-    data-conversation="${conversation.id}">
-    <div class="avatar">${escapeHTML(initials(partner.full_name))}</div>
-    <div class="conversation-info">
-     <div class="conversation-name">${escapeHTML(partner.full_name)}</div>
-     <div class="conversation-preview">${escapeHTML(preview)}</div>
-    </div>
-   </div>
-  `;
- }).join('');
-
- document.querySelectorAll('.conversation-item').forEach(item=>{
-  item.addEventListener('click',()=>{
-   const conversation = conversationsData.find(
-    c=>c.id === item.dataset.conversation
-   );
-   if(conversation) openConversation(conversation);
-  });
- });
-
-}
-
-async function startConversation(partner){
-
- if(!partner || partner.id === currentUser.id) return;
-
- const {data:existing,error:findError} = await supabase
-  .from('conversations')
-  .select('id,user_one,user_two,created_at,last_message_at')
-  .or(
-   `and(user_one.eq.${currentUser.id},user_two.eq.${partner.id}),and(user_one.eq.${partner.id},user_two.eq.${currentUser.id})`
-  )
-  .maybeSingle();
-
- if(findError){
-  console.error(findError);
-  alert('تعذر التحقق من المحادثة.');
-  return;
- }
-
- let conversation = existing;
-
- if(!conversation){
-
-  const {data:newConversation,error:createError} = await supabase
-   .from('conversations')
-   .insert({
-    user_one:currentUser.id,
-    user_two:partner.id
-   })
-   .select()
-   .single();
-
-  if(createError){
-
-   // In case another request created the same conversation.
-   const {data:retry} = await supabase
-    .from('conversations')
-    .select('id,user_one,user_two,created_at,last_message_at')
-    .or(
-     `and(user_one.eq.${currentUser.id},user_two.eq.${partner.id}),and(user_one.eq.${partner.id},user_two.eq.${currentUser.id})`
-    )
-    .maybeSingle();
-
-   if(!retry){
-    console.error(createError);
-    alert('تعذر إنشاء المحادثة. تحقق من صلاحيات Supabase.');
-    return;
-   }
-
-   conversation = retry;
-
-  }else{
-   conversation = newConversation;
-  }
- }
-
- await loadConversations();
- await openConversation(conversation);
-}
-
-async function openConversation(conversation){
-
- currentConversation = conversation;
- currentPartner = getPartner(conversation);
-
- if(!currentPartner || !currentPartner.id){
-  alert('تعذر العثور على بيانات الطالب.');
-  return;
- }
-
- $('layout').classList.add('chat-open');
- $('chatPlaceholder').classList.add('hidden');
- $('messagesArea').classList.remove('hidden');
- $('messageForm').classList.remove('hidden');
-
- $('chatName').textContent = currentPartner.full_name || 'طالب';
- $('chatAvatar').textContent = initials(currentPartner.full_name);
- $('chatStatus').textContent = 'محادثة خاصة';
-
- document.querySelectorAll('.conversation-item').forEach(item=>{
-  item.classList.toggle(
-   'selected',
-   item.dataset.conversation === conversation.id
-  );
- });
-
- hideNotice();
-
- await loadMessages();
- subscribeToMessages();
-}
-
-async function loadMessages(){
-
- if(!currentConversation) return;
-
- $('messagesArea').innerHTML =
-  '<div class="empty">جارٍ تحميل الرسائل...</div>';
-
- const {data,error} = await supabase
-  .from('messages')
-  .select('id,sender_id,content,message_type,created_at')
-  .eq('conversation_id',currentConversation.id)
-  .order('created_at',{ascending:true});
-
- if(error){
-  console.error(error);
-  $('messagesArea').innerHTML =
-   '<div class="empty">تعذر تحميل الرسائل.</div>';
-  return;
- }
-
- renderMessages(data || []);
-}
-
-function renderMessages(messages){
-
- const area = $('messagesArea');
-
- if(!messages.length){
-  area.innerHTML =
-   '<div class="empty">هذه بداية المحادثة.<br>أرسل أول رسالة الآن.</div>';
-  return;
- }
-
- area.innerHTML = messages.map(message=>{
-
-  const mine = message.sender_id === currentUser.id;
-  const content = message.message_type === 'image'
-   ? '📷 صورة'
-   : escapeHTML(message.content);
-
-  return `
-   <div class="message ${mine ? 'mine' : 'theirs'}">
-    ${content}
-    <span class="message-time">${formatTime(message.created_at)}</span>
-   </div>
-  `;
- }).join('');
-
- area.scrollTop = area.scrollHeight;
-}
-
-function subscribeToMessages(){
-
- if(messageChannel){
-  supabase.removeChannel(messageChannel);
-  messageChannel = null;
- }
-
- if(!currentConversation) return;
-
- const conversationId = currentConversation.id;
-
- messageChannel = supabase
-  .channel('messages-' + conversationId)
-  .on(
-   'postgres_changes',
-   {
-    event:'INSERT',
-    schema:'public',
-    table:'messages',
-    filter:'conversation_id=eq.' + conversationId
-   },
-   async ()=>{
-    await loadMessages();
-    await loadConversations();
-   }
-  )
-  .subscribe();
-}
-
-async function sendMessage(event){
-
- event.preventDefault();
-
- if(!currentConversation || !currentUser) return;
-
- const input = $('messageInput');
- const content = input.value.trim();
-
- if(!content) return;
-
- $('sendButton').disabled = true;
- input.disabled = true;
-
- const {error} = await supabase
-  .from('messages')
-  .insert({
-   conversation_id:currentConversation.id,
-   sender_id:currentUser.id,
-   content:content,
-   message_type:'text'
-  });
-
- $('sendButton').disabled = false;
- input.disabled = false;
-
- if(error){
-  console.error(error);
-  alert('لم يتم إرسال الرسالة. حاول مجدداً.');
-  return;
- }
-
- input.value = '';
-
- await loadMessages();
- await loadConversations();
- input.focus();
-}
-
-async function searchStudents(term){
-
- const results = $('searchResults');
-
- if(term.length < 2){
-  results.classList.add('hidden');
-  results.innerHTML = '';
-  return;
- }
-
- results.classList.remove('hidden');
- results.innerHTML =
-  '<div class="empty">جارٍ البحث...</div>';
-
- const {data,error} = await supabase.rpc(
-  'search_students',
-  {search_term:term}
- );
-
- if(error){
-  console.error(error);
-  results.innerHTML =
-   '<div class="empty">تعذر البحث عن الطلبة.</div>';
-  return;
- }
-
- const students = (data || []).filter(
-  student=>student.id !== currentUser.id
- );
-
- if(!students.length){
-  results.innerHTML =
-   '<div class="empty">لم يتم العثور على طالب بهذا الاسم أو اسم المستخدم.</div>';
-  return;
- }
-
- results.innerHTML = students.map(student=>`
-  <div class="result-item">
-   <div class="avatar">${escapeHTML(initials(student.full_name))}</div>
-   <div class="result-info">
-    <div class="result-name">${escapeHTML(student.full_name)}</div>
-    <div class="result-username">${student.username ? '@'+escapeHTML(student.username) : 'طالب CAMPUS ONE'}</div>
-   </div>
-   <button class="start-button"
-    data-student="${student.id}">مراسلة</button>
-  </div>
- `).join('');
-
- results.querySelectorAll('.start-button').forEach(button=>{
-  button.addEventListener('click',async()=>{
-
-   const student = students.find(
-    item=>item.id === button.dataset.student
-   );
-
-   if(!student) return;
-
-   results.classList.add('hidden');
-   $('studentSearch').value = '';
-
-   await startConversation(student);
-  });
- });
-}
-
-$('studentSearch').addEventListener('input',event=>{
-
- clearTimeout(searchTimer);
-
- const term = event.target.value.trim();
-
- searchTimer = setTimeout(()=>{
-  searchStudents(term);
- },400);
 
 });
 
-$('messageForm').addEventListener('submit',sendMessage);
-
-$('backButton').addEventListener('click',()=>{
- $('layout').classList.remove('chat-open');
-});
-
-async function init(){
-
- const {data:{user},error} = await supabase.auth.getUser();
-
- if(error || !user){
-  location.replace('auth.html');
-  return;
- }
-
- currentUser = user;
-
- const {data:profile,error:profileError} = await supabase
-  .from('profiles')
-  .select('role,verification_status')
-  .eq('id',user.id)
-  .single();
-
- if(profileError || !profile){
-  $('conversationList').innerHTML =
-   '<div class="empty">تعذر التحقق من حسابك.</div>';
-  return;
- }
-
- if(
-  profile.verification_status !== 'approved' &&
-  profile.role !== 'admin'
- ){
-  $('conversationList').innerHTML =
-   '<div class="empty">الرسائل متاحة للحسابات المعتمدة فقط.</div>';
-  return;
- }
-
- await loadPublicProfiles();
- await loadConversations();
-}
-
-init();
+loadDashboard();
 </script>
 
 </body>
