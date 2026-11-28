@@ -139,21 +139,28 @@ header{
 }
 
 .post-avatar{
- width:42px;height:42px;border-radius:50%;
+ width:43px;height:43px;border-radius:50%;
  background:#eff6ff;color:var(--blue);
  display:grid;place-items:center;font-weight:bold;
  flex-shrink:0;overflow:hidden;
 }
 .post-avatar img{width:100%;height:100%;object-fit:cover}
 
-.post-author{font-size:14px;font-weight:800}
+.post-author{
+ font-size:14px;font-weight:800;
+ color:var(--text);text-decoration:none;
+}
+.post-author:hover{color:var(--blue)}
+
 .post-date{font-size:11px;color:var(--muted);margin-top:5px}
 
 .post-space{
  display:inline-flex;align-items:center;gap:5px;
- margin-top:7px;padding:5px 9px;border-radius:8px;
+ margin-top:7px;padding:6px 10px;border-radius:8px;
  background:#eff6ff;color:#2563eb;font-size:11px;font-weight:bold;
+ text-decoration:none;
 }
+.post-space:hover{background:#dbeafe}
 
 .post-content{
  font-size:14px;line-height:1.9;white-space:pre-wrap;
@@ -166,13 +173,70 @@ header{
 }
 
 .post-footer{
- display:flex;justify-content:space-between;align-items:center;
- gap:8px;border-top:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;
+ gap:5px;border-top:1px solid var(--border);
  padding-top:12px;margin-top:12px;flex-wrap:wrap;
 }
 
-.post-footer a{
- color:var(--blue);text-decoration:none;font-size:12px;font-weight:bold;
+.post-action{
+ display:flex;align-items:center;justify-content:center;
+ gap:5px;border:0;background:transparent;
+ color:#64748b;padding:7px 8px;border-radius:9px;
+ font-size:12px;cursor:pointer;transition:.2s;
+ flex:1;min-width:48px;
+}
+.post-action:active{transform:scale(.92)}
+.post-action .action-icon{font-size:17px;line-height:1}
+.post-action .action-count{font-size:11px}
+.post-action.active{color:var(--blue);background:#eff6ff}
+.post-action:disabled{opacity:.5;cursor:wait}
+
+.comments-area{
+ display:none;margin-top:13px;padding-top:13px;
+ border-top:1px solid var(--border);
+}
+.comments-area.open{display:block}
+
+.comments-list{
+ display:flex;flex-direction:column;gap:10px;
+ margin-bottom:12px;
+}
+.comment-item{
+ display:flex;gap:9px;align-items:flex-start;
+ background:#f8fafc;padding:10px;border-radius:12px;
+}
+.comment-avatar{
+ width:30px;height:30px;border-radius:50%;
+ background:#dbeafe;color:#2563eb;
+ display:grid;place-items:center;font-size:12px;
+ font-weight:bold;flex-shrink:0;overflow:hidden;
+}
+.comment-avatar img{width:100%;height:100%;object-fit:cover}
+.comment-body{min-width:0;flex:1}
+.comment-name{font-size:12px;font-weight:bold;margin-bottom:4px}
+.comment-text{
+ font-size:13px;line-height:1.7;overflow-wrap:anywhere;
+ white-space:pre-wrap;
+}
+.comment-date{font-size:10px;color:var(--muted);margin-top:5px}
+
+.comment-form{display:flex;gap:8px;align-items:center}
+.comment-input{
+ flex:1;min-width:0;border:1px solid var(--border);
+ background:#f8fafc;border-radius:12px;padding:11px 12px;
+ font-family:inherit;font-size:13px;outline:none;
+}
+.comment-input:focus{border-color:var(--blue);background:white}
+.comment-submit{
+ border:0;background:var(--blue);color:white;
+ padding:11px 14px;border-radius:11px;
+ font-weight:bold;font-size:12px;cursor:pointer;
+}
+.comment-submit:disabled{opacity:.5}
+
+.comments-empty{
+ text-align:center;color:var(--muted);
+ font-size:12px;padding:12px;
 }
 
 .empty-feed{
@@ -363,6 +427,31 @@ const navNotificationCount = document.getElementById('navNotificationCount');
 
 let currentUserId = null;
 let notificationChannel = null;
+let publicProfiles = new Map();
+let postsCache = new Map();
+
+function escapeHTML(value){
+ return String(value ?? '').replace(/[&<>"']/g,char=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+ }[char]));
+}
+
+function getSavedPosts(){
+ try{
+  const saved = JSON.parse(localStorage.getItem('campus_saved_posts') || '[]');
+  return Array.isArray(saved) ? saved.map(String) : [];
+ }catch(error){
+  return [];
+ }
+}
+
+function setSavedPosts(posts){
+ localStorage.setItem('campus_saved_posts',JSON.stringify(posts));
+}
 
 async function updateNotificationCount(){
  if(!currentUserId)return;
@@ -370,6 +459,7 @@ async function updateNotificationCount(){
  const {count,error} = await supabase
   .from('notifications')
   .select('id',{count:'exact',head:true})
+  .eq('recipient_id',currentUserId)
   .eq('is_read',false);
 
  if(error){
@@ -416,7 +506,6 @@ async function loadPosts(){
  feed.innerHTML = '<div class="loading">جارٍ تحميل المنشورات...</div>';
 
  try{
-  // تحميل جميع المنشورات، سواء كانت عامة أو داخل مساحة
   const {data:posts,error} = await supabase
    .from('posts')
    .select('id,author_id,content,image_path,created_at,space_id')
@@ -434,17 +523,17 @@ async function loadPosts(){
    return;
   }
 
-  // جلب أسماء أصحاب المنشورات
-  const {data:profiles, error:profilesError} =
+  const postIds = posts.map(p=>p.id);
+
+  const {data:profiles,error:profilesError} =
    await supabase.rpc('get_public_profiles');
 
   if(profilesError)console.error('Profiles:',profilesError);
 
-  const profileMap = new Map(
+  publicProfiles = new Map(
    (profiles || []).map(p=>[p.id,p])
   );
 
-  // جلب أسماء المساحات المرتبطة بالمنشورات
   const spaceIds = [...new Set(
    posts.map(p=>p.space_id).filter(Boolean)
   )];
@@ -464,12 +553,60 @@ async function loadPosts(){
    );
   }
 
+  const [likesResult,commentsResult,repostsResult] = await Promise.all([
+   supabase.from('post_likes')
+    .select('post_id,user_id')
+    .in('post_id',postIds),
+
+   supabase.from('comments')
+    .select('post_id')
+    .in('post_id',postIds),
+
+   supabase.from('reposts')
+    .select('post_id,author_id')
+    .in('post_id',postIds)
+  ]);
+
+  if(likesResult.error)console.error('Likes:',likesResult.error);
+  if(commentsResult.error)console.error('Comments:',commentsResult.error);
+  if(repostsResult.error)console.error('Reposts:',repostsResult.error);
+
+  const likes = likesResult.data || [];
+  const comments = commentsResult.data || [];
+  const reposts = repostsResult.data || [];
+
+  const likeCounts = new Map();
+  const commentCounts = new Map();
+  const repostCounts = new Map();
+  const myLikes = new Set();
+  const myReposts = new Set();
+
+  likes.forEach(item=>{
+   likeCounts.set(item.post_id,(likeCounts.get(item.post_id)||0)+1);
+   if(item.user_id === currentUserId)myLikes.add(item.post_id);
+  });
+
+  comments.forEach(item=>{
+   commentCounts.set(item.post_id,(commentCounts.get(item.post_id)||0)+1);
+  });
+
+  reposts.forEach(item=>{
+   repostCounts.set(item.post_id,(repostCounts.get(item.post_id)||0)+1);
+   if(item.author_id === currentUserId)myReposts.add(item.post_id);
+  });
+
+  postsCache = new Map(posts.map(post=>[post.id,post]));
+
+  const savedPosts = getSavedPosts();
+
   const cards = await Promise.all(posts.map(async post=>{
-   const profile = profileMap.get(post.author_id);
+   const profile = publicProfiles.get(post.author_id);
    const authorName = profile?.full_name || 'طالب CAMPUS ONE';
    const avatarPath = profile?.profile_avatar_path || '';
+
+   // إذا تعذر جلب الاسم من قاعدة البيانات، نظهر اسمًا عامًا للمساحة
    const spaceName = post.space_id
-    ? spaceMap.get(post.space_id)
+    ? (spaceMap.get(post.space_id) || 'مساحة جامعية')
     : null;
 
    let avatarHTML = escapeHTML(authorName.trim().charAt(0) || 'ط');
@@ -506,18 +643,30 @@ async function loadPosts(){
       })
     : '';
 
+   const liked = myLikes.has(post.id);
+   const reposted = myReposts.has(post.id);
+   const saved = savedPosts.includes(String(post.id));
+
    return `
-    <article class="post-card">
+    <article class="post-card" data-post-id="${escapeHTML(post.id)}">
+
      <div class="post-top">
       <div class="post-avatar">${avatarHTML}</div>
+
       <div>
-       <div class="post-author">${escapeHTML(authorName)}</div>
+       <a class="post-author"
+        href="student.html?user=${encodeURIComponent(post.author_id)}">
+        ${escapeHTML(authorName)}
+       </a>
+
        <div class="post-date">${escapeHTML(date)}</div>
+
        ${spaceName ? `
-        <div class="post-space">
+        <a class="post-space"
+         href="community.html?space=${encodeURIComponent(post.space_id)}">
          <span>📍</span>
-         ${escapeHTML(spaceName)}
-        </div>
+         <span>${escapeHTML(spaceName)}</span>
+        </a>
        ` : ''}
       </div>
      </div>
@@ -529,10 +678,53 @@ async function loadPosts(){
      ${imageHTML}
 
      <div class="post-footer">
-      <a href="community.html${post.space_id ? '?space='+encodeURIComponent(post.space_id) : ''}">
-       ${spaceName ? 'عرض المنشور في المساحة ←' : 'عرض المجتمع ←'}
-      </a>
+
+      <button class="post-action ${liked?'active':''}"
+       data-action="like" type="button">
+       <span class="action-icon">${liked?'❤️':'♡'}</span>
+       <span>إعجاب</span>
+       <span class="action-count" data-count="likes">${likeCounts.get(post.id)||0}</span>
+      </button>
+
+      <button class="post-action"
+       data-action="comment" type="button">
+       <span class="action-icon">💬</span>
+       <span>تعليق</span>
+       <span class="action-count" data-count="comments">${commentCounts.get(post.id)||0}</span>
+      </button>
+
+      <button class="post-action ${reposted?'active':''}"
+       data-action="repost" type="button">
+       <span class="action-icon">🔁</span>
+       <span>إعادة نشر</span>
+       <span class="action-count" data-count="reposts">${repostCounts.get(post.id)||0}</span>
+      </button>
+
+      <button class="post-action"
+       data-action="share" type="button">
+       <span class="action-icon">↗</span>
+       <span>مشاركة</span>
+      </button>
+
+      <button class="post-action ${saved?'active':''}"
+       data-action="save" type="button">
+       <span class="action-icon">${saved?'🔖':'♧'}</span>
+       <span>حفظ</span>
+      </button>
+
      </div>
+
+     <div class="comments-area" data-comments-area>
+      <div class="comments-list" data-comments-list></div>
+
+      <form class="comment-form" data-comment-form>
+       <input class="comment-input" name="content"
+        type="text" maxlength="1000"
+        placeholder="اكتب تعليقك..." autocomplete="off" required>
+       <button class="comment-submit" type="submit">إرسال</button>
+      </form>
+     </div>
+
     </article>
    `;
   }));
@@ -546,6 +738,321 @@ async function loadPosts(){
     تعذر تحميل المنشورات حاليًا. تحقق من الاتصال ثم حاول تحديث القائمة.
    </div>`;
  }
+}
+
+async function toggleLike(postId,button){
+ button.disabled = true;
+
+ try{
+  const {data:existing,error:findError} = await supabase
+   .from('post_likes')
+   .select('id')
+   .eq('post_id',postId)
+   .eq('user_id',currentUserId)
+   .maybeSingle();
+
+  if(findError)throw findError;
+
+  if(existing){
+   const {error} = await supabase
+    .from('post_likes')
+    .delete()
+    .eq('post_id',postId)
+    .eq('user_id',currentUserId);
+
+   if(error)throw error;
+
+   button.classList.remove('active');
+   button.querySelector('.action-icon').textContent = '♡';
+   changeCount(button,-1);
+  }else{
+   const {error} = await supabase
+    .from('post_likes')
+    .insert({
+     post_id:postId,
+     user_id:currentUserId
+    });
+
+   if(error)throw error;
+
+   button.classList.add('active');
+   button.querySelector('.action-icon').textContent = '❤️';
+   changeCount(button,1);
+  }
+
+ }catch(error){
+  console.error('Like error:',error);
+  alert('تعذر تنفيذ الإعجاب. تحقق من صلاحيات الحساب ثم حاول مجددًا.');
+ }finally{
+  button.disabled = false;
+ }
+}
+
+async function toggleRepost(postId,button){
+ button.disabled = true;
+
+ try{
+  const {data:existing,error:findError} = await supabase
+   .from('reposts')
+   .select('post_id')
+   .eq('post_id',postId)
+   .eq('author_id',currentUserId)
+   .maybeSingle();
+
+  if(findError)throw findError;
+
+  if(existing){
+   const {error} = await supabase
+    .from('reposts')
+    .delete()
+    .eq('post_id',postId)
+    .eq('author_id',currentUserId);
+
+   if(error)throw error;
+
+   button.classList.remove('active');
+   changeCount(button,-1);
+  }else{
+   const {error} = await supabase
+    .from('reposts')
+    .insert({
+     post_id:postId,
+     author_id:currentUserId
+    });
+
+   if(error)throw error;
+
+   button.classList.add('active');
+   changeCount(button,1);
+  }
+
+ }catch(error){
+  console.error('Repost error:',error);
+  alert('تعذرت إعادة نشر هذا المنشور. حاول مجددًا.');
+ }finally{
+  button.disabled = false;
+ }
+}
+
+function changeCount(button,amount){
+ const countElement = button.querySelector('.action-count');
+ if(!countElement)return;
+
+ const current = Number(countElement.textContent || 0);
+ countElement.textContent = Math.max(0,current + amount);
+}
+
+async function loadComments(postId,card){
+ const list = card.querySelector('[data-comments-list]');
+ if(!list)return;
+
+ list.innerHTML = '<div class="comments-empty">جارٍ تحميل التعليقات...</div>';
+
+ try{
+  const {data:comments,error} = await supabase
+   .from('comments')
+   .select('id,post_id,author_id,content,created_at')
+   .eq('post_id',postId)
+   .order('created_at',{ascending:true})
+   .limit(50);
+
+  if(error)throw error;
+
+  if(!comments || comments.length===0){
+   list.innerHTML = '<div class="comments-empty">لا توجد تعليقات بعد. كن أول من يعلّق.</div>';
+   return;
+  }
+
+  const commentHTML = await Promise.all(comments.map(async comment=>{
+   const profile = publicProfiles.get(comment.author_id);
+   const name = profile?.full_name || 'طالب CAMPUS ONE';
+   const avatarPath = profile?.profile_avatar_path || '';
+
+   let avatar = escapeHTML(name.trim().charAt(0) || 'ط');
+
+   if(avatarPath){
+    const {data} = await supabase
+     .storage.from('community-media')
+     .createSignedUrl(avatarPath,3600);
+
+    if(data?.signedUrl){
+     avatar = `<img src="${escapeHTML(data.signedUrl)}" alt="">`;
+    }
+   }
+
+   const date = comment.created_at
+    ? new Date(comment.created_at).toLocaleString('ar-DZ',{
+       dateStyle:'short',
+       timeStyle:'short'
+      })
+    : '';
+
+   return `
+    <div class="comment-item">
+     <div class="comment-avatar">${avatar}</div>
+     <div class="comment-body">
+      <div class="comment-name">${escapeHTML(name)}</div>
+      <div class="comment-text">${escapeHTML(comment.content)}</div>
+      <div class="comment-date">${escapeHTML(date)}</div>
+     </div>
+    </div>
+   `;
+  }));
+
+  list.innerHTML = commentHTML.join('');
+
+ }catch(error){
+  console.error('Load comments error:',error);
+  list.innerHTML = '<div class="comments-empty">تعذر تحميل التعليقات.</div>';
+ }
+}
+
+async function addComment(postId,form){
+ const input = form.querySelector('input[name="content"]');
+ const button = form.querySelector('button[type="submit"]');
+ const content = input.value.trim();
+
+ if(!content)return;
+
+ button.disabled = true;
+ button.textContent = '...';
+
+ try{
+  const {error} = await supabase
+   .from('comments')
+   .insert({
+    post_id:postId,
+    author_id:currentUserId,
+    content:content
+   });
+
+  if(error)throw error;
+
+  input.value = '';
+
+  const card = form.closest('.post-card');
+  await loadComments(postId,card);
+
+  const commentButton = card.querySelector('[data-action="comment"]');
+  changeCount(commentButton,1);
+
+ }catch(error){
+  console.error('Add comment error:',error);
+  alert('تعذر إرسال التعليق. حاول مجددًا.');
+ }finally{
+  button.disabled = false;
+  button.textContent = 'إرسال';
+ }
+}
+
+async function sharePost(postId){
+ const post = postsCache.get(postId);
+ if(!post)return;
+
+ const url = new URL('community.html',window.location.href);
+ if(post.space_id){
+  url.searchParams.set('space',post.space_id);
+ }
+
+ const shareData = {
+  title:'CAMPUS ONE',
+  text:post.content || 'منشور من CAMPUS ONE',
+  url:url.href
+ };
+
+ try{
+  if(navigator.share){
+   await navigator.share(shareData);
+  }else if(navigator.clipboard){
+   await navigator.clipboard.writeText(url.href);
+   alert('تم نسخ رابط المنشور.');
+  }else{
+   prompt('انسخ رابط المنشور:',url.href);
+  }
+ }catch(error){
+  if(error.name !== 'AbortError'){
+   console.error('Share error:',error);
+   alert('تعذرت مشاركة المنشور.');
+  }
+ }
+}
+
+function toggleSave(postId,button){
+ const savedPosts = getSavedPosts();
+ const id = String(postId);
+ const index = savedPosts.indexOf(id);
+
+ if(index >= 0){
+  savedPosts.splice(index,1);
+  button.classList.remove('active');
+  button.querySelector('.action-icon').textContent = '♧';
+  button.querySelector('span:nth-child(2)').textContent = 'حفظ';
+  alert('تمت إزالة المنشور من المحفوظات على هذا الجهاز.');
+ }else{
+  savedPosts.push(id);
+  button.classList.add('active');
+  button.querySelector('.action-icon').textContent = '🔖';
+  button.querySelector('span:nth-child(2)').textContent = 'محفوظ';
+  alert('تم حفظ المنشور على هذا الجهاز.');
+ }
+
+ setSavedPosts(savedPosts);
+}
+
+function setupFeedInteractions(){
+ const feed = document.getElementById('postsFeed');
+ if(!feed || feed.dataset.eventsReady === 'true')return;
+
+ feed.dataset.eventsReady = 'true';
+
+ feed.addEventListener('click',async event=>{
+  const button = event.target.closest('[data-action]');
+  if(!button)return;
+
+  const card = button.closest('.post-card');
+  if(!card)return;
+
+  const postId = card.dataset.postId;
+  const action = button.dataset.action;
+
+  if(action === 'like'){
+   await toggleLike(postId,button);
+  }
+
+  if(action === 'repost'){
+   await toggleRepost(postId,button);
+  }
+
+  if(action === 'comment'){
+   const area = card.querySelector('[data-comments-area]');
+   const isOpen = area.classList.toggle('open');
+
+   if(isOpen && area.dataset.loaded !== 'true'){
+    await loadComments(postId,card);
+    area.dataset.loaded = 'true';
+   }
+  }
+
+  if(action === 'share'){
+   await sharePost(postId);
+  }
+
+  if(action === 'save'){
+   toggleSave(postId,button);
+  }
+ });
+
+ feed.addEventListener('submit',async event=>{
+  const form = event.target.closest('[data-comment-form]');
+  if(!form)return;
+
+  event.preventDefault();
+
+  const card = form.closest('.post-card');
+  if(!card)return;
+
+  await addComment(card.dataset.postId,form);
+ });
 }
 
 async function loadDashboard(){
@@ -627,6 +1134,7 @@ async function loadDashboard(){
      <h2 class="section-title">آخر منشورات الطلبة</h2>
      <button class="refresh-feed" id="refreshFeed">تحديث ↻</button>
     </div>
+
     <div id="postsFeed">
      <div class="loading">جارٍ تحميل المنشورات...</div>
     </div>
@@ -654,7 +1162,7 @@ async function loadDashboard(){
    const {error} = await supabase.auth.signOut();
 
    if(error){
-    alert('تعذر تسجيل الخروج. حاول مجدداً.');
+    alert('تعذر تسجيل الخروج. حاول مجددًا.');
     return;
    }
 
@@ -662,6 +1170,8 @@ async function loadDashboard(){
   });
 
   document.getElementById('refreshFeed').addEventListener('click',loadPosts);
+
+  setupFeedInteractions();
 
   await loadPosts();
   await updateNotificationCount();
@@ -672,16 +1182,6 @@ async function loadDashboard(){
   main.innerHTML =
    '<div class="loading">حدث خطأ أثناء تحميل الصفحة.</div>';
  }
-}
-
-function escapeHTML(value){
- return String(value ?? '').replace(/[&<>"']/g,char=>({
-  '&':'&amp;',
-  '<':'&lt;',
-  '>':'&gt;',
-  '"':'&quot;',
-  "'":'&#39;'
- }[char]));
 }
 
 document.querySelectorAll('.nav-item').forEach(item=>{
