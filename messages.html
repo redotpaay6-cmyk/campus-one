@@ -92,8 +92,9 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
 .note-delete{background:#f1f5f9;color:#475569}
 .chat-note{margin:10px 12px 0;padding:10px 12px;border-radius:12px;background:var(--light);border:1px solid #dbeafe;font-size:12px;color:var(--navy);line-height:1.7}
 .chat-note strong{margin-left:5px}
-.load-older{align-self:center;border:0;background:var(--light);color:var(--blue);padding:8px 13px;border-radius:9px;font-size:11px;cursor:pointer}
-.load-older:disabled{opacity:.5}
+.load-older{align-self:center;border:1px solid #dbeafe;background:white;color:var(--blue);padding:9px 15px;border-radius:10px;font-size:12px;font-weight:bold;cursor:pointer;min-height:36px}
+.load-older:hover{background:var(--light)}
+.load-older:disabled{opacity:.5;cursor:wait}
 .online-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#16a34a;margin-left:5px}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(18px);border-top:1px solid #e5eaf1;display:flex;justify-content:space-around;align-items:center;padding:9px 3px calc(9px + env(safe-area-inset-bottom));z-index:100;box-shadow:0 -5px 25px #102b4608}
 .nav-item{position:relative;color:#8995a7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;font-weight:600;text-decoration:none;flex:1;min-width:0;padding:6px 1px;border-radius:13px}
@@ -102,6 +103,7 @@ header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-ite
 .nav-item.active{color:var(--blue);background:#eff6ff}
 .nav-item.active .nav-icon svg{stroke-width:2.4}
 .nav-label{white-space:nowrap}
+
 @media(max-width:700px){
  .layout{display:block}
  .chat-panel{display:none;min-height:calc(100vh - 190px)}
@@ -248,7 +250,7 @@ let presenceUsers=new Set();
 let loadedMessages=[];
 let oldestMessageTime=null;
 let loadingOlder=false;
-let hasMoreMessages=true;
+let hasMoreMessages=false;
 let loadingInitialMessages=false;
 
 function escapeHTML(value){
@@ -266,16 +268,16 @@ function formatTime(value){
  return Number.isNaN(date.getTime())?'':date.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'});
 }
 
-function getPartner(conversation){
- const id=conversation.user_one===currentUser.id?conversation.user_two:conversation.user_one;
- return profilesMap.get(id)||{id,full_name:'طالب CAMPUS ONE',username:''};
-}
-
 /* تحميل بيانات الطلبة */
 async function loadPublicProfiles(){
  const {data,error}=await supabase.rpc('get_public_profiles');
  if(error){console.error(error);return}
  profilesMap=new Map((data||[]).map(p=>[p.id,p]));
+}
+
+function getPartner(conversation){
+ const id=conversation.user_one===currentUser.id?conversation.user_two:conversation.user_one;
+ return profilesMap.get(id)||{id,full_name:'طالب CAMPUS ONE',username:''};
 }
 
 /* الملاحظات */
@@ -292,6 +294,7 @@ async function loadNotes(){
  }
 
  notesMap=new Map();
+
  (data||[]).forEach(note=>{
   if(!notesMap.has(note.user_id))notesMap.set(note.user_id,note);
  });
@@ -327,6 +330,7 @@ function renderNotes(){
  list.querySelectorAll('.note-item').forEach(item=>{
   item.addEventListener('click',()=>{
    const id=item.dataset.noteUser;
+
    if(id===currentUser.id){
     openNoteModal();
    }else{
@@ -339,6 +343,7 @@ function renderNotes(){
 
 function renderPartnerNote(){
  if(!currentPartner)return;
+
  const note=notesMap.get(currentPartner.id);
  const box=$('partnerNote');
 
@@ -368,8 +373,10 @@ function closeNoteModal(){
  $('noteModal').classList.add('hidden');
 }
 
+/* نشر أو تحديث الملاحظة */
 async function saveNote(){
  const content=$('noteContent').value.trim();
+
  if(!content){
   alert('اكتب ملاحظة أولاً.');
   return;
@@ -379,31 +386,53 @@ async function saveNote(){
  $('saveNoteButton').textContent='جارٍ النشر...';
 
  try{
-  if(myNote){
-   const {error:deleteError}=await supabase.from('user_notes')
-    .delete().eq('id',myNote.id).eq('user_id',currentUser.id);
-
-   if(deleteError)throw deleteError;
-  }
-
   const now=new Date();
   const expires=new Date(now.getTime()+24*60*60*1000);
 
-  const {error}=await supabase.from('user_notes').insert({
-   user_id:currentUser.id,
-   content,
-   emoji:selectedEmoji,
-   created_at:now.toISOString(),
-   expires_at:expires.toISOString()
-  });
+  let result;
 
-  if(error)throw error;
+  if(myNote){
+   result=await supabase.from('user_notes')
+    .update({
+     content:content,
+     emoji:selectedEmoji,
+     created_at:now.toISOString(),
+     expires_at:expires.toISOString()
+    })
+    .eq('id',myNote.id)
+    .eq('user_id',currentUser.id)
+    .select('id')
+    .maybeSingle();
+
+   if(result.error)throw result.error;
+
+   if(!result.data){
+    throw new Error('لم يتم تحديث الملاحظة. تحقق من صلاحيات UPDATE في RLS.');
+   }
+  }else{
+   result=await supabase.from('user_notes').insert({
+    user_id:currentUser.id,
+    content:content,
+    emoji:selectedEmoji,
+    created_at:now.toISOString(),
+    expires_at:expires.toISOString()
+   });
+
+   if(result.error)throw result.error;
+  }
 
   closeNoteModal();
   await loadNotes();
+
  }catch(error){
   console.error('Save note error:',error);
-  alert('تعذر نشر الملاحظة. تحقق من صلاحيات INSERT وDELETE في RLS.');
+
+  alert(
+   'تعذر نشر الملاحظة:\n'+
+   (error.message||'خطأ غير معروف')+
+   '\nCode: '+(error.code||'غير متوفر')
+  );
+
  }finally{
   $('saveNoteButton').disabled=false;
   $('saveNoteButton').textContent='نشر الملاحظة';
@@ -422,8 +451,8 @@ async function deleteNote(){
  $('deleteNoteButton').disabled=false;
 
  if(error){
-  console.error(error);
-  alert('تعذر حذف الملاحظة. تحقق من سياسة DELETE في RLS.');
+  console.error('Delete note error:',error);
+  alert('تعذر حذف الملاحظة:\n'+(error.message||'خطأ غير معروف'));
   return;
  }
 
@@ -458,6 +487,7 @@ function updateChatPresence(){
  if($('chatStatus').textContent==='يكتب الآن...')return;
 
  const online=presenceUsers.has(currentPartner.id);
+
  $('chatStatus').innerHTML=online
   ?'<span class="online-dot"></span>متصل الآن'
   :'غير متصل';
@@ -486,27 +516,34 @@ async function loadConversations(){
  }
 
  const ids=conversationsData.map(c=>c.id);
+
  const {data:messages,error:msgError}=await supabase.from('messages')
   .select('conversation_id,content,message_type,created_at')
-  .in('conversation_id',ids).order('created_at',{ascending:false});
+  .in('conversation_id',ids)
+  .order('created_at',{ascending:false});
 
  if(msgError)console.error(msgError);
 
  const latest=new Map();
+
  (messages||[]).forEach(m=>{
   if(!latest.has(m.conversation_id))latest.set(m.conversation_id,m);
  });
 
  $('conversationList').innerHTML=conversationsData.map(c=>{
-  const p=getPartner(c),last=latest.get(c.id);
-  const preview=last?(last.message_type==='image'?'📷 صورة':last.content):'ابدأ المحادثة الآن';
+  const p=getPartner(c);
+  const last=latest.get(c.id);
+  const preview=last
+   ?(last.message_type==='image'?'📷 صورة':last.content)
+   :'ابدأ المحادثة الآن';
 
   return `<div class="conversation-item" data-conversation="${c.id}">
    <div class="avatar">${escapeHTML(initials(p.full_name))}</div>
    <div class="conversation-info">
     <div class="conversation-name">${escapeHTML(p.full_name)}</div>
     <div class="conversation-preview">${escapeHTML(preview)}</div>
-   </div></div>`;
+   </div>
+  </div>`;
  }).join('');
 
  document.querySelectorAll('.conversation-item').forEach(item=>{
@@ -526,13 +563,19 @@ async function startConversation(partner){
   .select('id,user_one,user_two,created_at,last_message_at')
   .or(filter).maybeSingle();
 
- if(error){console.error(error);alert('تعذر التحقق من المحادثة.');return}
+ if(error){
+  console.error(error);
+  alert('تعذر التحقق من المحادثة.');
+  return;
+ }
 
  let conversation=existing;
 
  if(!conversation){
   const {data:newConversation,error:createError}=await supabase.from('conversations')
-   .insert({user_one:currentUser.id,user_two:partner.id}).select().single();
+   .insert({user_one:currentUser.id,user_two:partner.id})
+   .select()
+   .single();
 
   if(createError){
    const {data:retry}=await supabase.from('conversations')
@@ -544,6 +587,7 @@ async function startConversation(partner){
     alert('تعذر إنشاء المحادثة. تحقق من صلاحيات Supabase.');
     return;
    }
+
    conversation=retry;
   }else{
    conversation=newConversation;
@@ -554,7 +598,7 @@ async function startConversation(partner){
  await openConversation(conversation);
 }
 
-/* الرسائل مع التحميل التدريجي */
+/* فتح المحادثة */
 async function openConversation(conversation){
  if(messageChannel){
   await supabase.removeChannel(messageChannel);
@@ -566,6 +610,11 @@ async function openConversation(conversation){
 
  currentConversation=conversation;
  currentPartner=getPartner(conversation);
+
+ loadedMessages=[];
+ oldestMessageTime=null;
+ hasMoreMessages=false;
+ loadingOlder=false;
 
  $('layout').classList.add('chat-open');
  $('chatPlaceholder').classList.add('hidden');
@@ -583,102 +632,149 @@ async function openConversation(conversation){
  });
 
  await loadMessages();
+
+ if(currentConversation?.id!==conversation.id)return;
+
  subscribeToMessages();
  updateChatPresence();
 }
 
+/* تحميل آخر 30 رسالة */
 async function loadMessages(){
  if(!currentConversation||loadingInitialMessages)return;
+
  loadingInitialMessages=true;
 
+ const conversationId=currentConversation.id;
  const area=$('messagesArea');
+
  area.innerHTML='<div class="empty">جارٍ تحميل الرسائل...</div>';
 
  const {data,error}=await supabase.from('messages')
   .select('id,sender_id,content,message_type,created_at')
-  .eq('conversation_id',currentConversation.id)
+  .eq('conversation_id',conversationId)
   .order('created_at',{ascending:false})
   .limit(PAGE_SIZE);
 
  loadingInitialMessages=false;
 
  if(error){
-  console.error(error);
+  console.error('Load messages error:',error);
   area.innerHTML='<div class="empty">تعذر تحميل الرسائل.</div>';
   return;
  }
 
+ if(currentConversation?.id!==conversationId)return;
+
  const messages=(data||[]).reverse();
+
  loadedMessages=messages;
  oldestMessageTime=messages.length?messages[0].created_at:null;
  hasMoreMessages=messages.length===PAGE_SIZE;
 
- renderMessages();
- area.scrollTop=area.scrollHeight;
+ renderMessages(true);
 }
 
+/* تحميل الرسائل الأقدم */
 async function loadOlderMessages(){
  if(loadingOlder||!hasMoreMessages||!oldestMessageTime||!currentConversation)return;
 
  loadingOlder=true;
+
+ const conversationId=currentConversation.id;
+ const button=$('loadOlderTop');
  const area=$('messagesArea');
+
+ button.disabled=true;
+ button.textContent='جارٍ تحميل الرسائل الأقدم...';
+
  const oldHeight=area.scrollHeight;
  const oldTop=area.scrollTop;
+ const previousOldest=oldestMessageTime;
 
  const {data,error}=await supabase.from('messages')
   .select('id,sender_id,content,message_type,created_at')
-  .eq('conversation_id',currentConversation.id)
-  .lt('created_at',oldestMessageTime)
+  .eq('conversation_id',conversationId)
+  .lt('created_at',previousOldest)
   .order('created_at',{ascending:false})
   .limit(PAGE_SIZE);
 
  if(error){
-  console.error(error);
+  console.error('Load older messages error:',error);
+
+  loadingOlder=false;
+  button.disabled=false;
+  button.textContent='تحميل الرسائل الأقدم';
+
+  alert('تعذر تحميل الرسائل القديمة. حاول مجدداً.');
+  return;
+ }
+
+ if(currentConversation?.id!==conversationId){
   loadingOlder=false;
   return;
  }
 
  const older=(data||[]).reverse();
+
  if(older.length){
-  loadedMessages=[...older,...loadedMessages];
+  const existingIds=new Set(loadedMessages.map(m=>m.id));
+  const uniqueOlder=older.filter(m=>!existingIds.has(m.id));
+
+  loadedMessages=[...uniqueOlder,...loadedMessages];
   oldestMessageTime=older[0].created_at;
  }
 
- if(older.length<PAGE_SIZE)hasMoreMessages=false;
+ if(older.length<PAGE_SIZE){
+  hasMoreMessages=false;
+ }
 
  renderMessages(false);
 
  area.scrollTop=area.scrollHeight-oldHeight+oldTop;
+
  loadingOlder=false;
+ button.disabled=false;
+ button.textContent='تحميل الرسائل الأقدم';
 }
 
+/* عرض الرسائل */
 function renderMessages(scrollToBottom=true){
  const area=$('messagesArea');
- const messages=loadedMessages;
 
  let html='';
 
  if(hasMoreMessages){
-  html+='<button type="button" id="loadOlderButton" class="load-older">تحميل الرسائل الأقدم</button>';
+  html+='<button type="button" id="loadOlderTop" class="load-older">تحميل الرسائل الأقدم</button>';
  }
 
- if(!messages.length){
+ if(!loadedMessages.length){
   html+='<div class="empty">هذه بداية المحادثة.<br>أرسل أول رسالة الآن.</div>';
  }else{
-  html+=messages.map(m=>{
+  html+=loadedMessages.map(m=>{
    const mine=m.sender_id===currentUser.id;
-   const content=m.message_type==='image'?'📷 صورة':escapeHTML(m.content);
+   const content=m.message_type==='image'
+    ?'📷 صورة'
+    :escapeHTML(m.content);
 
-   return `<div class="message ${mine?'mine':'theirs'}">${content}<span class="message-time">${formatTime(m.created_at)}</span></div>`;
+   return `<div class="message ${mine?'mine':'theirs'}">
+    ${content}
+    <span class="message-time">${formatTime(m.created_at)}</span>
+   </div>`;
   }).join('');
  }
 
  area.innerHTML=html;
 
- const olderButton=$('loadOlderButton');
- if(olderButton)olderButton.addEventListener('click',loadOlderMessages);
+ const olderButton=$('loadOlderTop');
 
- if(scrollToBottom)area.scrollTop=area.scrollHeight;
+ if(olderButton){
+  olderButton.addEventListener('click',loadOlderMessages);
+ }
+
+ if(scrollToBottom){
+  area.scrollTop=area.scrollHeight;
+ }
 }
 
 /* Realtime */
@@ -698,13 +794,22 @@ function subscribeToMessages(){
    table:'messages',
    filter:'conversation_id=eq.'+id
   },async(payload)=>{
+   if(currentConversation?.id!==id)return;
+
    const newMessage=payload.new;
+
    if(!loadedMessages.some(m=>m.id===newMessage.id)){
-    const wasAtBottom=$('messagesArea').scrollHeight-$('messagesArea').scrollTop-$('messagesArea').clientHeight<100;
+    const area=$('messagesArea');
+    const wasAtBottom=area.scrollHeight-area.scrollTop-area.clientHeight<100;
+
     loadedMessages.push(newMessage);
     renderMessages(false);
-    if(wasAtBottom)$('messagesArea').scrollTop=$('messagesArea').scrollHeight;
+
+    if(wasAtBottom){
+     area.scrollTop=area.scrollHeight;
+    }
    }
+
    await loadConversations();
   })
   .on('broadcast',{event:'typing'},({payload})=>{
@@ -712,6 +817,7 @@ function subscribeToMessages(){
 
    if(payload.is_typing){
     $('chatStatus').textContent='يكتب الآن...';
+
     clearTimeout(remoteTypingTimer);
     remoteTypingTimer=setTimeout(updateChatPresence,2500);
    }else{
@@ -721,6 +827,7 @@ function subscribeToMessages(){
   })
   .subscribe(status=>{
    console.log('REALTIME STATUS:',status);
+
    if(status==='SUBSCRIBED')updateChatPresence();
    if(status==='CHANNEL_ERROR')$('chatStatus').textContent='تعذر الاتصال المباشر';
    if(status==='TIMED_OUT')$('chatStatus').textContent='انتهت مهلة الاتصال';
@@ -771,6 +878,7 @@ async function sendMessage(event){
 
  const input=$('messageInput');
  const content=input.value.trim();
+
  if(!content)return;
 
  clearTimeout(typingTimer);
@@ -843,8 +951,10 @@ async function searchStudents(term){
   button.addEventListener('click',async()=>{
    const student=students.find(s=>s.id===button.dataset.student);
    if(!student)return;
+
    results.classList.add('hidden');
    $('studentSearch').value='';
+
    await startConversation(student);
   });
  });
@@ -853,7 +963,9 @@ async function searchStudents(term){
 /* الأحداث */
 $('studentSearch').addEventListener('input',event=>{
  clearTimeout(searchTimer);
+
  const term=event.target.value.trim();
+
  searchTimer=setTimeout(()=>searchStudents(term),400);
 });
 
@@ -869,6 +981,7 @@ $('messageForm').addEventListener('submit',sendMessage);
 $('backButton').addEventListener('click',()=>{
  clearTimeout(typingTimer);
  clearTimeout(remoteTypingTimer);
+
  sendTypingStatus(false);
  $('layout').classList.remove('chat-open');
 });
@@ -881,7 +994,11 @@ $('deleteNoteButton').addEventListener('click',deleteNote);
 document.querySelectorAll('.emoji-choice').forEach(button=>{
  button.addEventListener('click',()=>{
   selectedEmoji=button.textContent;
-  document.querySelectorAll('.emoji-choice').forEach(item=>item.classList.remove('active'));
+
+  document.querySelectorAll('.emoji-choice').forEach(item=>{
+   item.classList.remove('active');
+  });
+
   button.classList.add('active');
  });
 });
@@ -890,8 +1007,11 @@ $('noteModal').addEventListener('click',event=>{
  if(event.target===$('noteModal'))closeNoteModal();
 });
 
+/* تحميل الرسائل الأقدم عند الصعود لأعلى المحادثة */
 $('messagesArea').addEventListener('scroll',()=>{
- if($('messagesArea').scrollTop<50)loadOlderMessages();
+ if($('messagesArea').scrollTop<50){
+  loadOlderMessages();
+ }
 });
 
 /* تحديث الملاحظات عند تغيرها */
