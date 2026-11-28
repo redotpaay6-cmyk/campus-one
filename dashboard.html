@@ -14,31 +14,26 @@
  --bg:#f3f6fb;--text:#172b4d;--muted:#718096;
  --border:#e7edf5;--red:#ef4444;
 }
-body{
- font-family:Arial,sans-serif;background:var(--bg);
- color:var(--text);padding-bottom:85px;
-}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);padding-bottom:85px}
 header{
  background:var(--navy);color:white;padding:16px 5%;
  display:flex;align-items:center;justify-content:space-between;
- position:sticky;top:0;z-index:10;
- box-shadow:0 3px 15px #102b4620;
+ position:sticky;top:0;z-index:10;box-shadow:0 3px 15px #102b4620;
 }
 .logo{font-size:21px;font-weight:900;letter-spacing:.3px}
 .header-actions{display:flex;gap:13px;align-items:center}
 .icon-button{
  width:40px;height:40px;display:grid;place-items:center;
- background:#ffffff12;border:1px solid #ffffff18;
- color:white;border-radius:13px;cursor:pointer;position:relative;
- transition:.2s;
+ background:#ffffff12;border:1px solid #ffffff18;color:white;
+ border-radius:13px;cursor:pointer;position:relative;transition:.2s;
 }
 .icon-button:active{transform:scale(.91)}
 .icon-button svg{width:21px;height:21px}
 .badge-count{
- position:absolute;top:-5px;right:-5px;background:#ef4444;
- color:white;border-radius:20px;min-width:18px;height:18px;
- padding:0 4px;font-size:10px;display:flex;align-items:center;
- justify-content:center;font-weight:bold;border:2px solid var(--navy);
+ position:absolute;top:-5px;right:-5px;background:#ef4444;color:white;
+ border-radius:20px;min-width:18px;height:18px;padding:0 4px;
+ font-size:10px;display:flex;align-items:center;justify-content:center;
+ font-weight:bold;border:2px solid var(--navy);
 }
 .badge-count.hidden,.nav-badge.hidden{display:none}
 .container{max-width:1050px;margin:auto;padding:22px 16px}
@@ -59,10 +54,8 @@ header{
 }
 .card:active{transform:scale(.97)}
 .card-icon{
- width:46px;height:46px;border-radius:14px;
- background:var(--light-blue);color:var(--blue);
- display:flex;align-items:center;justify-content:center;
- margin-bottom:13px;
+ width:46px;height:46px;border-radius:14px;background:var(--light-blue);
+ color:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:13px;
 }
 .card-icon svg{width:24px;height:24px}
 .card h3{font-size:15px;margin-bottom:7px}
@@ -73,153 +66,104 @@ header{
 }
 .notice h3{font-size:15px;margin-bottom:9px}
 .notice p{font-size:13px;color:var(--muted);line-height:1.8}
-.admin-link{
- display:inline-block;margin-top:12px;color:var(--blue);
- text-decoration:none;font-weight:bold;
-}
+.admin-link{display:inline-block;margin-top:12px;color:var(--blue);text-decoration:none;font-weight:bold}
 .logout{
  background:#fff0f0;color:#c53030;border:0;padding:11px 16px;
  border-radius:10px;cursor:pointer;margin-top:22px;font-weight:bold;
 }
 .loading{text-align:center;padding:35px 15px;color:var(--muted)}
-
-/* POSTS FEED */
 .feed-section{margin-top:28px}
-.feed-header{
- display:flex;align-items:center;justify-content:space-between;
- gap:10px;margin-bottom:14px;
-}
+.feed-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
 .feed-header .section-title{margin:0}
 .refresh-feed{
  border:1px solid var(--border);background:white;color:var(--blue);
  padding:8px 12px;border-radius:10px;font-weight:bold;cursor:pointer;
 }
 .post-card{
- background:white;border:1px solid var(--border);
- border-radius:17px;padding:16px;margin-bottom:13px;
- box-shadow:0 4px 15px #102b4608;
+ background:white;border:1px solid var(--border);border-radius:17px;
+ padding:16px;margin-bottom:13px;box-shadow:0 4px 15px #102b4608;
 }
 .post-top{display:flex;align-items:center;gap:10px;margin-bottom:13px}
 .post-avatar{
- width:43px;height:43px;border-radius:50%;
- background:#eff6ff;color:var(--blue);
- display:grid;place-items:center;font-weight:bold;
- flex-shrink:0;overflow:hidden;
+ width:43px;height:43px;border-radius:50%;background:#eff6ff;color:var(--blue);
+ display:grid;place-items:center;font-weight:bold;flex-shrink:0;overflow:hidden;
 }
 .post-avatar img{width:100%;height:100%;object-fit:cover}
 .post-author{font-size:14px;font-weight:800;color:var(--text);text-decoration:none}
 .post-author:hover{color:var(--blue)}
 .post-date{font-size:11px;color:var(--muted);margin-top:5px}
 .post-space{
- display:inline-flex;align-items:center;gap:5px;
- margin-top:7px;padding:6px 10px;border-radius:8px;
- background:#eff6ff;color:#2563eb;font-size:11px;font-weight:bold;
- text-decoration:none;
+ display:inline-flex;align-items:center;gap:5px;margin-top:7px;padding:6px 10px;
+ border-radius:8px;background:#eff6ff;color:#2563eb;font-size:11px;font-weight:bold;text-decoration:none;
 }
 .post-space:hover{background:#dbeafe}
 .post-space svg{width:15px;height:15px}
-.post-content{
- font-size:14px;line-height:1.9;white-space:pre-wrap;
- overflow-wrap:anywhere;margin:10px 0;
-}
-.post-image{
- width:100%;max-height:420px;object-fit:cover;
- border-radius:13px;margin-top:8px;
-}
+.post-content{font-size:14px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;margin:10px 0}
+.post-image{width:100%;max-height:420px;object-fit:cover;border-radius:13px;margin-top:8px}
 .post-footer{
- display:flex;align-items:center;justify-content:space-between;
- gap:5px;border-top:1px solid var(--border);
- padding-top:12px;margin-top:12px;flex-wrap:wrap;
+ display:flex;align-items:center;justify-content:space-between;gap:5px;
+ border-top:1px solid var(--border);padding-top:12px;margin-top:12px;flex-wrap:wrap;
 }
 .post-action{
- display:flex;flex-direction:column;align-items:center;
- justify-content:center;gap:5px;border:0;background:transparent;
- color:#64748b;padding:7px 4px;border-radius:9px;
- font-size:11px;cursor:pointer;transition:.2s;
- flex:1;min-width:0;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:5px;border:0;background:transparent;color:#64748b;padding:7px 4px;
+ border-radius:9px;font-size:11px;cursor:pointer;transition:.2s;flex:1;min-width:0;
 }
 .post-action:active{transform:scale(.92)}
-.post-action .action-icon{
- width:22px;height:22px;display:grid;place-items:center;
-}
+.post-action .action-icon{width:22px;height:22px;display:grid;place-items:center}
 .post-action .action-icon svg{
- width:21px;height:21px;fill:none;stroke:currentColor;
- stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+ width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;
+ stroke-linecap:round;stroke-linejoin:round;
 }
 .post-action .action-count{font-size:10px}
 .post-action.active{color:var(--blue);background:#eff6ff}
 .post-action.liked{color:var(--red);background:#fff1f2}
 .post-action:disabled{opacity:.5;cursor:wait}
-.comments-area{
- display:none;margin-top:13px;padding-top:13px;
- border-top:1px solid var(--border);
-}
+.comments-area{display:none;margin-top:13px;padding-top:13px;border-top:1px solid var(--border)}
 .comments-area.open{display:block}
 .comments-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
-.comment-item{
- display:flex;gap:9px;align-items:flex-start;
- background:#f8fafc;padding:10px;border-radius:12px;
-}
+.comment-item{display:flex;gap:9px;align-items:flex-start;background:#f8fafc;padding:10px;border-radius:12px}
 .comment-avatar{
- width:30px;height:30px;border-radius:50%;
- background:#dbeafe;color:#2563eb;
- display:grid;place-items:center;font-size:12px;
- font-weight:bold;flex-shrink:0;overflow:hidden;
+ width:30px;height:30px;border-radius:50%;background:#dbeafe;color:#2563eb;
+ display:grid;place-items:center;font-size:12px;font-weight:bold;flex-shrink:0;overflow:hidden;
 }
 .comment-avatar img{width:100%;height:100%;object-fit:cover}
 .comment-body{min-width:0;flex:1}
 .comment-name{font-size:12px;font-weight:bold;margin-bottom:4px}
-.comment-text{
- font-size:13px;line-height:1.7;overflow-wrap:anywhere;white-space:pre-wrap;
-}
+.comment-text{font-size:13px;line-height:1.7;overflow-wrap:anywhere;white-space:pre-wrap}
 .comment-date{font-size:10px;color:var(--muted);margin-top:5px}
 .comment-form{display:flex;gap:8px;align-items:center}
 .comment-input{
- flex:1;min-width:0;border:1px solid var(--border);
- background:#f8fafc;border-radius:12px;padding:11px 12px;
- font-family:inherit;font-size:13px;outline:none;
+ flex:1;min-width:0;border:1px solid var(--border);background:#f8fafc;
+ border-radius:12px;padding:11px 12px;font-family:inherit;font-size:13px;outline:none;
 }
 .comment-input:focus{border-color:var(--blue);background:white}
 .comment-submit{
- border:0;background:var(--blue);color:white;
- padding:11px 14px;border-radius:11px;
- font-weight:bold;font-size:12px;cursor:pointer;
+ border:0;background:var(--blue);color:white;padding:11px 14px;
+ border-radius:11px;font-weight:bold;font-size:12px;cursor:pointer;
 }
 .comment-submit:disabled{opacity:.5}
 .comments-empty{text-align:center;color:var(--muted);font-size:12px;padding:12px}
 .empty-feed{
- background:white;border:1px dashed #cbd5e1;
- border-radius:16px;padding:28px 16px;text-align:center;
- color:var(--muted);font-size:13px;line-height:1.9;
+ background:white;border:1px dashed #cbd5e1;border-radius:16px;
+ padding:28px 16px;text-align:center;color:var(--muted);font-size:13px;line-height:1.9;
 }
-.feed-error{
- background:#fff7ed;border:1px solid #fed7aa;
- border-radius:13px;padding:15px;color:#9a3412;
- font-size:13px;line-height:1.8;
-}
-
-/* NAVIGATION - نفس تصميم community.html */
+.feed-error{background:#fff7ed;border:1px solid #fed7aa;border-radius:13px;padding:15px;color:#9a3412;font-size:13px;line-height:1.8}
 .bottom-nav{
- display:flex;justify-content:space-around;position:fixed;
- bottom:0;left:0;right:0;background:#fff;
- border-top:1px solid var(--border);padding:8px 3px;
- padding-bottom:calc(8px + env(safe-area-inset-bottom));
- z-index:100;
+ display:flex;justify-content:space-around;position:fixed;bottom:0;left:0;right:0;
+ background:#fff;border-top:1px solid var(--border);padding:8px 3px;
+ padding-bottom:calc(8px + env(safe-area-inset-bottom));z-index:100;
 }
 .bottom-nav a{
- text-decoration:none;color:#7b8797;font-size:10px;
- text-align:center;line-height:1.5;flex:1;
- display:flex;flex-direction:column;align-items:center;gap:3px;
- position:relative;
+ text-decoration:none;color:#7b8797;font-size:10px;text-align:center;
+ line-height:1.5;flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;
 }
 .bottom-nav svg{width:21px;height:21px}
 .bottom-nav a.active{color:var(--blue);font-weight:bold}
 .nav-badge{
- position:absolute;top:-3px;right:calc(50% - 20px);
- min-width:16px;height:16px;padding:0 4px;
- background:#ef4444;color:white;border:2px solid white;
- border-radius:20px;font-size:9px;display:flex;
- align-items:center;justify-content:center;font-weight:bold;
+ position:absolute;top:-3px;right:calc(50% - 20px);min-width:16px;height:16px;
+ padding:0 4px;background:#ef4444;color:white;border:2px solid white;
+ border-radius:20px;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:bold;
 }
 @media(min-width:700px){
  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -233,21 +177,15 @@ header{
 <header>
  <div class="logo">CAMPUS ONE</div>
  <div class="header-actions">
-  <button class="icon-button" aria-label="الإشعارات"
-   onclick="location.href='notifications.html'">
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
-    <path d="M10 21h4"/>
+  <button class="icon-button" aria-label="الإشعارات" onclick="location.href='notifications.html'">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>
    </svg>
    <span id="notificationCount" class="badge-count hidden">0</span>
   </button>
-  <button class="icon-button" aria-label="حسابي"
-   onclick="location.href='student.html'">
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="4"/>
-    <path d="M5 21a7 7 0 0 1 14 0"/>
+  <button class="icon-button" aria-label="حسابي" onclick="location.href='student.html'">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>
    </svg>
   </button>
  </div>
@@ -259,50 +197,28 @@ header{
 
 <nav class="bottom-nav" aria-label="التنقل الرئيسي">
  <a class="active" href="dashboard.html" data-page="dashboard">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-   <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/>
-  </svg>
-  الرئيسية
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg>الرئيسية
  </a>
  <a href="community.html" data-page="community">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-   <circle cx="9" cy="8" r="3.5"/>
-   <path d="M2.5 20v-1.5a6.5 6.5 0 0 1 13 0V20zM16 5a3.5 3.5 0 0 1 0 7m2 2a5.5 5.5 0 0 1 3.5 5.1V20"/>
-  </svg>
-  المجتمع
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-1.5a6.5 6.5 0 0 1 13 0V20zM16 5a3.5 3.5 0 0 1 0 7m2 2a5.5 5.5 0 0 1 3.5 5.1V20"/></svg>المجتمع
  </a>
  <a href="search.html" data-page="search">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-   <circle cx="10.8" cy="10.8" r="7"/>
-   <path d="m16 16 5 5"/>
-  </svg>
-  البحث
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="7"/><path d="m16 16 5 5"/></svg>البحث
  </a>
  <a href="messages.html" data-page="messages">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-   <path d="M4 5h16v12H9l-5 4z"/>
-  </svg>
-  الرسائل
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v12H9l-5 4z"/></svg>الرسائل
  </a>
  <a href="notifications.html" data-page="notifications">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-   <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>
-  </svg>
-  الإشعارات
-  <span id="navNotificationCount" class="nav-badge hidden">0</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+  الإشعارات<span id="navNotificationCount" class="nav-badge hidden">0</span>
  </a>
  <a href="student.html" data-page="student">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-   <circle cx="12" cy="8" r="4"/>
-   <path d="M4 21a8 8 0 0 1 16 0"/>
-  </svg>
-  حسابي
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>حسابي
  </a>
 </nav>
 
 <script type="module">
-import { createClient } from
-'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const supabase = createClient(
  'https://rpvoajlzkoynimfowzgl.supabase.co',
@@ -317,6 +233,7 @@ let currentUserId = null;
 let notificationChannel = null;
 let publicProfiles = new Map();
 let postsCache = new Map();
+let savedPostIds = new Set();
 
 const iconPaths = {
  profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
@@ -343,15 +260,21 @@ function escapeHTML(value){
  }[char]));
 }
 
-function getSavedPosts(){
- try{
-  const saved = JSON.parse(localStorage.getItem('campus_saved_posts') || '[]');
-  return Array.isArray(saved) ? saved.map(String) : [];
- }catch(error){return [];}
-}
+/* تحميل المحفوظات من Supabase */
+async function loadSavedPostIds(){
+ savedPostIds = new Set();
 
-function setSavedPosts(posts){
- localStorage.setItem('campus_saved_posts',JSON.stringify(posts));
+ const {data,error} = await supabase
+  .from('saved_posts')
+  .select('post_id')
+  .eq('user_id',currentUserId);
+
+ if(error){
+  console.error('Saved posts loading error:',error);
+  throw error;
+ }
+
+ (data||[]).forEach(row=>savedPostIds.add(String(row.post_id)));
 }
 
 async function updateNotificationCount(){
@@ -443,8 +366,7 @@ async function loadPosts(){
    if(item.author_id===currentUserId)myReposts.add(item.post_id);
   });
 
-  postsCache = new Map(posts.map(post=>[post.id,post]));
-  const savedPosts = getSavedPosts();
+  postsCache = new Map(posts.map(post=>[String(post.id),post]));
 
   const cards = await Promise.all(posts.map(async post=>{
    const profile = publicProfiles.get(post.author_id);
@@ -470,7 +392,7 @@ async function loadPosts(){
 
    const date = post.created_at ? new Date(post.created_at).toLocaleString('ar-DZ',{dateStyle:'medium',timeStyle:'short'}) : '';
    const liked = myLikes.has(post.id),reposted = myReposts.has(post.id);
-   const saved = savedPosts.includes(String(post.id));
+   const saved = savedPostIds.has(String(post.id));
 
    return `
     <article class="post-card" data-post-id="${escapeHTML(post.id)}">
@@ -577,6 +499,50 @@ async function toggleRepost(postId,button){
  }finally{button.disabled=false;}
 }
 
+/* حفظ المنشور في قاعدة البيانات */
+async function toggleSave(postId,button){
+ button.disabled = true;
+
+ const id = String(postId);
+ const wasSaved = savedPostIds.has(id);
+
+ try{
+  if(wasSaved){
+   const {error} = await supabase
+    .from('saved_posts')
+    .delete()
+    .eq('user_id',currentUserId)
+    .eq('post_id',postId);
+
+   if(error)throw error;
+
+   savedPostIds.delete(id);
+   button.classList.remove('active');
+   button.querySelector('span:nth-child(2)').textContent = 'حفظ';
+   alert('تمت إزالة المنشور من المحفوظات.');
+  }else{
+   const {error} = await supabase
+    .from('saved_posts')
+    .insert({
+     user_id:currentUserId,
+     post_id:postId
+    });
+
+   if(error)throw error;
+
+   savedPostIds.add(id);
+   button.classList.add('active');
+   button.querySelector('span:nth-child(2)').textContent = 'محفوظ';
+   alert('تم حفظ المنشور في حسابك بنجاح ✓');
+  }
+ }catch(error){
+  console.error('Save post error:',error);
+  alert('تعذر حفظ المنشور. تحقق من اتصالك وصلاحيات جدول المحفوظات.');
+ }finally{
+  button.disabled = false;
+ }
+}
+
 async function loadComments(postId,card){
  const list = card.querySelector('[data-comments-list]');
  if(!list)return;
@@ -644,7 +610,7 @@ async function addComment(postId,form){
 }
 
 async function sharePost(postId){
- const post = postsCache.get(postId);
+ const post = postsCache.get(String(postId));
  if(!post)return;
  const url = new URL('community.html',window.location.href);
  if(post.space_id)url.searchParams.set('space',post.space_id);
@@ -666,27 +632,6 @@ async function sharePost(postId){
    alert('تعذرت مشاركة المنشور.');
   }
  }
-}
-
-function toggleSave(postId,button){
- const savedPosts = getSavedPosts();
- const id = String(postId);
- const index = savedPosts.indexOf(id);
-
- if(index>=0){
-  savedPosts.splice(index,1);
-  button.classList.remove('active');
-  button.querySelector('.action-icon').innerHTML = svgIcon('bookmark');
-  button.querySelector('span:nth-child(2)').textContent = 'حفظ';
-  alert('تمت إزالة المنشور من المحفوظات على هذا الجهاز.');
- }else{
-  savedPosts.push(id);
-  button.classList.add('active');
-  button.querySelector('.action-icon').innerHTML = svgIcon('bookmark');
-  button.querySelector('span:nth-child(2)').textContent = 'محفوظ';
-  alert('تم حفظ المنشور على هذا الجهاز.');
- }
- setSavedPosts(savedPosts);
 }
 
 function setupFeedInteractions(){
@@ -713,7 +658,7 @@ function setupFeedInteractions(){
    }
   }
   if(action==='share')await sharePost(postId);
-  if(action==='save')toggleSave(postId,button);
+  if(action==='save')await toggleSave(postId,button);
  });
 
  feed.addEventListener('submit',async event=>{
@@ -806,7 +751,12 @@ async function loadDashboard(){
   });
 
   document.getElementById('refreshFeed').addEventListener('click',loadPosts);
+
   setupFeedInteractions();
+
+  /* جلب المحفوظات قبل عرض المنشورات */
+  await loadSavedPostIds();
+
   await loadPosts();
   await updateNotificationCount();
   subscribeToNotifications();
