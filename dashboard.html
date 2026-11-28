@@ -40,86 +40,37 @@ header{
  box-shadow:0 3px 15px #102b4620;
 }
 
-.logo{
- font-size:21px;
- font-weight:900;
- letter-spacing:.3px;
-}
-
-.header-actions{
- display:flex;
- gap:13px;
- align-items:center;
-}
+.logo{font-size:21px;font-weight:900;letter-spacing:.3px}
+.header-actions{display:flex;gap:13px;align-items:center}
 
 .icon-button{
- width:40px;
- height:40px;
- display:grid;
- place-items:center;
- background:#ffffff12;
- border:1px solid #ffffff18;
- color:white;
- border-radius:13px;
- cursor:pointer;
- position:relative;
+ width:40px;height:40px;display:grid;place-items:center;
+ background:#ffffff12;border:1px solid #ffffff18;
+ color:white;border-radius:13px;cursor:pointer;position:relative;
  transition:.2s;
 }
-
 .icon-button:active{transform:scale(.91)}
 .icon-button svg{width:21px;height:21px}
 
 .badge-count{
- position:absolute;
- top:-5px;
- right:-5px;
- background:#ef4444;
- color:white;
- border-radius:20px;
- min-width:18px;
- height:18px;
- padding:0 4px;
- font-size:10px;
- display:flex;
- align-items:center;
- justify-content:center;
- font-weight:bold;
- border:2px solid var(--navy);
+ position:absolute;top:-5px;right:-5px;background:#ef4444;
+ color:white;border-radius:20px;min-width:18px;height:18px;
+ padding:0 4px;font-size:10px;display:flex;align-items:center;
+ justify-content:center;font-weight:bold;border:2px solid var(--navy);
 }
-
 .badge-count.hidden{display:none}
 
-.container{
- max-width:1050px;
- margin:auto;
- padding:22px 16px;
-}
+.container{max-width:1050px;margin:auto;padding:22px 16px}
 
 .welcome{
  background:linear-gradient(135deg,#102b46,#1768a5);
- color:white;
- padding:25px;
- border-radius:20px;
- margin-bottom:22px;
+ color:white;padding:25px;border-radius:20px;margin-bottom:22px;
  box-shadow:0 8px 25px #102b4620;
 }
+.welcome h1{font-size:23px;margin-bottom:9px}
+.welcome p{color:#dbeafe;font-size:14px;margin-top:6px}
 
-.welcome h1{
- font-size:23px;
- margin-bottom:9px;
-}
-
-.welcome p{
- color:#dbeafe;
- font-size:14px;
- margin-top:6px;
-}
-
-.section-title{
- font-size:19px;
- margin:25px 0 14px;
- font-weight:800;
-}
+.section-title{font-size:19px;margin:25px 0 14px;font-weight:800}
 
 .grid{
  display:grid;
@@ -128,188 +79,158 @@ header{
 }
 
 .card{
- background:white;
- padding:19px 15px;
- border-radius:17px;
- border:1px solid var(--border);
- box-shadow:0 4px 15px #102b4608;
- cursor:pointer;
- transition:.2s;
- text-align:right;
- color:inherit;
- text-decoration:none;
- display:block;
+ background:white;padding:19px 15px;border-radius:17px;
+ border:1px solid var(--border);box-shadow:0 4px 15px #102b4608;
+ cursor:pointer;transition:.2s;text-align:right;color:inherit;
+ text-decoration:none;display:block;
 }
-
 .card:active{transform:scale(.97)}
-
 .card-icon{
- width:46px;
- height:46px;
- border-radius:14px;
- background:var(--light-blue);
- color:var(--blue);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:22px;
- margin-bottom:13px;
+ width:46px;height:46px;border-radius:14px;
+ background:var(--light-blue);color:var(--blue);
+ display:flex;align-items:center;justify-content:center;
+ font-size:22px;margin-bottom:13px;
 }
-
-.card h3{
- font-size:15px;
- margin-bottom:7px;
-}
-
-.card p{
- font-size:12px;
- color:var(--muted);
- line-height:1.7;
-}
+.card h3{font-size:15px;margin-bottom:7px}
+.card p{font-size:12px;color:var(--muted);line-height:1.7}
 
 .notice{
- background:white;
- border:1px solid var(--border);
- padding:18px;
- border-radius:17px;
- margin-top:12px;
- box-shadow:0 4px 15px #102b4608;
+ background:white;border:1px solid var(--border);padding:18px;
+ border-radius:17px;margin-top:12px;box-shadow:0 4px 15px #102b4608;
 }
-
-.notice h3{
- font-size:15px;
- margin-bottom:9px;
-}
-
-.notice p{
- font-size:13px;
- color:var(--muted);
- line-height:1.8;
-}
+.notice h3{font-size:15px;margin-bottom:9px}
+.notice p{font-size:13px;color:var(--muted);line-height:1.8}
 
 .admin-link{
- display:inline-block;
- margin-top:12px;
- color:var(--blue);
- text-decoration:none;
- font-weight:bold;
+ display:inline-block;margin-top:12px;color:var(--blue);
+ text-decoration:none;font-weight:bold;
 }
 
 .logout{
- background:#fff0f0;
- color:#c53030;
- border:0;
- padding:11px 16px;
- border-radius:10px;
- cursor:pointer;
- margin-top:22px;
- font-weight:bold;
+ background:#fff0f0;color:#c53030;border:0;padding:11px 16px;
+ border-radius:10px;cursor:pointer;margin-top:22px;font-weight:bold;
 }
 
-.loading{
- text-align:center;
- padding:50px;
- color:var(--muted);
+.loading{text-align:center;padding:35px 15px;color:var(--muted)}
+
+/* POSTS FEED */
+
+.feed-section{margin-top:28px}
+
+.feed-header{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:10px;margin-bottom:14px;
+}
+.feed-header .section-title{margin:0}
+
+.refresh-feed{
+ border:1px solid var(--border);background:white;color:var(--blue);
+ padding:8px 12px;border-radius:10px;font-weight:bold;cursor:pointer;
+}
+
+.post-card{
+ background:white;border:1px solid var(--border);
+ border-radius:17px;padding:16px;margin-bottom:13px;
+ box-shadow:0 4px 15px #102b4608;
+}
+
+.post-top{
+ display:flex;align-items:center;gap:10px;margin-bottom:13px;
+}
+
+.post-avatar{
+ width:42px;height:42px;border-radius:50%;
+ background:#eff6ff;color:var(--blue);
+ display:grid;place-items:center;font-weight:bold;
+ flex-shrink:0;overflow:hidden;
+}
+.post-avatar img{width:100%;height:100%;object-fit:cover}
+
+.post-author{font-size:14px;font-weight:800}
+.post-date{font-size:11px;color:var(--muted);margin-top:5px}
+
+.post-space{
+ display:inline-flex;align-items:center;gap:5px;
+ margin-top:7px;padding:5px 9px;border-radius:8px;
+ background:#eff6ff;color:#2563eb;font-size:11px;font-weight:bold;
+}
+
+.post-content{
+ font-size:14px;line-height:1.9;white-space:pre-wrap;
+ overflow-wrap:anywhere;margin:10px 0;
+}
+
+.post-image{
+ width:100%;max-height:420px;object-fit:cover;
+ border-radius:13px;margin-top:8px;
+}
+
+.post-footer{
+ display:flex;justify-content:space-between;align-items:center;
+ gap:8px;border-top:1px solid var(--border);
+ padding-top:12px;margin-top:12px;flex-wrap:wrap;
+}
+
+.post-footer a{
+ color:var(--blue);text-decoration:none;font-size:12px;font-weight:bold;
+}
+
+.empty-feed{
+ background:white;border:1px dashed #cbd5e1;
+ border-radius:16px;padding:28px 16px;text-align:center;
+ color:var(--muted);font-size:13px;line-height:1.9;
+}
+
+.feed-error{
+ background:#fff7ed;border:1px solid #fed7aa;
+ border-radius:13px;padding:15px;color:#9a3412;
+ font-size:13px;line-height:1.8;
 }
 
 /* PREMIUM BOTTOM NAVIGATION */
 
 .bottom-nav{
- position:fixed;
- bottom:0;
- left:0;
- right:0;
- background:#ffffffed;
- backdrop-filter:blur(18px);
+ position:fixed;bottom:0;left:0;right:0;
+ background:#ffffffed;backdrop-filter:blur(18px);
  -webkit-backdrop-filter:blur(18px);
  border-top:1px solid #e5eaf1;
- display:flex;
- justify-content:space-around;
- align-items:center;
+ display:flex;justify-content:space-around;align-items:center;
  padding:9px 3px calc(9px + env(safe-area-inset-bottom));
- z-index:100;
- box-shadow:0 -5px 25px #102b4608;
+ z-index:100;box-shadow:0 -5px 25px #102b4608;
 }
 
 .nav-item{
- position:relative;
- border:0;
- background:transparent;
- color:#8995a7;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- gap:4px;
- font-size:10px;
- font-weight:600;
- cursor:pointer;
- text-decoration:none;
- flex:1;
- min-width:0;
- padding:6px 1px;
- border-radius:13px;
+ position:relative;border:0;background:transparent;color:#8995a7;
+ display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:4px;font-size:10px;font-weight:600;
+ cursor:pointer;text-decoration:none;flex:1;min-width:0;
+ padding:6px 1px;border-radius:13px;
  transition:color .2s,background .2s,transform .2s;
  -webkit-tap-highlight-color:transparent;
 }
 
 .nav-icon{
- width:25px;
- height:25px;
- display:grid;
- place-items:center;
+ width:25px;height:25px;display:grid;place-items:center;
  transition:transform .2s;
 }
-
 .nav-icon svg{
- width:23px;
- height:23px;
- stroke:currentColor;
- fill:none;
- stroke-width:1.8;
- stroke-linecap:round;
- stroke-linejoin:round;
+ width:23px;height:23px;stroke:currentColor;fill:none;
+ stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
 }
 
-.nav-item.active{
- color:var(--blue);
- background:#eff6ff;
-}
-
-.nav-item.active .nav-icon{
- transform:translateY(-2px);
-}
-
-.nav-item.active .nav-icon svg{
- stroke-width:2.4;
-}
-
-.nav-item:active{
- transform:scale(.91);
-}
-
-.nav-label{
- white-space:nowrap;
-}
+.nav-item.active{color:var(--blue);background:#eff6ff}
+.nav-item.active .nav-icon{transform:translateY(-2px)}
+.nav-item.active .nav-icon svg{stroke-width:2.4}
+.nav-item:active{transform:scale(.91)}
+.nav-label{white-space:nowrap}
 
 .nav-badge{
- position:absolute;
- top:1px;
- right:calc(50% - 19px);
- min-width:16px;
- height:16px;
- padding:0 4px;
- background:#ef4444;
- color:white;
- border:2px solid white;
- border-radius:20px;
- font-size:9px;
- display:flex;
- align-items:center;
- justify-content:center;
- font-weight:bold;
+ position:absolute;top:1px;right:calc(50% - 19px);
+ min-width:16px;height:16px;padding:0 4px;
+ background:#ef4444;color:white;border:2px solid white;
+ border-radius:20px;font-size:9px;display:flex;
+ align-items:center;justify-content:center;font-weight:bold;
 }
-
 .nav-badge.hidden{display:none}
 
 @media(min-width:700px){
@@ -317,16 +238,10 @@ header{
  .welcome{padding:35px}
  .welcome h1{font-size:28px}
  .bottom-nav{
-  max-width:650px;
-  left:50%;
-  right:auto;
-  transform:translateX(-50%);
-  bottom:12px;
-  width:calc(100% - 30px);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:9px;
-  box-shadow:0 8px 35px #102b4620;
+  max-width:650px;left:50%;right:auto;transform:translateX(-50%);
+  bottom:12px;width:calc(100% - 30px);
+  border:1px solid var(--border);border-radius:20px;
+  padding:9px;box-shadow:0 8px 35px #102b4620;
  }
  body{padding-bottom:110px}
 }
@@ -337,30 +252,22 @@ header{
 
 <header>
  <div class="logo">🎓 CAMPUS ONE</div>
-
  <div class="header-actions">
 
-  <button class="icon-button"
-   aria-label="الإشعارات"
+  <button class="icon-button" aria-label="الإشعارات"
    onclick="location.href='notifications.html'">
-
-   <svg viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" stroke-width="1.8"
-    stroke-linecap="round" stroke-linejoin="round">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
     <path d="M10 21h4"/>
    </svg>
-
    <span id="notificationCount" class="badge-count hidden">0</span>
   </button>
 
-  <button class="icon-button"
-   aria-label="حسابي"
+  <button class="icon-button" aria-label="حسابي"
    onclick="location.href='student.html'">
-
-   <svg viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" stroke-width="1.8"
-    stroke-linecap="round" stroke-linejoin="round">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="8" r="4"/>
     <path d="M5 21a7 7 0 0 1 14 0"/>
    </svg>
@@ -372,8 +279,6 @@ header{
 <main class="container" id="mainContent">
  <div class="loading">جارٍ تحميل حسابك...</div>
 </main>
-
-<!-- PREMIUM NAVIGATION -->
 
 <nav class="bottom-nav" aria-label="التنقل الرئيسي">
 
@@ -453,18 +358,13 @@ const supabase = createClient(
 );
 
 const main = document.getElementById('mainContent');
-
-const notificationCount =
- document.getElementById('notificationCount');
-
-const navNotificationCount =
- document.getElementById('navNotificationCount');
+const notificationCount = document.getElementById('notificationCount');
+const navNotificationCount = document.getElementById('navNotificationCount');
 
 let currentUserId = null;
 let notificationChannel = null;
 
 async function updateNotificationCount(){
-
  if(!currentUserId)return;
 
  const {count,error} = await supabase
@@ -483,7 +383,6 @@ async function updateNotificationCount(){
  if(total > 0){
   notificationCount.textContent = label;
   notificationCount.classList.remove('hidden');
-
   navNotificationCount.textContent = label;
   navNotificationCount.classList.remove('hidden');
  }else{
@@ -493,32 +392,164 @@ async function updateNotificationCount(){
 }
 
 function subscribeToNotifications(){
-
  if(notificationChannel){
   supabase.removeChannel(notificationChannel);
  }
 
  notificationChannel = supabase
   .channel('dashboard-notifications-' + currentUserId)
-  .on(
-   'postgres_changes',
-   {
-    event:'INSERT',
-    schema:'public',
-    table:'notifications',
-    filter:'recipient_id=eq.' + currentUserId
-   },
-   ()=>{
-    updateNotificationCount();
-   }
-  )
+  .on('postgres_changes',{
+   event:'INSERT',
+   schema:'public',
+   table:'notifications',
+   filter:'recipient_id=eq.' + currentUserId
+  },()=>{
+   updateNotificationCount();
+  })
   .subscribe();
 }
 
-async function loadDashboard(){
+async function loadPosts(){
+ const feed = document.getElementById('postsFeed');
+ if(!feed)return;
+
+ feed.innerHTML = '<div class="loading">جارٍ تحميل المنشورات...</div>';
 
  try{
+  // تحميل جميع المنشورات، سواء كانت عامة أو داخل مساحة
+  const {data:posts,error} = await supabase
+   .from('posts')
+   .select('id,author_id,content,image_path,created_at,space_id')
+   .order('created_at',{ascending:false})
+   .limit(30);
 
+  if(error)throw error;
+
+  if(!posts || posts.length===0){
+   feed.innerHTML = `
+    <div class="empty-feed">
+     لا توجد منشورات حتى الآن.<br>
+     ستظهر هنا منشورات الطلبة من جميع المساحات.
+    </div>`;
+   return;
+  }
+
+  // جلب أسماء أصحاب المنشورات
+  const {data:profiles, error:profilesError} =
+   await supabase.rpc('get_public_profiles');
+
+  if(profilesError)console.error('Profiles:',profilesError);
+
+  const profileMap = new Map(
+   (profiles || []).map(p=>[p.id,p])
+  );
+
+  // جلب أسماء المساحات المرتبطة بالمنشورات
+  const spaceIds = [...new Set(
+   posts.map(p=>p.space_id).filter(Boolean)
+  )];
+
+  let spaceMap = new Map();
+
+  if(spaceIds.length){
+   const {data:spaces,error:spacesError} = await supabase
+    .from('community_spaces')
+    .select('id,name')
+    .in('id',spaceIds);
+
+   if(spacesError)console.error('Spaces:',spacesError);
+
+   spaceMap = new Map(
+    (spaces || []).map(s=>[s.id,s.name])
+   );
+  }
+
+  const cards = await Promise.all(posts.map(async post=>{
+   const profile = profileMap.get(post.author_id);
+   const authorName = profile?.full_name || 'طالب CAMPUS ONE';
+   const avatarPath = profile?.profile_avatar_path || '';
+   const spaceName = post.space_id
+    ? spaceMap.get(post.space_id)
+    : null;
+
+   let avatarHTML = escapeHTML(authorName.trim().charAt(0) || 'ط');
+
+   if(avatarPath){
+    const {data:avatarData,error:avatarError} = await supabase
+     .storage.from('community-media')
+     .createSignedUrl(avatarPath,3600);
+
+    if(!avatarError && avatarData?.signedUrl){
+     avatarHTML = `<img src="${escapeHTML(avatarData.signedUrl)}" alt="">`;
+    }
+   }
+
+   let imageHTML = '';
+
+   if(post.image_path){
+    const {data:imageData,error:imageError} = await supabase
+     .storage.from('community-media')
+     .createSignedUrl(post.image_path,3600);
+
+    if(!imageError && imageData?.signedUrl){
+     imageHTML = `
+      <img class="post-image"
+       src="${escapeHTML(imageData.signedUrl)}"
+       alt="صورة المنشور" loading="lazy">`;
+    }
+   }
+
+   const date = post.created_at
+    ? new Date(post.created_at).toLocaleString('ar-DZ',{
+       dateStyle:'medium',
+       timeStyle:'short'
+      })
+    : '';
+
+   return `
+    <article class="post-card">
+     <div class="post-top">
+      <div class="post-avatar">${avatarHTML}</div>
+      <div>
+       <div class="post-author">${escapeHTML(authorName)}</div>
+       <div class="post-date">${escapeHTML(date)}</div>
+       ${spaceName ? `
+        <div class="post-space">
+         <span>📍</span>
+         ${escapeHTML(spaceName)}
+        </div>
+       ` : ''}
+      </div>
+     </div>
+
+     ${post.content ? `
+      <div class="post-content">${escapeHTML(post.content)}</div>
+     ` : ''}
+
+     ${imageHTML}
+
+     <div class="post-footer">
+      <a href="community.html${post.space_id ? '?space='+encodeURIComponent(post.space_id) : ''}">
+       ${spaceName ? 'عرض المنشور في المساحة ←' : 'عرض المجتمع ←'}
+      </a>
+     </div>
+    </article>
+   `;
+  }));
+
+  feed.innerHTML = cards.join('');
+
+ }catch(error){
+  console.error('Posts loading error:',error);
+  feed.innerHTML = `
+   <div class="feed-error">
+    تعذر تحميل المنشورات حاليًا. تحقق من الاتصال ثم حاول تحديث القائمة.
+   </div>`;
+ }
+}
+
+async function loadDashboard(){
+ try{
   const {data:{user},error:userError} =
    await supabase.auth.getUser();
 
@@ -591,6 +622,16 @@ async function loadDashboard(){
 
    </section>
 
+   <section class="feed-section">
+    <div class="feed-header">
+     <h2 class="section-title">آخر منشورات الطلبة</h2>
+     <button class="refresh-feed" id="refreshFeed">تحديث ↻</button>
+    </div>
+    <div id="postsFeed">
+     <div class="loading">جارٍ تحميل المنشورات...</div>
+    </div>
+   </section>
+
    <h2 class="section-title">آخر المستجدات</h2>
 
    <section class="notice">
@@ -610,7 +651,6 @@ async function loadDashboard(){
   `;
 
   document.getElementById('logoutBtn').addEventListener('click',async()=>{
-
    const {error} = await supabase.auth.signOut();
 
    if(error){
@@ -621,20 +661,20 @@ async function loadDashboard(){
    location.replace('auth.html');
   });
 
+  document.getElementById('refreshFeed').addEventListener('click',loadPosts);
+
+  await loadPosts();
   await updateNotificationCount();
   subscribeToNotifications();
 
  }catch(error){
-
   console.error(error);
-
   main.innerHTML =
    '<div class="loading">حدث خطأ أثناء تحميل الصفحة.</div>';
  }
 }
 
 function escapeHTML(value){
-
  return String(value ?? '').replace(/[&<>"']/g,char=>({
   '&':'&amp;',
   '<':'&lt;',
@@ -644,18 +684,13 @@ function escapeHTML(value){
  }[char]));
 }
 
-/* Clicking home while already on dashboard returns to top */
 document.querySelectorAll('.nav-item').forEach(item=>{
-
  item.addEventListener('click',event=>{
-
   if(item.dataset.page === 'dashboard'){
    event.preventDefault();
    window.scrollTo({top:0,behavior:'smooth'});
   }
-
  });
-
 });
 
 loadDashboard();
